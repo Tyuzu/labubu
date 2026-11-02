@@ -1,0 +1,24 @@
+{{define "merge-pdf.html"}}
+<section class="tool-page">
+  <div class="tool-header">
+    <p class="eyebrow">PDF Utility</p>
+    <h1>Merge PDF</h1>
+    <p>Combine multiple PDF files into one clean document in a few steps.</p>
+  </div>
+
+  <div class="tool-card">
+    <form class="image-tool" data-tool="merge-pdf">
+      <div class="field">
+        <label for="merge-pdf-files">Choose PDF files</label>
+        <input id="merge-pdf-files" type="file" accept="application/pdf" multiple />
+      </div>
+
+      <button type="submit">Merge PDFs</button>
+    </form>
+
+    <div class="result-block">
+      <a class="download-link" href="#" hidden>Download merged PDF</a>
+    </div>
+  </div>
+</section>
+{{end}}

@@ -1,0 +1,29 @@
+{{define "split-pdf.html"}}
+<section class="tool-page">
+  <div class="tool-header">
+    <p class="eyebrow">PDF Utility</p>
+    <h1>Split PDF</h1>
+    <p>Break a multi-page PDF into smaller documents or selected page ranges.</p>
+  </div>
+
+  <div class="tool-card">
+    <form class="image-tool" data-tool="split-pdf">
+      <div class="field">
+        <label for="split-pdf-file">Upload PDF</label>
+        <input id="split-pdf-file" type="file" accept="application/pdf" />
+      </div>
+
+      <div class="field">
+        <label for="split-range">Page range</label>
+        <input id="split-range" type="text" value="1-3" placeholder="Example: 1-3, 5-7" />
+      </div>
+
+      <button type="submit">Split PDF</button>
+    </form>
+
+    <div class="result-block">
+      <a class="download-link" href="#" hidden>Download split PDF</a>
+    </div>
+  </div>
+</section>
+{{end}}

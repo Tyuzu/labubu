@@ -51,12 +51,31 @@
             {{template "base64-to-image.html" .}}
         {{else if eq .TemplateName "passport-photo-maker.html"}}
             {{template "passport-photo-maker.html" .}}
+        {{else if eq .TemplateName "merge-pdf.html"}}
+            {{template "merge-pdf.html" .}}
+        {{else if eq .TemplateName "split-pdf.html"}}
+            {{template "split-pdf.html" .}}
+        {{else if eq .TemplateName "compress-pdf.html"}}
+            {{template "compress-pdf.html" .}}
+        {{else if eq .TemplateName "jpg-to-pdf.html"}}
+            {{template "jpg-to-pdf.html" .}}
+        {{else if eq .TemplateName "pdf-to-images.html"}}
+            {{template "pdf-to-images.html" .}}
+        {{else if eq .TemplateName "rotate-pdf.html"}}
+            {{template "rotate-pdf.html" .}}
+        {{else if eq .TemplateName "delete-pdf-pages.html"}}
+            {{template "delete-pdf-pages.html" .}}
+        {{else if eq .TemplateName "extract-pdf-pages.html"}}
+            {{template "extract-pdf-pages.html" .}}
         {{else}}
             {{template "content" .}}
         {{end}}
     </main>
 
     {{template "footer" .}}
+    <script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
     <script src="/static/js/image-tools.js"></script>
 </body>
 </html>

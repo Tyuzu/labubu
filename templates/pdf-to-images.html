@@ -1,0 +1,32 @@
+{{define "pdf-to-images.html"}}
+<section class="tool-page">
+  <div class="tool-header">
+    <p class="eyebrow">PDF Utility</p>
+    <h1>PDF to Images</h1>
+    <p>Convert each page of a PDF into separate JPG or PNG images for export.</p>
+  </div>
+
+  <div class="tool-card">
+    <form class="image-tool" data-tool="pdf-to-images">
+      <div class="field">
+        <label for="pdf-images-file">Upload PDF</label>
+        <input id="pdf-images-file" type="file" accept="application/pdf" />
+      </div>
+
+      <div class="field">
+        <label for="pdf-images-format">Output format</label>
+        <select id="pdf-images-format">
+          <option value="jpg">JPG</option>
+          <option value="png">PNG</option>
+        </select>
+      </div>
+
+      <button type="submit">Convert to images</button>
+    </form>
+
+    <div class="result-block">
+      <a class="download-link" href="#" hidden>Download images archive</a>
+    </div>
+  </div>
+</section>
+{{end}}

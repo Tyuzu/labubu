@@ -1,0 +1,33 @@
+{{define "compress-pdf.html"}}
+<section class="tool-page">
+  <div class="tool-header">
+    <p class="eyebrow">PDF Utility</p>
+    <h1>Compress PDF</h1>
+    <p>Reduce the size of large PDFs for email sharing, web uploads, and storage.</p>
+  </div>
+
+  <div class="tool-card">
+    <form class="image-tool" data-tool="compress-pdf">
+      <div class="field">
+        <label for="compress-pdf-file">Upload PDF</label>
+        <input id="compress-pdf-file" type="file" accept="application/pdf" />
+      </div>
+
+      <div class="field">
+        <label for="compress-level">Compression level</label>
+        <select id="compress-level">
+          <option value="low">Low</option>
+          <option value="medium" selected>Medium</option>
+          <option value="high">High</option>
+        </select>
+      </div>
+
+      <button type="submit">Compress PDF</button>
+    </form>
+
+    <div class="result-block">
+      <a class="download-link" href="#" hidden>Download compressed PDF</a>
+    </div>
+  </div>
+</section>
+{{end}}

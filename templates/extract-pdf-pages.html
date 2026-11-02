@@ -1,0 +1,29 @@
+{{define "extract-pdf-pages.html"}}
+<section class="tool-page">
+  <div class="tool-header">
+    <p class="eyebrow">PDF Utility</p>
+    <h1>Extract PDF Pages</h1>
+    <p>Pull out specific pages from a PDF and save them as a neat separate document.</p>
+  </div>
+
+  <div class="tool-card">
+    <form class="image-tool" data-tool="extract-pdf-pages">
+      <div class="field">
+        <label for="extract-pdf-file">Upload PDF</label>
+        <input id="extract-pdf-file" type="file" accept="application/pdf" />
+      </div>
+
+      <div class="field">
+        <label for="extract-page-range">Pages to extract</label>
+        <input id="extract-page-range" type="text" value="3-5" placeholder="Example: 2, 7-9" />
+      </div>
+
+      <button type="submit">Extract pages</button>
+    </form>
+
+    <div class="result-block">
+      <a class="download-link" href="#" hidden>Download extracted PDF</a>
+    </div>
+  </div>
+</section>
+{{end}}

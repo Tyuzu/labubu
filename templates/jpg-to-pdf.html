@@ -1,0 +1,24 @@
+{{define "jpg-to-pdf.html"}}
+<section class="tool-page">
+  <div class="tool-header">
+    <p class="eyebrow">PDF Utility</p>
+    <h1>JPG to PDF</h1>
+    <p>Turn one or more JPG images into a single PDF document.</p>
+  </div>
+
+  <div class="tool-card">
+    <form class="image-tool" data-tool="jpg-to-pdf">
+      <div class="field">
+        <label for="jpg-pdf-files">Choose JPG images</label>
+        <input id="jpg-pdf-files" type="file" accept="image/jpeg,.jpg,.jpeg" multiple />
+      </div>
+
+      <button type="submit">Create PDF</button>
+    </form>
+
+    <div class="result-block">
+      <a class="download-link" href="#" hidden>Download PDF</a>
+    </div>
+  </div>
+</section>
+{{end}}

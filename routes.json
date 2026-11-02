@@ -190,5 +190,101 @@
       "robots": "index, follow",
       "canonical": "https://example.com/passport-photo-maker"
     }
+  },
+  "MERGE_PDF_URL": {
+    "path": "/merge-pdf",
+    "template": "merge-pdf.html",
+    "metadata": {
+      "title": "Merge PDF - Imigi",
+      "description": "Merge multiple PDF files into a single document with a simple upload workflow.",
+      "keywords": "merge pdf, combine pdf, pdf merger",
+      "og_image": "/static/images/merge-pdf.jpg",
+      "robots": "index, follow",
+      "canonical": "https://example.com/merge-pdf"
+    }
+  },
+  "SPLIT_PDF_URL": {
+    "path": "/split-pdf",
+    "template": "split-pdf.html",
+    "metadata": {
+      "title": "Split PDF - Imigi",
+      "description": "Split a PDF into smaller files or chosen page ranges with ease.",
+      "keywords": "split pdf, separate pdf pages, pdf splitter",
+      "og_image": "/static/images/split-pdf.jpg",
+      "robots": "index, follow",
+      "canonical": "https://example.com/split-pdf"
+    }
+  },
+  "COMPRESS_PDF_URL": {
+    "path": "/compress-pdf",
+    "template": "compress-pdf.html",
+    "metadata": {
+      "title": "Compress PDF - Imigi",
+      "description": "Compress PDF files to reduce their size and improve sharing convenience.",
+      "keywords": "compress pdf, reduce pdf size, optimize pdf",
+      "og_image": "/static/images/compress-pdf.jpg",
+      "robots": "index, follow",
+      "canonical": "https://example.com/compress-pdf"
+    }
+  },
+  "JPG_TO_PDF_URL": {
+    "path": "/jpg-to-pdf",
+    "template": "jpg-to-pdf.html",
+    "metadata": {
+      "title": "JPG to PDF - Imigi",
+      "description": "Convert JPG images into a convenient PDF file with a single action.",
+      "keywords": "jpg to pdf, image to pdf, convert jpg to pdf",
+      "og_image": "/static/images/jpg-to-pdf.jpg",
+      "robots": "index, follow",
+      "canonical": "https://example.com/jpg-to-pdf"
+    }
+  },
+  "PDF_TO_IMAGES_URL": {
+    "path": "/pdf-to-images",
+    "template": "pdf-to-images.html",
+    "metadata": {
+      "title": "PDF to Images - Imigi",
+      "description": "Convert PDF pages into individual JPG or PNG images for editing or sharing.",
+      "keywords": "pdf to images, convert pdf to jpg, export pdf pages",
+      "og_image": "/static/images/pdf-to-images.jpg",
+      "robots": "index, follow",
+      "canonical": "https://example.com/pdf-to-images"
+    }
+  },
+  "ROTATE_PDF_URL": {
+    "path": "/rotate-pdf",
+    "template": "rotate-pdf.html",
+    "metadata": {
+      "title": "Rotate PDF - Imigi",
+      "description": "Rotate PDF pages to correct orientation and keep document layouts tidy.",
+      "keywords": "rotate pdf, pdf orientation, rotate pages",
+      "og_image": "/static/images/rotate-pdf.jpg",
+      "robots": "index, follow",
+      "canonical": "https://example.com/rotate-pdf"
+    }
+  },
+  "DELETE_PDF_PAGES_URL": {
+    "path": "/delete-pdf-pages",
+    "template": "delete-pdf-pages.html",
+    "metadata": {
+      "title": "Delete PDF Pages - Imigi",
+      "description": "Delete selected pages from PDF files to create cleaner and more focused documents.",
+      "keywords": "delete pdf pages, remove pages from pdf, pdf editing",
+      "og_image": "/static/images/delete-pdf-pages.jpg",
+      "robots": "index, follow",
+      "canonical": "https://example.com/delete-pdf-pages"
+    }
+  },
+  "EXTRACT_PDF_PAGES_URL": {
+    "path": "/extract-pdf-pages",
+    "template": "extract-pdf-pages.html",
+    "metadata": {
+      "title": "Extract PDF Pages - Imigi",
+      "description": "Extract selected PDF pages into a new file for easier sharing and organization.",
+      "keywords": "extract pdf pages, pdf page extraction, pdf pages",
+      "og_image": "/static/images/extract-pdf-pages.jpg",
+      "robots": "index, follow",
+      "canonical": "https://example.com/extract-pdf-pages"
+    }
   }
 }
