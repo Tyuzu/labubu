@@ -18,6 +18,17 @@
 <body>
     {{template "navbar" .}}
 
+    <header class="top-header">
+        <div class="search-box">
+            <span class="search-icon">⌕</span>
+            <span>Search tools</span>
+        </div>
+        <div class="header-user">
+            <span class="user-badge">I</span>
+            <span>Imigi</span>
+        </div>
+    </header>
+
     <main class="container" style="padding: 20px;">
         {{if eq .TemplateName "about.html"}}
             {{template "about.html" .}}
@@ -86,6 +97,30 @@
                     var isOpen = nav.classList.toggle('open');
                     toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
                 });
+            }
+
+            var serverIcons = document.querySelectorAll('.server-icon');
+            var categoryItems = document.querySelectorAll('[data-category]');
+
+            function setCategory(category) {
+                serverIcons.forEach(function(icon) {
+                    icon.classList.toggle('active', icon.getAttribute('data-category') === category);
+                });
+
+                categoryItems.forEach(function(item) {
+                    var itemCategory = item.getAttribute('data-category');
+                    item.classList.toggle('active', itemCategory === category);
+                });
+            }
+
+            if (serverIcons.length) {
+                serverIcons.forEach(function(icon) {
+                    icon.addEventListener('click', function() {
+                        setCategory(icon.getAttribute('data-category'));
+                    });
+                });
+
+                setCategory('overview');
             }
         })();
     </script>
