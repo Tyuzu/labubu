@@ -1,0 +1,36 @@
+{{define "passport-photo-maker.html"}}
+<section class="tool-page">
+  <div class="tool-header">
+    <p class="eyebrow">Photo Utility</p>
+    <h1>Passport Photo Maker</h1>
+    <p>Create a clean passport-style photo with a neutral background and centered composition.</p>
+  </div>
+
+  <div class="tool-card">
+    <form class="image-tool" data-tool="passport">
+      <div class="field">
+        <label for="passport-file">Upload portrait image</label>
+        <input id="passport-file" type="file" accept="image/*" />
+      </div>
+
+      <div class="field-row two-col">
+        <div class="field">
+          <label for="passport-width">Width</label>
+          <input id="passport-width" type="number" min="1" value="413" />
+        </div>
+        <div class="field">
+          <label for="passport-height">Height</label>
+          <input id="passport-height" type="number" min="1" value="531" />
+        </div>
+      </div>
+
+      <button type="submit">Create passport photo</button>
+    </form>
+
+    <div class="result-block">
+      <img class="tool-preview" alt="Passport preview" hidden />
+      <a class="download-link" href="#" hidden>Download passport image</a>
+    </div>
+  </div>
+</section>
+{{end}}

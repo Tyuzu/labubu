@@ -1,0 +1,25 @@
+{{define "png-to-jpg.html"}}
+<section class="tool-page">
+  <div class="tool-header">
+    <p class="eyebrow">Image Conversion</p>
+    <h1>PNG to JPG</h1>
+    <p>Turn PNG images into JPG format for web and compatibility needs.</p>
+  </div>
+
+  <div class="tool-card">
+    <form class="image-tool" data-tool="png-to-jpg">
+      <div class="field">
+        <label for="png-jpg-file">Upload PNG image</label>
+        <input id="png-jpg-file" type="file" accept="image/png,.png" />
+      </div>
+
+      <button type="submit">Convert to JPG</button>
+    </form>
+
+    <div class="result-block">
+      <img class="tool-preview" alt="JPG preview" hidden />
+      <a class="download-link" href="#" hidden>Download JPG version</a>
+    </div>
+  </div>
+</section>
+{{end}}

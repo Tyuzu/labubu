@@ -46,5 +46,149 @@
       "robots": "index, follow",
       "canonical": "https://example.com/contact"
     }
+  },
+  "IMAGE_COMPRESSOR_URL": {
+    "path": "/image-compressor",
+    "template": "image-compressor.html",
+    "metadata": {
+      "title": "Image Compressor - Imigi",
+      "description": "Compress images and reduce file size without losing too much quality.",
+      "keywords": "image compressor, compress image, web optimization",
+      "og_image": "/static/images/image-compressor.jpg",
+      "robots": "index, follow",
+      "canonical": "https://example.com/image-compressor"
+    }
+  },
+  "IMAGE_RESIZER_URL": {
+    "path": "/image-resizer",
+    "template": "image-resizer.html",
+    "metadata": {
+      "title": "Image Resizer - Imigi",
+      "description": "Resize images to exact dimensions for web, print, or social media.",
+      "keywords": "image resizer, resize image, dimensions",
+      "og_image": "/static/images/image-resizer.jpg",
+      "robots": "index, follow",
+      "canonical": "https://example.com/image-resizer"
+    }
+  },
+  "JPG_TO_PNG_URL": {
+    "path": "/jpg-to-png",
+    "template": "jpg-to-png.html",
+    "metadata": {
+      "title": "JPG to PNG - Imigi",
+      "description": "Convert JPG files to PNG format for crisp, transparent-friendly results.",
+      "keywords": "jpg to png, convert jpg to png, image conversion",
+      "og_image": "/static/images/jpg-to-png.jpg",
+      "robots": "index, follow",
+      "canonical": "https://example.com/jpg-to-png"
+    }
+  },
+  "PNG_TO_JPG_URL": {
+    "path": "/png-to-jpg",
+    "template": "png-to-jpg.html",
+    "metadata": {
+      "title": "PNG to JPG - Imigi",
+      "description": "Convert PNG images into JPG files for sharing and compatibility.",
+      "keywords": "png to jpg, convert png to jpg, file conversion",
+      "og_image": "/static/images/png-to-jpg.jpg",
+      "robots": "index, follow",
+      "canonical": "https://example.com/png-to-jpg"
+    }
+  },
+  "WEBP_CONVERTER_URL": {
+    "path": "/webp-converter",
+    "template": "webp-converter.html",
+    "metadata": {
+      "title": "WebP Converter - Imigi",
+      "description": "Convert images to WebP for quicker loading and smaller file sizes.",
+      "keywords": "webp converter, convert to webp, image format",
+      "og_image": "/static/images/webp-converter.jpg",
+      "robots": "index, follow",
+      "canonical": "https://example.com/webp-converter"
+    }
+  },
+  "PNG_TO_WEBP_URL": {
+    "path": "/png-to-webp",
+    "template": "png-to-webp.html",
+    "metadata": {
+      "title": "PNG to WebP - Imigi",
+      "description": "Convert PNG artwork and graphics to efficient WebP files.",
+      "keywords": "png to webp, convert png to webp",
+      "og_image": "/static/images/png-to-webp.jpg",
+      "robots": "index, follow",
+      "canonical": "https://example.com/png-to-webp"
+    }
+  },
+  "JPG_TO_WEBP_URL": {
+    "path": "/jpg-to-webp",
+    "template": "jpg-to-webp.html",
+    "metadata": {
+      "title": "JPG to WebP - Imigi",
+      "description": "Turn JPG images into compact WebP files with adjustable quality.",
+      "keywords": "jpg to webp, convert jpg to webp",
+      "og_image": "/static/images/jpg-to-webp.jpg",
+      "robots": "index, follow",
+      "canonical": "https://example.com/jpg-to-webp"
+    }
+  },
+  "IMAGE_CROPPER_URL": {
+    "path": "/image-cropper",
+    "template": "image-cropper.html",
+    "metadata": {
+      "title": "Image Cropper - Imigi",
+      "description": "Crop images to focus on the exact part you need in your composition.",
+      "keywords": "image cropper, crop image, trim photo",
+      "og_image": "/static/images/image-cropper.jpg",
+      "robots": "index, follow",
+      "canonical": "https://example.com/image-cropper"
+    }
+  },
+  "IMAGE_ROTATOR_URL": {
+    "path": "/image-rotator",
+    "template": "image-rotator.html",
+    "metadata": {
+      "title": "Image Rotator - Imigi",
+      "description": "Rotate images quickly to correct orientation or create a new composition.",
+      "keywords": "image rotator, rotate image, photo orientation",
+      "og_image": "/static/images/image-rotator.jpg",
+      "robots": "index, follow",
+      "canonical": "https://example.com/image-rotator"
+    }
+  },
+  "IMAGE_TO_BASE64_URL": {
+    "path": "/image-to-base64",
+    "template": "image-to-base64.html",
+    "metadata": {
+      "title": "Image to Base64 - Imigi",
+      "description": "Convert image files into Base64 strings for embedding, testing, or transfer.",
+      "keywords": "image to base64, encode image, data uri",
+      "og_image": "/static/images/image-to-base64.jpg",
+      "robots": "index, follow",
+      "canonical": "https://example.com/image-to-base64"
+    }
+  },
+  "BASE64_TO_IMAGE_URL": {
+    "path": "/base64-to-image",
+    "template": "base64-to-image.html",
+    "metadata": {
+      "title": "Base64 to Image - Imigi",
+      "description": "Decode a Base64 string back into an image preview and download.",
+      "keywords": "base64 to image, decode image, base64 converter",
+      "og_image": "/static/images/base64-to-image.jpg",
+      "robots": "index, follow",
+      "canonical": "https://example.com/base64-to-image"
+    }
+  },
+  "PASSPORT_PHOTO_MAKER_URL": {
+    "path": "/passport-photo-maker",
+    "template": "passport-photo-maker.html",
+    "metadata": {
+      "title": "Passport Photo Maker - Imigi",
+      "description": "Create a simple passport-style image with a clean, centered composition.",
+      "keywords": "passport photo maker, visa photo, photo template",
+      "og_image": "/static/images/passport-photo-maker.jpg",
+      "robots": "index, follow",
+      "canonical": "https://example.com/passport-photo-maker"
+    }
   }
 }

@@ -27,12 +27,37 @@
             {{template "index.html" .}}
         {{else if eq .TemplateName "images.html"}}
             {{template "images.html" .}}
+        {{else if eq .TemplateName "image-compressor.html"}}
+            {{template "image-compressor.html" .}}
+        {{else if eq .TemplateName "image-resizer.html"}}
+            {{template "image-resizer.html" .}}
+        {{else if eq .TemplateName "jpg-to-png.html"}}
+            {{template "jpg-to-png.html" .}}
+        {{else if eq .TemplateName "png-to-jpg.html"}}
+            {{template "png-to-jpg.html" .}}
+        {{else if eq .TemplateName "webp-converter.html"}}
+            {{template "webp-converter.html" .}}
+        {{else if eq .TemplateName "png-to-webp.html"}}
+            {{template "png-to-webp.html" .}}
+        {{else if eq .TemplateName "jpg-to-webp.html"}}
+            {{template "jpg-to-webp.html" .}}
+        {{else if eq .TemplateName "image-cropper.html"}}
+            {{template "image-cropper.html" .}}
+        {{else if eq .TemplateName "image-rotator.html"}}
+            {{template "image-rotator.html" .}}
+        {{else if eq .TemplateName "image-to-base64.html"}}
+            {{template "image-to-base64.html" .}}
+        {{else if eq .TemplateName "base64-to-image.html"}}
+            {{template "base64-to-image.html" .}}
+        {{else if eq .TemplateName "passport-photo-maker.html"}}
+            {{template "passport-photo-maker.html" .}}
         {{else}}
             {{template "content" .}}
         {{end}}
     </main>
 
     {{template "footer" .}}
+    <script src="/static/js/image-tools.js"></script>
 </body>
 </html>
 {{end}}

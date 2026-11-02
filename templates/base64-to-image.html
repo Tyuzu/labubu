@@ -1,0 +1,25 @@
+{{define "base64-to-image.html"}}
+<section class="tool-page">
+  <div class="tool-header">
+    <p class="eyebrow">Decoding Tool</p>
+    <h1>Base64 to Image</h1>
+    <p>Paste a Base64 string to instantly render the image preview or download it.</p>
+  </div>
+
+  <div class="tool-card">
+    <form class="base64-form" data-tool="base64-to-image">
+      <div class="field">
+        <label for="decode-base64">Base64 content</label>
+        <textarea id="decode-base64" placeholder="Paste Base64 here..." rows="8"></textarea>
+      </div>
+
+      <button type="submit">Decode image</button>
+    </form>
+
+    <div class="result-block">
+      <img class="tool-preview" alt="Decoded preview" hidden />
+      <a class="download-link" href="#" hidden>Download decoded image</a>
+    </div>
+  </div>
+</section>
+{{end}}

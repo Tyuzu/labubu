@@ -1,0 +1,25 @@
+{{define "image-to-base64.html"}}
+<section class="tool-page">
+  <div class="tool-header">
+    <p class="eyebrow">Encoding Tool</p>
+    <h1>Image to Base64</h1>
+    <p>Convert any uploaded file into a Base64 string for embedding or portable transfers.</p>
+  </div>
+
+  <div class="tool-card">
+    <form class="image-tool" data-tool="image-to-base64">
+      <div class="field">
+        <label for="base64-file">Upload image</label>
+        <input id="base64-file" type="file" accept="image/*" />
+      </div>
+
+      <button type="submit">Encode to Base64</button>
+    </form>
+
+    <div class="result-block">
+      <textarea class="tool-output" id="base64-output" readonly hidden></textarea>
+      <button type="button" class="secondary-btn" data-copy-output hidden>Copy Base64</button>
+    </div>
+  </div>
+</section>
+{{end}}

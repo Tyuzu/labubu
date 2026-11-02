@@ -1,0 +1,47 @@
+{{define "image-cropper.html"}}
+<section class="tool-page">
+  <div class="tool-header">
+    <p class="eyebrow">Image Utility</p>
+    <h1>Image Cropper</h1>
+    <p>Crop uploaded images to a precise area using width and height coordinates.</p>
+  </div>
+
+  <div class="tool-card">
+    <form class="image-tool" data-tool="crop">
+      <div class="field">
+        <label for="crop-file">Upload image</label>
+        <input id="crop-file" type="file" accept="image/*" />
+      </div>
+
+      <div class="field-row two-col">
+        <div class="field">
+          <label for="crop-x">X offset</label>
+          <input id="crop-x" type="number" min="0" value="0" />
+        </div>
+        <div class="field">
+          <label for="crop-y">Y offset</label>
+          <input id="crop-y" type="number" min="0" value="0" />
+        </div>
+      </div>
+
+      <div class="field-row two-col">
+        <div class="field">
+          <label for="crop-width">Crop width</label>
+          <input id="crop-width" type="number" min="1" value="600" />
+        </div>
+        <div class="field">
+          <label for="crop-height">Crop height</label>
+          <input id="crop-height" type="number" min="1" value="400" />
+        </div>
+      </div>
+
+      <button type="submit">Crop image</button>
+    </form>
+
+    <div class="result-block">
+      <img class="tool-preview" alt="Cropped preview" hidden />
+      <a class="download-link" href="#" hidden>Download cropped image</a>
+    </div>
+  </div>
+</section>
+{{end}}

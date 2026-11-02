@@ -1,0 +1,33 @@
+{{define "jpg-to-webp.html"}}
+<section class="tool-page">
+  <div class="tool-header">
+    <p class="eyebrow">WebP Utility</p>
+    <h1>JPG to WebP</h1>
+    <p>Save JPG files as compact WebP versions for more efficient web performance.</p>
+  </div>
+
+  <div class="tool-card">
+    <form class="image-tool" data-tool="jpg-to-webp">
+      <div class="field">
+        <label for="jpg-webp-file">Upload JPG image</label>
+        <input id="jpg-webp-file" type="file" accept="image/jpeg,.jpg,.jpeg" />
+      </div>
+
+      <div class="field range-field">
+        <label for="jpg-webp-quality">Quality</label>
+        <div class="range-row">
+          <input id="jpg-webp-quality" type="range" min="0.1" max="1" step="0.05" value="0.8" />
+          <span data-quality-value>0.80</span>
+        </div>
+      </div>
+
+      <button type="submit">Convert to WebP</button>
+    </form>
+
+    <div class="result-block">
+      <img class="tool-preview" alt="WebP preview" hidden />
+      <a class="download-link" href="#" hidden>Download WebP image</a>
+    </div>
+  </div>
+</section>
+{{end}}
