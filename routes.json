@@ -1,0 +1,50 @@
+{
+  "HOME_PAGE_URL": {
+    "path": "/",
+    "template": "index.html",
+    "metadata": {
+      "title": "Home Page - Imigi",
+      "description": "Welcome to our home page description",
+      "keywords": "imigi, home, app, welcome",
+      "og_image": "/static/images/home-og.jpg",
+      "robots": "index, follow",
+      "canonical": "https://example.com/"
+    }
+  },
+  "ABOUT_PAGE_URL": {
+    "path": "/about",
+    "template": "about.html",
+    "metadata": {
+      "title": "About Us - Imigi",
+      "description": "Learn more about our team and mission",
+      "keywords": "about, team, mission, company",
+      "og_image": "/static/images/about-og.jpg",
+      "robots": "index, follow",
+      "canonical": "https://example.com/about"
+    }
+  },
+  "IMAGES_PAGE_URL": {
+    "path": "/images",
+    "template": "images.html",
+    "metadata": {
+      "title": "Gallery - Imigi",
+      "description": "Explore our collection of images and media",
+      "keywords": "images, gallery, photos",
+      "og_image": "/static/images/images-og.jpg",
+      "robots": "index, follow",
+      "canonical": "https://example.com/images"
+    }
+  },
+  "CONTACT_PAGE_URL": {
+    "path": "/contact",
+    "template": "contact.html",
+    "metadata": {
+      "title": "Contact Us - Imigi",
+      "description": "Get in touch with us today",
+      "keywords": "contact, support, help",
+      "og_image": "/static/images/contact-og.jpg",
+      "robots": "index, follow",
+      "canonical": "https://example.com/contact"
+    }
+  }
+}

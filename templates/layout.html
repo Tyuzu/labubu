@@ -1,0 +1,38 @@
+{{define "layout"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{.Metadata.Title}}</title>
+    <meta name="description" content="{{.Metadata.Description}}">
+    {{if .Metadata.Keywords}}<meta name="keywords" content="{{.Metadata.Keywords}}">{{end}}
+    {{if .Metadata.Robots}}<meta name="robots" content="{{.Metadata.Robots}}">{{end}}
+    {{if .Metadata.Canonical}}<link rel="canonical" href="{{.Metadata.Canonical}}">{{end}}
+
+    <meta property="og:title" content="{{.Metadata.Title}}">
+    <meta property="og:description" content="{{.Metadata.Description}}">
+    {{if .Metadata.OgImage}}<meta property="og:image" content="{{.Metadata.OgImage}}">{{end}}
+    
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    {{template "navbar" .}}
+
+    <main class="container" style="padding: 20px;">
+        {{if eq .TemplateName "about.html"}}
+            {{template "about.html" .}}
+        {{else if eq .TemplateName "contact.html"}}
+            {{template "contact.html" .}}
+        {{else if eq .TemplateName "index.html"}}
+            {{template "index.html" .}}
+        {{else if eq .TemplateName "images.html"}}
+            {{template "images.html" .}}
+        {{else}}
+            {{template "content" .}}
+        {{end}}
+    </main>
+
+    {{template "footer" .}}
+</body>
+</html>
+{{end}}
