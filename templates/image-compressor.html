@@ -10,7 +10,17 @@
     <form class="image-tool" data-tool="compress">
       <div class="field">
         <label for="compress-file">Upload image</label>
-        <input id="compress-file" type="file" accept="image/*" />
+        <div class="file-dropzone" data-dropzone data-input="compress-file" tabindex="0" role="button" aria-label="Upload image">
+          <input id="compress-file" type="file" accept="image/*" hidden />
+          <div class="dropzone-content">
+            <span class="dropzone-icon">⇪</span>
+            <div class="dropzone-copy">
+              <strong>Drag &amp; drop your image here</strong>
+              <span>or browse</span>
+            </div>
+          </div>
+          <small class="dropzone-filename">No file selected</small>
+        </div>
       </div>
 
       <div class="field range-field">

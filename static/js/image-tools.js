@@ -3,6 +3,57 @@ document.addEventListener('DOMContentLoaded', () => {
     window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
   }
 
+  document.querySelectorAll('.file-dropzone').forEach((dropzone) => {
+    const input = dropzone.querySelector('input[type="file"]');
+    const filename = dropzone.querySelector('.dropzone-filename');
+
+    const syncFilename = () => {
+      if (!input || !filename) return;
+      const selectedName = input.files && input.files.length ? input.files[0].name : 'No file selected';
+      filename.textContent = selectedName;
+      dropzone.classList.toggle('has-file', Boolean(input.files && input.files.length));
+    };
+
+    if (input) {
+      input.addEventListener('change', syncFilename);
+    }
+
+    dropzone.addEventListener('click', (event) => {
+      if (event.target === input) return;
+      input && input.click();
+    });
+
+    dropzone.addEventListener('keydown', (event) => {
+      if ((event.key === 'Enter' || event.key === ' ') && !event.repeat) {
+        event.preventDefault();
+        input && input.click();
+      }
+    });
+
+    ['dragenter', 'dragover'].forEach((eventName) => {
+      dropzone.addEventListener(eventName, (event) => {
+        event.preventDefault();
+        dropzone.classList.add('dragover');
+      });
+    });
+
+    ['dragleave', 'drop'].forEach((eventName) => {
+      dropzone.addEventListener(eventName, (event) => {
+        event.preventDefault();
+        dropzone.classList.remove('dragover');
+      });
+    });
+
+    dropzone.addEventListener('drop', (event) => {
+      if (input && event.dataTransfer && event.dataTransfer.files && event.dataTransfer.files.length) {
+        input.files = event.dataTransfer.files;
+        syncFilename();
+      }
+    });
+
+    syncFilename();
+  });
+
   document.querySelectorAll('.image-tool').forEach((form) => {
     bindRangeValue(form);
     ensureStatusElement(form);
@@ -11,6 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
       event.preventDefault();
       const input = form.querySelector('input[type="file"]');
       const files = input && input.files ? Array.from(input.files) : [];
+      const submitButton = form.querySelector('button[type="submit"]');
 
       if (!form.dataset.tool) {
         return;
@@ -21,6 +73,11 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.textContent = 'Compressing...';
+      }
+
       setFormStatus(form, 'Processing your file...', false);
 
       try {
@@ -29,6 +86,11 @@ document.addEventListener('DOMContentLoaded', () => {
         setFormStatus(form, 'Your file is ready to download.', false);
       } catch (error) {
         setFormStatus(form, error.message || 'Unable to process the file.', true);
+      } finally {
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.textContent = 'Compress another image';
+        }
       }
     });
   });
@@ -178,6 +240,11 @@ function displayResult(form, result) {
   const downloadLink = form.parentElement.querySelector('.download-link');
   const output = form.parentElement.querySelector('.tool-output');
   const copyButton = form.parentElement.querySelector('[data-copy-output]');
+  const submitButton = form.querySelector('button[type="submit"]');
+
+  if (submitButton) {
+    submitButton.textContent = 'Compress another image';
+  }
 
   if (result && result.type === 'base64') {
     if (output) {

@@ -18,6 +18,7 @@ body {
   font-family: "Segoe UI", Arial, sans-serif;
   background: linear-gradient(180deg, #101317 0%, #12161b 100%);
   color: var(--text-primary);
+  min-height: 100vh;
 }
 
 .container {
@@ -26,12 +27,29 @@ body {
   padding: 0 16px 40px;
 }
 
+footer {
+  margin-top: 0;
+  padding: 20px 24px;
+  background: #111317;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  text-align: center;
+  font-size: 0.9em;
+  color: var(--text-secondary);
+}
+
+footer p {
+  margin: 0;
+}
+
 .tool-page {
   max-width: 980px;
   margin: 32px auto 40px;
 }
 
 .tool-header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   margin-bottom: 28px;
 }
 
@@ -45,11 +63,11 @@ body {
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  margin-bottom: 16px;
+  margin: 0;
 }
 
 .tool-header h1 {
-  margin: 0 0 12px;
+  margin: 0;
   font-size: clamp(2.2rem, 4vw, 3.2rem);
   line-height: 1.1;
   letter-spacing: -0.04em;
@@ -60,6 +78,7 @@ body {
   color: #4b5563;
   font-size: 1.08rem;
   max-width: 720px;
+  line-height: 1.6;
 }
 
 .tool-card {
@@ -69,6 +88,79 @@ body {
   padding: 28px;
   box-shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
   backdrop-filter: blur(6px);
+}
+
+.file-dropzone {
+  position: relative;
+  display: grid;
+  gap: 12px;
+  padding: 22px 18px;
+  border: 1.5px dashed rgba(148, 163, 184, 0.6);
+  border-radius: 18px;
+  background: rgba(148, 163, 184, 0.06);
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.file-dropzone:hover,
+.file-dropzone:focus-visible,
+.file-dropzone.dragover {
+  border-color: rgba(124, 58, 237, 0.8);
+  background: rgba(124, 58, 237, 0.06);
+  box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.08);
+  outline: none;
+}
+
+.file-dropzone.has-file {
+  border-color: rgba(124, 58, 237, 0.85);
+  background: rgba(124, 58, 237, 0.05);
+}
+
+.file-dropzone input[type="file"] {
+  display: none;
+}
+
+.dropzone-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+.dropzone-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  color: #fff;
+  font-size: 1.3rem;
+  box-shadow: 0 10px 24px rgba(79, 70, 229, 0.2);
+}
+
+.dropzone-copy {
+  display: grid;
+  gap: 4px;
+}
+
+.dropzone-copy strong {
+  font-size: 1rem;
+  color: #0f172a;
+}
+
+.dropzone-copy span,
+.dropzone-filename {
+  color: #475569;
+  font-size: 0.9rem;
+}
+
+.dropzone-filename {
+  text-align: center;
+  font-weight: 600;
 }
 
 .image-tool,
@@ -149,12 +241,19 @@ button {
   font-weight: 800;
   cursor: pointer;
   box-shadow: 0 12px 22px rgba(79, 70, 229, 0.22);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.2s ease;
 }
 
 button:hover {
   transform: translateY(-1px);
   box-shadow: 0 16px 26px rgba(79, 70, 229, 0.28);
+}
+
+button:disabled {
+  opacity: 0.72;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 .secondary-btn {
@@ -478,7 +577,7 @@ button:hover {
 
 .sidebar-nav {
   position: relative;
-  width: 300px;
+  width: 240px;
   background: linear-gradient(180deg, rgba(30,31,34,0.96) 0%, rgba(23,25,29,0.96) 100%);
   border-right: 1px solid var(--border-soft);
   box-shadow: inset -1px 0 0 rgba(255,255,255,0.04);
@@ -502,13 +601,13 @@ button:hover {
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  margin-bottom: 12px;
+  margin: 6px 0 18px;
 }
 
 .nav-inner {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 20px;
   min-height: 100%;
 }
 
@@ -554,7 +653,8 @@ button:hover {
 .sidebar-section {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
+  margin-top: 6px;
 }
 
 .channel-list,
