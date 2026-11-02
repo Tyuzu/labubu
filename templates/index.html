@@ -1,4 +1,112 @@
 {{define "index.html"}}
-<h1>Welcome to Imigi</h1>
-<p>This is the dynamic home page loaded via templates/index.html.</p>
+<section class="hero-section">
+    <div class="hero-copy">
+        <span class="eyebrow">All-in-one media toolkit</span>
+        <h1>Transform, optimize, and manage your images and PDFs in one place.</h1>
+        <p>
+            Imigi helps creators, teams, and businesses compress, convert, split, merge, resize, and polish their media without leaving the browser.
+        </p>
+        <div class="hero-actions">
+            <a class="primary-btn" href="/image-compressor">Try Image Tools</a>
+            <a class="secondary-btn" href="/merge-pdf">Try PDF Tools</a>
+        </div>
+        <div class="hero-metrics">
+            <div>
+                <strong>25+</strong>
+                <span>Media tools</span>
+            </div>
+            <div>
+                <strong>100%</strong>
+                <span>Browser-based</span>
+            </div>
+            <div>
+                <strong>Fast</strong>
+                <span>Low-friction flow</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="hero-panel">
+        <div class="mini-panel gradient-panel">
+            <span>Quick actions</span>
+            <ul>
+                <li>Compress image</li>
+                <li>Resize photo</li>
+                <li>Convert to WebP</li>
+                <li>Merge PDFs</li>
+            </ul>
+        </div>
+        <div class="mini-panel">
+            <span>Popular tools</span>
+            <div class="chip-list">
+                <span>JPG to PNG</span>
+                <span>PDF to Images</span>
+                <span>Rotate PDF</span>
+                <span>Passport Photo</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="feature-grid">
+    <article class="feature-card">
+        <div class="feature-icon">🖼️</div>
+        <h3>Image Workflow</h3>
+        <p>Resize, crop, rotate, convert, and compress images without external software.</p>
+    </article>
+
+    <article class="feature-card">
+        <div class="feature-icon">📄</div>
+        <h3>PDF Workflow</h3>
+        <p>Merge, split, extract, rotate, and compress PDFs for smoother document handling.</p>
+    </article>
+
+    <article class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Fast & Simple</h3>
+        <p>Easy upload flows, instant previews, and straightforward downloads in a clean UI.</p>
+    </article>
+</section>
+
+<section class="tool-showcase">
+    <div class="section-header">
+        <span class="eyebrow">Popular utilities</span>
+        <h2>Everything you need for image and PDF editing</h2>
+    </div>
+
+    <div class="tool-grid">
+        <a href="/image-compressor" class="tool-tile">
+            <span>Image Compressor</span>
+            <small>Reduce size</small>
+        </a>
+        <a href="/jpg-to-png" class="tool-tile">
+            <span>JPG to PNG</span>
+            <small>Convert format</small>
+        </a>
+        <a href="/png-to-webp" class="tool-tile">
+            <span>PNG to WebP</span>
+            <small>Web optimization</small>
+        </a>
+        <a href="/image-cropper" class="tool-tile">
+            <span>Image Cropper</span>
+            <small>Frame precisely</small>
+        </a>
+        <a href="/merge-pdf" class="tool-tile">
+            <span>Merge PDF</span>
+            <small>Combine files</small>
+        </a>
+        <a href="/split-pdf" class="tool-tile">
+            <span>Split PDF</span>
+            <small>Break apart</small>
+        </a>
+        <a href="/jpg-to-pdf" class="tool-tile">
+            <span>JPG to PDF</span>
+            <small>Create docs</small>
+        </a>
+        <a href="/pdf-to-images" class="tool-tile">
+            <span>PDF to Images</span>
+            <small>Export pages</small>
+        </a>
+    </div>
+</section>
 {{end}}
