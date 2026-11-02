@@ -1,48 +1,55 @@
 {{define "navbar"}}
-<nav class="sidebar-nav">
-    <div class="nav-inner">
+<nav class="sidebar-nav" id="sidebarNav">
+    <div class="nav-topbar">
         <div class="nav-brand">
             <a href="/">Imigi</a>
         </div>
+        <button class="nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
 
+    <div class="nav-inner">
         <div class="sidebar-section">
             <div class="nav-group">
-                <a href="/">Home</a>
-                <a href="/about">About</a>
-                <a href="/images">Gallery</a>
-                <a href="/contact">Contact</a>
+                <a href="/"><span class="nav-icon">🏠</span>Home</a>
+                <a href="/about"><span class="nav-icon">ℹ️</span>About</a>
+                <a href="/images"><span class="nav-icon">🖼️</span>Gallery</a>
+                <a href="/contact"><span class="nav-icon">✉️</span>Contact</a>
             </div>
         </div>
 
         <div class="sidebar-section">
-            <span class="nav-label">Image Tools</span>
+            <span class="nav-label"><span class="nav-icon">🧩</span>Image Tools</span>
             <div class="nav-group nav-tools">
-                <a href="/image-compressor">Compressor</a>
-                <a href="/image-resizer">Resizer</a>
-                <a href="/jpg-to-png">JPG to PNG</a>
-                <a href="/png-to-jpg">PNG to JPG</a>
-                <a href="/webp-converter">WebP</a>
-                <a href="/png-to-webp">PNG to WebP</a>
-                <a href="/jpg-to-webp">JPG to WebP</a>
-                <a href="/image-cropper">Cropper</a>
-                <a href="/image-rotator">Rotator</a>
-                <a href="/image-to-base64">Image to Base64</a>
-                <a href="/base64-to-image">Base64 to Image</a>
-                <a href="/passport-photo-maker">Passport Photo</a>
+                <a href="/image-compressor"><span class="nav-icon">🗜️</span>Compressor</a>
+                <a href="/image-resizer"><span class="nav-icon">📐</span>Resizer</a>
+                <a href="/jpg-to-png"><span class="nav-icon">⇄</span>JPG to PNG</a>
+                <a href="/png-to-jpg"><span class="nav-icon">⇄</span>PNG to JPG</a>
+                <a href="/webp-converter"><span class="nav-icon">🧠</span>WebP</a>
+                <a href="/png-to-webp"><span class="nav-icon">⚡</span>PNG to WebP</a>
+                <a href="/jpg-to-webp"><span class="nav-icon">⚡</span>JPG to WebP</a>
+                <a href="/image-cropper"><span class="nav-icon">✂️</span>Cropper</a>
+                <a href="/image-rotator"><span class="nav-icon">🔄</span>Rotator</a>
+                <a href="/image-to-base64"><span class="nav-icon">⌨️</span>Image to Base64</a>
+                <a href="/base64-to-image"><span class="nav-icon">🧾</span>Base64 to Image</a>
+                <a href="/passport-photo-maker"><span class="nav-icon">📸</span>Passport Photo</a>
             </div>
         </div>
 
         <div class="sidebar-section">
-            <span class="nav-label">PDF Tools</span>
+            <span class="nav-label"><span class="nav-icon">📄</span>PDF Tools</span>
             <div class="nav-group nav-tools">
-                <a href="/merge-pdf">Merge PDF</a>
-                <a href="/split-pdf">Split PDF</a>
-                <a href="/compress-pdf">Compress PDF</a>
-                <a href="/jpg-to-pdf">JPG to PDF</a>
-                <a href="/pdf-to-images">PDF to Images</a>
-                <a href="/rotate-pdf">Rotate PDF</a>
-                <a href="/delete-pdf-pages">Delete PDF Pages</a>
-                <a href="/extract-pdf-pages">Extract PDF Pages</a>
+                <a href="/merge-pdf"><span class="nav-icon">🧩</span>Merge PDF</a>
+                <a href="/split-pdf"><span class="nav-icon">✂️</span>Split PDF</a>
+                <a href="/compress-pdf"><span class="nav-icon">🗜️</span>Compress PDF</a>
+                <a href="/jpg-to-pdf"><span class="nav-icon">📎</span>JPG to PDF</a>
+                <a href="/pdf-to-images"><span class="nav-icon">🖼️</span>PDF to Images</a>
+                <a href="/rotate-pdf"><span class="nav-icon">🔁</span>Rotate PDF</a>
+                <a href="/delete-pdf-pages"><span class="nav-icon">🗑️</span>Delete Pages</a>
+                <a href="/extract-pdf-pages"><span class="nav-icon">📤</span>Extract Pages</a>
             </div>
         </div>
     </div>

@@ -77,6 +77,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
     <script src="/static/js/image-tools.js"></script>
+    <script>
+        (function() {
+            var nav = document.getElementById('sidebarNav');
+            var toggle = document.querySelector('.nav-toggle');
+            if (nav && toggle) {
+                toggle.addEventListener('click', function() {
+                    var isOpen = nav.classList.toggle('open');
+                    toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                });
+            }
+        })();
+    </script>
 </body>
 </html>
 {{end}}
