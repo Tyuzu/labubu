@@ -1,22 +1,44 @@
 {{define "navbar"}}
-<nav style="background: #f4f4f4; padding: 15px; border-bottom: 1px solid #ddd;">
-    <a href="/" style="margin-right: 15px; text-decoration: none; font-weight: bold;">Home</a>
-    <a href="/about" style="margin-right: 15px; text-decoration: none; font-weight: bold;">About</a>
-    <a href="/images" style="margin-right: 15px; text-decoration: none; font-weight: bold;">Gallery</a>
-    <a href="/contact" style="margin-right: 15px; text-decoration: none; font-weight: bold;">Contact</a>
-    <a href="/image-compressor" style="margin-right: 15px; text-decoration: none; font-weight: bold;">Image Compressor</a>
-    <a href="/image-resizer" style="margin-right: 15px; text-decoration: none; font-weight: bold;">Image Resizer</a>
-    <a href="/jpg-to-png" style="margin-right: 15px; text-decoration: none; font-weight: bold;">JPG to PNG</a>
-    <a href="/png-to-jpg" style="margin-right: 15px; text-decoration: none; font-weight: bold;">PNG to JPG</a>
-    <a href="/webp-converter" style="margin-right: 15px; text-decoration: none; font-weight: bold;">WebP</a>
-    <a href="/passport-photo-maker" style="margin-right: 15px; text-decoration: none; font-weight: bold;">Passport Photo</a>
-    <a href="/merge-pdf" style="margin-right: 15px; text-decoration: none; font-weight: bold;">Merge PDF</a>
-    <a href="/split-pdf" style="margin-right: 15px; text-decoration: none; font-weight: bold;">Split PDF</a>
-    <a href="/compress-pdf" style="margin-right: 15px; text-decoration: none; font-weight: bold;">Compress PDF</a>
-    <a href="/jpg-to-pdf" style="margin-right: 15px; text-decoration: none; font-weight: bold;">JPG to PDF</a>
-    <a href="/pdf-to-images" style="margin-right: 15px; text-decoration: none; font-weight: bold;">PDF to Images</a>
-    <a href="/rotate-pdf" style="margin-right: 15px; text-decoration: none; font-weight: bold;">Rotate PDF</a>
-    <a href="/delete-pdf-pages" style="margin-right: 15px; text-decoration: none; font-weight: bold;">Delete PDF Pages</a>
-    <a href="/extract-pdf-pages" style="text-decoration: none; font-weight: bold;">Extract PDF Pages</a>
+<nav class="top-nav">
+    <div class="nav-inner">
+        <div class="nav-brand">
+            <a href="/">Imigi</a>
+        </div>
+
+        <div class="nav-group">
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/images">Gallery</a>
+            <a href="/contact">Contact</a>
+        </div>
+
+        <div class="nav-group nav-tools">
+            <span class="nav-label">Image Tools</span>
+            <a href="/image-compressor">Compressor</a>
+            <a href="/image-resizer">Resizer</a>
+            <a href="/jpg-to-png">JPG to PNG</a>
+            <a href="/png-to-jpg">PNG to JPG</a>
+            <a href="/webp-converter">WebP</a>
+            <a href="/png-to-webp">PNG to WebP</a>
+            <a href="/jpg-to-webp">JPG to WebP</a>
+            <a href="/image-cropper">Cropper</a>
+            <a href="/image-rotator">Rotator</a>
+            <a href="/image-to-base64">Image to Base64</a>
+            <a href="/base64-to-image">Base64 to Image</a>
+            <a href="/passport-photo-maker">Passport Photo</a>
+        </div>
+
+        <div class="nav-group nav-tools">
+            <span class="nav-label">PDF Tools</span>
+            <a href="/merge-pdf">Merge PDF</a>
+            <a href="/split-pdf">Split PDF</a>
+            <a href="/compress-pdf">Compress PDF</a>
+            <a href="/jpg-to-pdf">JPG to PDF</a>
+            <a href="/pdf-to-images">PDF to Images</a>
+            <a href="/rotate-pdf">Rotate PDF</a>
+            <a href="/delete-pdf-pages">Delete PDF Pages</a>
+            <a href="/extract-pdf-pages">Extract PDF Pages</a>
+        </div>
+    </div>
 </nav>
 {{end}}
