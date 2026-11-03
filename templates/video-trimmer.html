@@ -13,6 +13,14 @@
         <input id="video-trim-file" type="file" accept="video/*" />
       </div>
 
+      <div class="field">
+        <label for="video-trim-mode">Processing engine</label>
+        <select id="video-trim-mode">
+          <option value="cdn">CDN FFmpeg (ffmpeg.wasm)</option>
+          <option value="self-hosted">Self-hosted FFmpeg</option>
+        </select>
+      </div>
+
       <div class="field-row two-col">
         <div class="field">
           <label for="video-trim-start">Start time (seconds)</label>

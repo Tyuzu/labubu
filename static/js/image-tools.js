@@ -230,9 +230,83 @@ async function runTool(toolName, form, files) {
       return deletePdfPages(file, form.querySelector('#delete-page-range')?.value || '2');
     case 'extract-pdf-pages':
       return extractPdfPages(file, form.querySelector('#extract-page-range')?.value || '1-2');
+    case 'video-cropper':
+      return processVideoTool(file, form, 'crop', {
+        x: getNumber(form, 'video-crop-x', 0),
+        y: getNumber(form, 'video-crop-y', 0),
+        width: getNumber(form, 'video-crop-width', 1280),
+        height: getNumber(form, 'video-crop-height', 720)
+      });
+    case 'video-trimmer':
+      return processVideoTool(file, form, 'trim', {
+        start: getNumber(form, 'video-trim-start', 0),
+        end: getNumber(form, 'video-trim-end', 10)
+      });
+    case 'video-filters':
+      return processVideoTool(file, form, 'filter', {
+        filter: form.querySelector('#video-filter-style')?.value || 'cinematic'
+      });
     default:
       throw new Error('This tool is not implemented yet.');
   }
+}
+
+function getVideoProcessingMode(form) {
+  const mode = form.querySelector('[id$="-mode"]')?.value || 'cdn';
+  return mode === 'self-hosted' ? 'self-hosted' : 'cdn';
+}
+
+async function processVideoTool(file, form, action, params) {
+  const mode = getVideoProcessingMode(form);
+  if (mode === 'self-hosted') {
+    return processVideoOnServer(file, action, params);
+  }
+
+  switch (action) {
+    case 'crop':
+      return cropVideo(file, params);
+    case 'trim':
+      return trimVideo(file, params);
+    case 'filter':
+      return applyVideoFilter(file, params.filter || 'cinematic');
+    default:
+      throw new Error('Unknown video action.');
+  }
+}
+
+async function processVideoOnServer(file, action, params) {
+  if (!file) {
+    throw new Error('Please upload a video before processing.');
+  }
+
+  const formData = new FormData();
+  formData.append('action', action);
+  formData.append('video', file, file.name);
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== null) {
+      formData.append(key, String(value));
+    }
+  });
+
+  const response = await fetch('/api/video/process', {
+    method: 'POST',
+    body: formData
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(text || 'The self-hosted FFmpeg backend failed to process the video.');
+  }
+
+  const blob = await response.blob();
+  const contentDisposition = response.headers.get('Content-Disposition') || '';
+  const match = contentDisposition.match(/filename="?([^";]+)"?/i);
+  const fileName = match ? match[1] : `${action}-video.mp4`;
+
+  return {
+    url: URL.createObjectURL(blob),
+    fileName
+  };
 }
 
 function displayResult(form, result) {
@@ -592,6 +666,125 @@ function createDownloadResult(blob, fileName) {
     url: URL.createObjectURL(blob),
     fileName
   };
+}
+
+let ffmpegInstance = null;
+let ffmpegUtil = null;
+
+async function getFFmpeg() {
+  if (ffmpegInstance) {
+    return ffmpegInstance;
+  }
+
+  const [{ FFmpeg }, utilModule] = await Promise.all([
+    import('https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/esm/index.js'),
+    import('https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.10/dist/esm/index.js')
+  ]);
+
+  ffmpegUtil = utilModule;
+
+  const ffmpeg = new FFmpeg();
+  ffmpeg.on('log', ({ message }) => {
+    if (message && typeof console !== 'undefined') {
+      console.debug('[ffmpeg]', message);
+    }
+  });
+
+  await ffmpeg.load({
+    coreURL: await ffmpegUtil.toBlobURL('https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/esm/ffmpeg-core.js', 'text/javascript'),
+    wasmURL: await ffmpegUtil.toBlobURL('https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/esm/ffmpeg-core.wasm', 'application/wasm')
+  });
+
+  ffmpegInstance = ffmpeg;
+  return ffmpeg;
+}
+
+async function runVideoFFmpeg(file, args, outputName) {
+  if (!file) {
+    throw new Error('Please upload a video before processing.');
+  }
+
+  const ffmpeg = await getFFmpeg();
+  const extension = getFileExtension(file.name);
+  const inputName = `input.${extension}`;
+
+  await ffmpeg.writeFile(inputName, await ffmpegUtil.fetchFile(file));
+  await ffmpeg.exec(args);
+  const data = await ffmpeg.readFile(outputName);
+
+  return new Blob([data.buffer], { type: 'video/mp4' });
+}
+
+async function cropVideo(file, options) {
+  const width = Math.max(1, Number(options.width) || 1280);
+  const height = Math.max(1, Number(options.height) || 720);
+  const x = Math.max(0, Number(options.x) || 0);
+  const y = Math.max(0, Number(options.y) || 0);
+
+  const inputName = `input.${getFileExtension(file.name)}`;
+  const outputName = `cropped-${Date.now()}.mp4`;
+  const blob = await runVideoFFmpeg(file, [
+    '-i', inputName,
+    '-vf', `crop=${width}:${height}:${x}:${y}`,
+    '-c:v', 'libx264',
+    '-preset', 'veryfast',
+    '-c:a', 'aac',
+    '-movflags', '+faststart',
+    outputName
+  ], outputName);
+
+  return createDownloadResult(blob, `${getBaseName(file.name)}-cropped.mp4`);
+}
+
+async function trimVideo(file, options) {
+  const start = Math.max(0, Number(options.start) || 0);
+  const end = Math.max(start + 0.1, Number(options.end) || 10);
+
+  const inputName = `input.${getFileExtension(file.name)}`;
+  const outputName = `trimmed-${Date.now()}.mp4`;
+  const blob = await runVideoFFmpeg(file, [
+    '-i', inputName,
+    '-ss', String(start),
+    '-to', String(end),
+    '-c:v', 'libx264',
+    '-preset', 'veryfast',
+    '-c:a', 'aac',
+    '-movflags', '+faststart',
+    outputName
+  ], outputName);
+
+  return createDownloadResult(blob, `${getBaseName(file.name)}-trimmed.mp4`);
+}
+
+async function applyVideoFilter(file, preset) {
+  const presetMap = {
+    cinematic: 'eq=contrast=1.15:saturation=1.35:brightness=0.04',
+    warm: 'eq=contrast=1.1:saturation=1.4:brightness=0.08',
+    cool: 'eq=contrast=1.2:saturation=0.95:brightness=-0.03',
+    vintage: 'eq=contrast=1.35:saturation=0.8:brightness=0.06',
+    contrast: 'eq=contrast=1.6:saturation=1.2:brightness=0.02'
+  };
+
+  const filter = presetMap[preset] || presetMap.cinematic;
+  const inputName = `input.${getFileExtension(file.name)}`;
+  const outputName = `filtered-${Date.now()}.mp4`;
+  const blob = await runVideoFFmpeg(file, [
+    '-i', inputName,
+    '-vf', filter,
+    '-c:v', 'libx264',
+    '-preset', 'veryfast',
+    '-c:a', 'aac',
+    '-movflags', '+faststart',
+    outputName
+  ], outputName);
+
+  return createDownloadResult(blob, `${getBaseName(file.name)}-filtered.mp4`);
+}
+
+function getFileExtension(name) {
+  if (!name) return 'mp4';
+  const parts = name.split('.');
+  return parts.length > 1 ? parts.pop().toLowerCase() : 'mp4';
 }
 
 function canvasToBlob(canvas, format, quality = 0.8) {

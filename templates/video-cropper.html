@@ -13,6 +13,14 @@
         <input id="video-crop-file" type="file" accept="video/*" />
       </div>
 
+      <div class="field">
+        <label for="video-crop-mode">Processing engine</label>
+        <select id="video-crop-mode">
+          <option value="cdn">CDN FFmpeg (ffmpeg.wasm)</option>
+          <option value="self-hosted">Self-hosted FFmpeg</option>
+        </select>
+      </div>
+
       <div class="field-row two-col">
         <div class="field">
           <label for="video-crop-x">X offset</label>
