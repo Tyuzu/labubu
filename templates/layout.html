@@ -13,6 +13,12 @@
     <meta property="og:title" content="{{.Metadata.Title}}">
     <meta property="og:description" content="{{.Metadata.Description}}">
     {{if .Metadata.OgImage}}<meta property="og:image" content="{{.Metadata.OgImage}}">{{end}}
+    <meta name="theme-color" content="#5865f2">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="/static/manifest.webmanifest">
+    <link rel="icon" type="image/svg+xml" href="/static/icons/imigi-icon.svg">
+    <link rel="apple-touch-icon" href="/static/icons/imigi-icon.svg">
 
     <link rel="preconnect" href="https://pagead2.googlesyndication.com">
     <link rel="preconnect" href="https://googleads.g.doubleclick.net">
@@ -75,6 +81,8 @@
             {{template "image-cropper.html" .}}
         {{else if eq .TemplateName "image-rotator.html"}}
             {{template "image-rotator.html" .}}
+        {{else if eq .TemplateName "document-scanner.html"}}
+            {{template "document-scanner.html" .}}
         {{else if eq .TemplateName "image-to-base64.html"}}
             {{template "image-to-base64.html" .}}
         {{else if eq .TemplateName "base64-to-image.html"}}
@@ -117,6 +125,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
     <script src="/static/js/image-tools.js"></script>
+    <script src="/static/js/pwa.js"></script>
     <script>
         (function() {
             var nav = document.getElementById('sidebarNav');
@@ -165,6 +174,7 @@
                     '/jpg-to-webp': 'images',
                     '/image-cropper': 'images',
                     '/image-rotator': 'images',
+                    '/document-scanner': 'scanner',
                     '/passport-photo-maker': 'images',
                     '/merge-pdf': 'pdfs',
                     '/split-pdf': 'pdfs',

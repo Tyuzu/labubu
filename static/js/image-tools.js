@@ -214,6 +214,12 @@ async function runTool(toolName, form, files) {
         width: getNumber(form, 'passport-width', 413),
         height: getNumber(form, 'passport-height', 531)
       });
+    case 'document-scanner':
+      return scanDocument(file, {
+        threshold: Number(form.querySelector('#scanner-threshold')?.value || 180),
+        padding: Number(form.querySelector('#scanner-padding')?.value || 18),
+        contrast: Number(form.querySelector('#scanner-contrast')?.value || 1.6)
+      });
     case 'merge-pdf':
       return mergePdf(files);
     case 'split-pdf':
@@ -489,6 +495,84 @@ async function passportMaker(file, options) {
   return {
     url: URL.createObjectURL(blob),
     fileName: `passport-photo-${getBaseName(file.name)}.jpg`
+  };
+}
+
+async function scanDocument(file, options = {}) {
+  const image = await readImage(file);
+  const sourceCanvas = document.createElement('canvas');
+  sourceCanvas.width = image.width;
+  sourceCanvas.height = image.height;
+  const sourceCtx = sourceCanvas.getContext('2d');
+  sourceCtx.drawImage(image, 0, 0);
+
+  const sourceData = sourceCtx.getImageData(0, 0, sourceCanvas.width, sourceCanvas.height);
+  const data = sourceData.data;
+  const threshold = Number(options.threshold) || 180;
+  const padding = Number(options.padding) || 18;
+
+  let minX = sourceCanvas.width;
+  let minY = sourceCanvas.height;
+  let maxX = -1;
+  let maxY = -1;
+
+  for (let y = 0; y < sourceCanvas.height; y += 2) {
+    for (let x = 0; x < sourceCanvas.width; x += 2) {
+      const index = (y * sourceCanvas.width + x) * 4;
+      const r = data[index];
+      const g = data[index + 1];
+      const b = data[index + 2];
+      const brightness = (r + g + b) / 3;
+
+      if (brightness < threshold) {
+        minX = Math.min(minX, x);
+        maxX = Math.max(maxX, x);
+        minY = Math.min(minY, y);
+        maxY = Math.max(maxY, y);
+      }
+    }
+  }
+
+  let cropX = 0;
+  let cropY = 0;
+  let cropWidth = sourceCanvas.width;
+  let cropHeight = sourceCanvas.height;
+
+  if (maxX >= 0 && maxY >= 0) {
+    cropX = Math.max(0, minX - padding);
+    cropY = Math.max(0, minY - padding);
+    cropWidth = Math.min(sourceCanvas.width - cropX, maxX - minX + padding * 2);
+    cropHeight = Math.min(sourceCanvas.height - cropY, maxY - minY + padding * 2);
+  }
+
+  const outputCanvas = document.createElement('canvas');
+  outputCanvas.width = Math.max(1, cropWidth);
+  outputCanvas.height = Math.max(1, cropHeight);
+  const outputCtx = outputCanvas.getContext('2d');
+
+  const cropRect = sourceCtx.getImageData(cropX, cropY, cropWidth, cropHeight);
+  const rectData = cropRect.data;
+
+  for (let i = 0; i < rectData.length; i += 4) {
+    const r = rectData[i];
+    const g = rectData[i + 1];
+    const b = rectData[i + 2];
+    const brightness = (r + g + b) / 3;
+    const gray = Math.min(255, Math.max(0, brightness));
+    const adjusted = Math.min(255, Math.max(0, (gray - 128) * (Number(options.contrast) || 1.6) + 128));
+    const finalVal = adjusted > threshold ? 255 : 0;
+
+    rectData[i] = finalVal;
+    rectData[i + 1] = finalVal;
+    rectData[i + 2] = finalVal;
+  }
+
+  outputCtx.putImageData(cropRect, 0, 0);
+
+  const blob = await canvasToBlob(outputCanvas, 'image/png', 0.96);
+  return {
+    url: URL.createObjectURL(blob),
+    fileName: `scanned-${getBaseName(file.name)}.png`
   };
 }
 

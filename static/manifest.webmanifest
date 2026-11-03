@@ -1,0 +1,20 @@
+{
+  "name": "Imigi",
+  "short_name": "Imigi",
+  "description": "Imigi media toolkit for images, PDFs, scanner, and video editing.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#5865f2",
+  "orientation": "portrait-primary",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/static/icons/imigi-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -203,6 +203,18 @@
       "canonical": "https://example.com/image-rotator"
     }
   },
+  "DOCUMENT_SCANNER_URL": {
+    "path": "/document-scanner",
+    "template": "document-scanner.html",
+    "metadata": {
+      "title": "Document Scanner - Imigi",
+      "description": "Turn photos of documents into clean, contrast-boosted scans with a CamScanner-style enhancement flow.",
+      "keywords": "document scanner, scan document, camscanner, image enhancement",
+      "og_image": "/static/images/document-scanner.jpg",
+      "robots": "index, follow",
+      "canonical": "https://example.com/document-scanner"
+    }
+  },
   "IMAGE_TO_BASE64_URL": {
     "path": "/image-to-base64",
     "template": "image-to-base64.html",

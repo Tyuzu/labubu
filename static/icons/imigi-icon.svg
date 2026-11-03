@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Imigi logo">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5865f2"/>
+      <stop offset="100%" stop-color="#7c3aed"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="128" fill="url(#bg)"/>
+  <path d="M140 164h232v42H140zm0 84h232v42H140zm0 84h154v42H140z" fill="#ffffff" opacity="0.92"/>
+  <circle cx="376" cy="248" r="44" fill="#ffffff" opacity="0.95"/>
+</svg>
