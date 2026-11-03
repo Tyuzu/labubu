@@ -47,6 +47,54 @@
       "canonical": "https://example.com/contact"
     }
   },
+  "VIDEO_STUDIO_URL": {
+    "path": "/videos",
+    "template": "videos.html",
+    "metadata": {
+      "title": "Video Studio - Imigi",
+      "description": "Edit and enhance videos with crop, trim, and filter tools designed for fast browser workflows.",
+      "keywords": "video editor, crop video, trim video, video filters",
+      "og_image": "/static/images/videos-og.jpg",
+      "robots": "index, follow",
+      "canonical": "https://example.com/videos"
+    }
+  },
+  "VIDEO_CROPPER_URL": {
+    "path": "/video-cropper",
+    "template": "video-cropper.html",
+    "metadata": {
+      "title": "Video Cropper - Imigi",
+      "description": "Crop uploaded videos to focus on the exact frame or aspect ratio you need.",
+      "keywords": "video cropper, crop video, trim aspect ratio",
+      "og_image": "/static/images/video-cropper.jpg",
+      "robots": "index, follow",
+      "canonical": "https://example.com/video-cropper"
+    }
+  },
+  "VIDEO_TRIMMER_URL": {
+    "path": "/video-trimmer",
+    "template": "video-trimmer.html",
+    "metadata": {
+      "title": "Video Trimmer - Imigi",
+      "description": "Trim clips to keep only the moments you need from longer video files.",
+      "keywords": "video trimmer, trim video, cut clip",
+      "og_image": "/static/images/video-trimmer.jpg",
+      "robots": "index, follow",
+      "canonical": "https://example.com/video-trimmer"
+    }
+  },
+  "VIDEO_FILTERS_URL": {
+    "path": "/video-filters",
+    "template": "video-filters.html",
+    "metadata": {
+      "title": "Video Filters - Imigi",
+      "description": "Apply cinematic filters and color styles to improve the mood of your video clips.",
+      "keywords": "video filters, color grade, cinematic filter",
+      "og_image": "/static/images/video-filters.jpg",
+      "robots": "index, follow",
+      "canonical": "https://example.com/video-filters"
+    }
+  },
   "IMAGE_COMPRESSOR_URL": {
     "path": "/image-compressor",
     "template": "image-compressor.html",

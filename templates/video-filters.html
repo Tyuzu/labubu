@@ -1,0 +1,36 @@
+{{define "video-filters.html"}}
+<section class="tool-page">
+  <div class="tool-header">
+    <p class="eyebrow">Video Utility</p>
+    <h1>Video Filters</h1>
+    <p>Apply quick looks and cinematic color styles to improve the mood and clarity of your clips.</p>
+  </div>
+
+  <div class="tool-card">
+    <form class="image-tool" data-tool="video-filters">
+      <div class="field">
+        <label for="video-filter-file">Upload video</label>
+        <input id="video-filter-file" type="file" accept="video/*" />
+      </div>
+
+      <div class="field">
+        <label for="video-filter-style">Filter preset</label>
+        <select id="video-filter-style">
+          <option value="cinematic">Cinematic</option>
+          <option value="warm">Warm</option>
+          <option value="cool">Cool</option>
+          <option value="vintage">Vintage</option>
+          <option value="contrast">High Contrast</option>
+        </select>
+      </div>
+
+      <button type="submit">Apply filter</button>
+    </form>
+
+    <div class="result-block">
+      <video class="tool-preview" controls muted playsinline hidden></video>
+      <a class="download-link" href="#" hidden>Download filtered video</a>
+    </div>
+  </div>
+</section>
+{{end}}

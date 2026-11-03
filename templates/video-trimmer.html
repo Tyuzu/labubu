@@ -1,0 +1,36 @@
+{{define "video-trimmer.html"}}
+<section class="tool-page">
+  <div class="tool-header">
+    <p class="eyebrow">Video Utility</p>
+    <h1>Video Trimmer</h1>
+    <p>Cut your video between start and end points to keep only the best moments from each clip.</p>
+  </div>
+
+  <div class="tool-card">
+    <form class="image-tool" data-tool="video-trimmer">
+      <div class="field">
+        <label for="video-trim-file">Upload video</label>
+        <input id="video-trim-file" type="file" accept="video/*" />
+      </div>
+
+      <div class="field-row two-col">
+        <div class="field">
+          <label for="video-trim-start">Start time (seconds)</label>
+          <input id="video-trim-start" type="number" min="0" value="0" />
+        </div>
+        <div class="field">
+          <label for="video-trim-end">End time (seconds)</label>
+          <input id="video-trim-end" type="number" min="1" value="10" />
+        </div>
+      </div>
+
+      <button type="submit">Trim video</button>
+    </form>
+
+    <div class="result-block">
+      <video class="tool-preview" controls muted playsinline hidden></video>
+      <a class="download-link" href="#" hidden>Download trimmed video</a>
+    </div>
+  </div>
+</section>
+{{end}}

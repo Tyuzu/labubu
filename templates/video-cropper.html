@@ -1,0 +1,47 @@
+{{define "video-cropper.html"}}
+<section class="tool-page">
+  <div class="tool-header">
+    <p class="eyebrow">Video Utility</p>
+    <h1>Video Cropper</h1>
+    <p>Crop uploaded videos to a custom frame size for reels, posts, ads, or branded social content.</p>
+  </div>
+
+  <div class="tool-card">
+    <form class="image-tool" data-tool="video-cropper">
+      <div class="field">
+        <label for="video-crop-file">Upload video</label>
+        <input id="video-crop-file" type="file" accept="video/*" />
+      </div>
+
+      <div class="field-row two-col">
+        <div class="field">
+          <label for="video-crop-x">X offset</label>
+          <input id="video-crop-x" type="number" min="0" value="0" />
+        </div>
+        <div class="field">
+          <label for="video-crop-y">Y offset</label>
+          <input id="video-crop-y" type="number" min="0" value="0" />
+        </div>
+      </div>
+
+      <div class="field-row two-col">
+        <div class="field">
+          <label for="video-crop-width">Crop width</label>
+          <input id="video-crop-width" type="number" min="1" value="1280" />
+        </div>
+        <div class="field">
+          <label for="video-crop-height">Crop height</label>
+          <input id="video-crop-height" type="number" min="1" value="720" />
+        </div>
+      </div>
+
+      <button type="submit">Crop video</button>
+    </form>
+
+    <div class="result-block">
+      <video class="tool-preview" controls muted playsinline hidden></video>
+      <a class="download-link" href="#" hidden>Download cropped video</a>
+    </div>
+  </div>
+</section>
+{{end}}

@@ -49,6 +49,14 @@
             {{template "index.html" .}}
         {{else if eq .TemplateName "images.html"}}
             {{template "images.html" .}}
+        {{else if eq .TemplateName "videos.html"}}
+            {{template "videos.html" .}}
+        {{else if eq .TemplateName "video-cropper.html"}}
+            {{template "video-cropper.html" .}}
+        {{else if eq .TemplateName "video-trimmer.html"}}
+            {{template "video-trimmer.html" .}}
+        {{else if eq .TemplateName "video-filters.html"}}
+            {{template "video-filters.html" .}}
         {{else if eq .TemplateName "image-compressor.html"}}
             {{template "image-compressor.html" .}}
         {{else if eq .TemplateName "image-resizer.html"}}
@@ -144,6 +152,10 @@
                     '/about': 'overview',
                     '/images': 'overview',
                     '/contact': 'overview',
+                    '/videos': 'videos',
+                    '/video-cropper': 'videos',
+                    '/video-trimmer': 'videos',
+                    '/video-filters': 'videos',
                     '/image-compressor': 'images',
                     '/image-resizer': 'images',
                     '/jpg-to-png': 'images',
