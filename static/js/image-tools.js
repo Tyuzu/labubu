@@ -57,19 +57,25 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.image-tool').forEach((form) => {
     bindRangeValue(form);
     ensureStatusElement(form);
+    setupCameraCapture(form);
+    setupQrCodeForm(form);
 
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
       const input = form.querySelector('input[type="file"]');
-      const files = input && input.files ? Array.from(input.files) : [];
+      let files = input && input.files ? Array.from(input.files) : [];
       const submitButton = form.querySelector('button[type="submit"]');
 
       if (!form.dataset.tool) {
         return;
       }
 
+      if (['document-scanner', 'qr-code-scanner'].includes(form.dataset.tool) && files.length === 0 && form.dataset.scannerCameraData) {
+        files = [await dataUrlToFile(form.dataset.scannerCameraData, form.dataset.tool === 'qr-code-scanner' ? 'qr-code-scan.png' : 'camera-scan.png')];
+      }
+
       if (files.length === 0 && !['image-to-base64', 'base64-to-image'].includes(form.dataset.tool)) {
-        setFormStatus(form, 'Please choose a file first.', true);
+        setFormStatus(form, 'Please choose a file or capture a photo first.', true);
         return;
       }
 
@@ -156,6 +162,88 @@ function ensureStatusElement(form) {
   }
 }
 
+function setupCameraCapture(form) {
+  if (!form.dataset.tool || form.dataset.tool !== 'document-scanner') {
+    return;
+  }
+
+  const toggleButton = form.querySelector('.camera-toggle');
+  const captureButton = form.querySelector('.camera-capture');
+  const video = form.querySelector('#scanner-camera');
+  const canvas = form.querySelector('#scanner-capture-canvas');
+  let stream = null;
+
+  if (!toggleButton || !captureButton || !video || !canvas) {
+    return;
+  }
+
+  const stopCamera = () => {
+    if (stream) {
+      stream.getTracks().forEach((track) => track.stop());
+    }
+    stream = null;
+    if (video) {
+      video.srcObject = null;
+      video.hidden = true;
+    }
+    captureButton.hidden = true;
+    toggleButton.textContent = 'Use camera';
+    form.dataset.scannerCameraData = '';
+  };
+
+  toggleButton.addEventListener('click', async () => {
+    if (stream) {
+      stopCamera();
+      return;
+    }
+
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      setFormStatus(form, 'Camera access is not supported in this browser.', true);
+      return;
+    }
+
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'environment' },
+        audio: false
+      });
+      video.srcObject = stream;
+      video.hidden = false;
+      await video.play();
+      captureButton.hidden = false;
+      toggleButton.textContent = 'Stop camera';
+      setFormStatus(form, 'Camera is ready. Capture a document photo.', false);
+    } catch (error) {
+      setFormStatus(form, 'Unable to access the camera. Please upload a photo instead.', true);
+    }
+  });
+
+  captureButton.addEventListener('click', () => {
+    if (!stream || video.videoWidth === 0 || video.videoHeight === 0) {
+      setFormStatus(form, 'Start the camera before capturing a photo.', true);
+      return;
+    }
+
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    const context = canvas.getContext('2d');
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    form.dataset.scannerCameraData = canvas.toDataURL('image/png');
+    setFormStatus(form, 'Photo captured. You can scan it now.', false);
+  });
+
+  const fileInput = form.querySelector('input[type="file"]');
+  if (fileInput) {
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files && fileInput.files.length > 0) {
+        form.dataset.scannerCameraData = '';
+      }
+    });
+  }
+
+  form.addEventListener('reset', stopCamera);
+}
+
 function setFormStatus(form, message, isError) {
   const block = form.parentElement;
   const status = block.querySelector('.tool-status');
@@ -164,6 +252,83 @@ function setFormStatus(form, message, isError) {
   status.hidden = false;
   status.style.color = isError ? '#b91c1c' : '#166534';
   status.style.fontWeight = '600';
+}
+
+function setupQrCodeCameraCapture(form) {
+  if (!form.dataset.tool || form.dataset.tool !== 'qr-code-scanner') {
+    return;
+  }
+
+  const toggleButton = form.querySelector('.camera-toggle');
+  const scanButton = form.querySelector('.camera-scan');
+  const video = form.querySelector('#qr-camera');
+  const canvas = form.querySelector('#qr-scan-canvas');
+  let stream = null;
+
+  if (!toggleButton || !scanButton || !video || !canvas) {
+    return;
+  }
+
+  const stopCamera = () => {
+    if (stream) {
+      stream.getTracks().forEach((track) => track.stop());
+    }
+    stream = null;
+    if (video) {
+      video.srcObject = null;
+      video.hidden = true;
+    }
+    toggleButton.textContent = 'Use camera';
+    scanButton.hidden = true;
+    form.dataset.scannerCameraData = '';
+  };
+
+  toggleButton.addEventListener('click', async () => {
+    if (stream) {
+      stopCamera();
+      return;
+    }
+
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      setFormStatus(form, 'Camera access is not supported in this browser.', true);
+      return;
+    }
+
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'environment' },
+        audio: false
+      });
+      video.srcObject = stream;
+      video.hidden = false;
+      await video.play();
+      scanButton.hidden = false;
+      toggleButton.textContent = 'Stop camera';
+      setFormStatus(form, 'Camera is ready. Scan the QR code.', false);
+    } catch (error) {
+      setFormStatus(form, 'Unable to access the camera. Please upload a QR image instead.', true);
+    }
+  });
+
+  scanButton.addEventListener('click', () => {
+    if (!stream || video.videoWidth === 0 || video.videoHeight === 0) {
+      setFormStatus(form, 'Start the camera before scanning.', true);
+      return;
+    }
+
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    const context = canvas.getContext('2d');
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    form.dataset.scannerCameraData = canvas.toDataURL('image/png');
+    setFormStatus(form, 'QR capture ready. Process it now.', false);
+  });
+
+  form.addEventListener('reset', stopCamera);
+}
+
+function setupQrCodeForm(form) {
+  setupQrCodeCameraCapture(form);
 }
 
 function bindRangeValue(form) {
@@ -220,6 +385,8 @@ async function runTool(toolName, form, files) {
         padding: Number(form.querySelector('#scanner-padding')?.value || 18),
         contrast: Number(form.querySelector('#scanner-contrast')?.value || 1.6)
       });
+    case 'qr-code-scanner':
+      return scanQrCode(file, form);
     case 'merge-pdf':
       return mergePdf(files);
     case 'split-pdf':
@@ -326,13 +493,24 @@ function displayResult(form, result) {
     submitButton.textContent = 'Compress another image';
   }
 
-  if (result && result.type === 'base64') {
+  if (result && (result.type === 'base64' || result.type === 'text')) {
     if (output) {
       output.value = result.value;
       output.hidden = false;
     }
     if (copyButton) {
       copyButton.hidden = false;
+    }
+    if (downloadLink && result.fileName) {
+      const blob = new Blob([String(result.value || '')], { type: result.type === 'text' ? 'text/plain;charset=utf-8' : 'text/plain;charset=utf-8' });
+      downloadLink.href = URL.createObjectURL(blob);
+      downloadLink.download = result.fileName;
+      downloadLink.hidden = false;
+      downloadLink.textContent = result.type === 'text' ? 'Download QR result' : 'Download Base64';
+    }
+    if (preview) {
+      preview.hidden = true;
+      preview.removeAttribute('src');
     }
     return;
   }
@@ -393,6 +571,20 @@ function fileToDataUrl(file) {
     reader.onerror = () => reject(new Error('The file could not be read.'));
     reader.readAsDataURL(file);
   });
+}
+
+function dataUrlToFile(dataUrl, fileName) {
+  const [header, content] = dataUrl.split(',');
+  const mimeMatch = header.match(/data:(.*?);base64/);
+  const mime = mimeMatch ? mimeMatch[1] : 'image/png';
+  const binary = atob(content);
+  const array = new Uint8Array(binary.length);
+
+  for (let index = 0; index < binary.length; index += 1) {
+    array[index] = binary.charCodeAt(index);
+  }
+
+  return new File([array], fileName, { type: mime, lastModified: Date.now() });
 }
 
 async function fileToBase64(file) {
@@ -495,6 +687,38 @@ async function passportMaker(file, options) {
   return {
     url: URL.createObjectURL(blob),
     fileName: `passport-photo-${getBaseName(file.name)}.jpg`
+  };
+}
+
+async function scanQrCode(file, form) {
+  if (!file) {
+    throw new Error('Please upload a QR code image or use the camera first.');
+  }
+
+  const image = await readImage(file);
+  const canvas = document.createElement('canvas');
+  canvas.width = image.width;
+  canvas.height = image.height;
+  const context = canvas.getContext('2d');
+  context.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+  const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+  const code = window.jsQR?.(imageData.data, imageData.width, imageData.height);
+
+  if (!code || !code.data) {
+    throw new Error('No QR code was detected. Try a clearer image or a closer shot.');
+  }
+
+  const preview = form.parentElement.querySelector('.tool-preview');
+  if (preview) {
+    preview.src = fileToDataUrl ? await fileToDataUrl(file) : URL.createObjectURL(file);
+    preview.hidden = false;
+  }
+
+  return {
+    type: 'text',
+    value: code.data,
+    fileName: 'qr-code-result.txt'
   };
 }
 

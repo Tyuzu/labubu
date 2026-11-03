@@ -215,6 +215,18 @@
       "canonical": "https://example.com/document-scanner"
     }
   },
+  "QR_CODE_SCANNER_URL": {
+    "path": "/qr-code-scanner",
+    "template": "qr-code-scanner.html",
+    "metadata": {
+      "title": "QR Code Scanner - Imigi",
+      "description": "Scan QR codes from uploaded images or a live camera feed and read the decoded content instantly.",
+      "keywords": "qr code scanner, scan qr code, qr reader, camera scanner",
+      "og_image": "/static/images/qr-code-scanner.jpg",
+      "robots": "index, follow",
+      "canonical": "https://example.com/qr-code-scanner"
+    }
+  },
   "IMAGE_TO_BASE64_URL": {
     "path": "/image-to-base64",
     "template": "image-to-base64.html",

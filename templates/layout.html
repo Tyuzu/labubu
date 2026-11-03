@@ -83,6 +83,8 @@
             {{template "image-rotator.html" .}}
         {{else if eq .TemplateName "document-scanner.html"}}
             {{template "document-scanner.html" .}}
+        {{else if eq .TemplateName "qr-code-scanner.html"}}
+            {{template "qr-code-scanner.html" .}}
         {{else if eq .TemplateName "image-to-base64.html"}}
             {{template "image-to-base64.html" .}}
         {{else if eq .TemplateName "base64-to-image.html"}}
@@ -124,6 +126,7 @@
     <script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
     <script src="/static/js/image-tools.js"></script>
     <script src="/static/js/pwa.js"></script>
     <script>
@@ -175,6 +178,7 @@
                     '/image-cropper': 'images',
                     '/image-rotator': 'images',
                     '/document-scanner': 'scanner',
+                    '/qr-code-scanner': 'scanner',
                     '/passport-photo-maker': 'images',
                     '/merge-pdf': 'pdfs',
                     '/split-pdf': 'pdfs',
