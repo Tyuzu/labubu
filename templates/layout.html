@@ -13,7 +13,9 @@
     <meta property="og:title" content="{{.Metadata.Title}}">
     <meta property="og:description" content="{{.Metadata.Description}}">
     {{if .Metadata.OgImage}}<meta property="og:image" content="{{.Metadata.OgImage}}">{{end}}
-    
+
+    <link rel="preconnect" href="https://pagead2.googlesyndication.com">
+    <link rel="preconnect" href="https://googleads.g.doubleclick.net">
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body class="app-layout">
@@ -31,6 +33,14 @@
     </header>
 
     <main class="container">
+        <div class="adsense-wrap">
+            <ins class="adsbygoogle adsense-slot"
+                 style="display:block; width:min(100%, 728px); height:90px; min-height:90px; background:rgba(148,163,184,0.08); border:1px solid rgba(148,163,184,0.15); border-radius:14px;"
+                 data-ad-client="ca-pub-XXXXXXXXXXXXXX"
+                 data-ad-slot="1234567890"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+        </div>
         {{if eq .TemplateName "about.html"}}
             {{template "about.html" .}}
         {{else if eq .TemplateName "contact.html"}}
@@ -84,7 +94,17 @@
         {{end}}
     </main>
 
+    <div class="adsense-wrap adsense-wrap--footer">
+        <ins class="adsbygoogle adsense-slot adsense-slot--mobile"
+             style="display:block; width:min(100%, 728px); height:90px; min-height:90px; background:rgba(148,163,184,0.08); border:1px solid rgba(148,163,184,0.15); border-radius:14px;"
+             data-ad-client="ca-pub-XXXXXXXXXXXXXX"
+             data-ad-slot="0987654321"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+    </div>
+
     {{template "footer" .}}
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXX" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
@@ -92,9 +112,8 @@
     <script>
         (function() {
             var nav = document.getElementById('sidebarNav');
-            var toggle = document.querySelector('.nav-toggle');
             var navInner = document.querySelector('.nav-inner');
-            var serverIcons = document.querySelectorAll('.server-icon');
+            var serverButtons = document.querySelectorAll('.server-button');
             var navGroups = document.querySelectorAll('.channel-list, .sidebar-section');
             var channelItems = document.querySelectorAll('.channel-item');
             var storageKey = 'imigi-nav-state';
@@ -199,10 +218,10 @@
                     navInner.classList.toggle('hidden', !selected || !groupVisible);
                 }
 
-                serverIcons.forEach(function(icon) {
-                    var isActive = icon.getAttribute('data-category') === selected;
-                    icon.classList.toggle('active', isActive);
-                    icon.setAttribute('aria-selected', isActive ? 'true' : 'false');
+                serverButtons.forEach(function(button) {
+                    var isActive = button.getAttribute('data-category') === selected;
+                    button.classList.toggle('active', isActive);
+                    button.setAttribute('aria-selected', isActive ? 'true' : 'false');
                 });
 
                 navGroups.forEach(function(group) {
@@ -217,18 +236,10 @@
                 }
             }
 
-            if (nav && toggle) {
-                toggle.addEventListener('click', function() {
-                    nav.classList.remove('collapsed');
-                    var isOpen = nav.classList.toggle('open');
-                    toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-                });
-            }
-
-            if (serverIcons.length) {
-                serverIcons.forEach(function(icon) {
-                    icon.addEventListener('click', function() {
-                        var category = icon.getAttribute('data-category');
+            if (serverButtons.length) {
+                serverButtons.forEach(function(button) {
+                    button.addEventListener('click', function() {
+                        var category = button.getAttribute('data-category');
                         if (activeCategory === category) {
                             setCategory(category, !groupVisible);
                             return;

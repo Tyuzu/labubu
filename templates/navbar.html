@@ -1,10 +1,22 @@
 {{define "navbar"}}
 <div class="discord-shell">
     <aside class="server-rail" role="tablist" aria-label="Tool Categories">
-        <button class="server-icon active" type="button" role="tab" aria-selected="true" data-category="overview" title="Overview">I</button>
-        <button class="server-icon" type="button" role="tab" aria-selected="false" data-category="images" title="Images">🖼️</button>
-        <button class="server-icon" type="button" role="tab" aria-selected="false" data-category="pdfs" title="PDFs">📄</button>
-        <button class="server-icon" type="button" role="tab" aria-selected="false" data-category="utility" title="Utility">⚡</button>
+        <button class="server-button active" type="button" role="tab" aria-selected="true" data-category="overview" title="Overview">
+            <span class="server-icon">I</span>
+            <span class="server-name">Home</span>
+        </button>
+        <button class="server-button" type="button" role="tab" aria-selected="false" data-category="images" title="Images">
+            <span class="server-icon">🖼️</span>
+            <span class="server-name">Images</span>
+        </button>
+        <button class="server-button" type="button" role="tab" aria-selected="false" data-category="pdfs" title="PDFs">
+            <span class="server-icon">📄</span>
+            <span class="server-name">PDFs</span>
+        </button>
+        <button class="server-button" type="button" role="tab" aria-selected="false" data-category="utility" title="Utility">
+            <span class="server-icon">⚡</span>
+            <span class="server-name">Tools</span>
+        </button>
     </aside>
 
     <nav class="sidebar-nav" id="sidebarNav" aria-label="Main Navigation">
@@ -12,11 +24,6 @@
             <div class="nav-brand">
                 <a href="/">Imigi</a>
             </div>
-            <button class="nav-toggle" type="button" aria-label="Toggle navigation menu" aria-expanded="false">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
         </div>
 
         <div class="nav-inner">

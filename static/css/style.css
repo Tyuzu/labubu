@@ -21,12 +21,12 @@
     --success: #23a55a;
     --warning: #fbbf24;
     --danger: #ef4444;
-    --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.45);
-    --shadow-card: 0 12px 30px rgba(15, 23, 42, 0.28);
+    --shadow-soft: 0 1.125rem 2.5rem rgba(15, 23, 42, 0.45);
+    --shadow-card: 0 0.75rem 1.875rem rgba(15, 23, 42, 0.28);
 
-    --rail-width: 72px;
-    --sidebar-width: 260px;
-    --header-height: 72px;
+    --rail-width: 4.5rem;
+    --sidebar-width: 16.25rem;
+    --header-height: 4.5rem;
     --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
@@ -82,20 +82,35 @@ a {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 12px 0;
-    gap: 10px;
+    justify-content: center;
+    padding: 0.75rem 0;
+    gap: 0.625rem;
     position: fixed;
     top: 0;
     bottom: 0;
     left: 0;
     width: var(--rail-width);
     z-index: 100;
-    border-right: 1px solid rgba(148, 163, 184, 0.14);
+    border-right: 0.0625rem solid rgba(148, 163, 184, 0.14);
+}
+
+.server-button {
+    width: 3.5rem;
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    padding: 0;
+    cursor: pointer;
 }
 
 .server-icon {
-    width: 46px;
-    height: 46px;
+    width: 2.875rem;
+    height: 2.875rem;
     border-radius: 50%;
     background: linear-gradient(135deg, rgba(88, 101, 242, 0.2), rgba(124, 58, 237, 0.18));
     color: var(--text-primary);
@@ -104,35 +119,48 @@ a {
     justify-content: center;
     font-weight: 700;
     font-size: 1.05rem;
-    cursor: pointer;
-    border: 1px solid transparent;
+    border: 0.0625rem solid transparent;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+    box-shadow: inset 0 0 0 0.0625rem rgba(255, 255, 255, 0.02);
 }
 
-.server-icon:hover {
-    border-radius: 16px;
+.server-button:hover .server-icon {
+    border-radius: 1rem;
     background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-    transform: translateY(-1px);
+    transform: translateY(-0.0625rem);
 }
 
-.server-icon.active {
-    border-radius: 16px;
+.server-button.active .server-icon {
+    border-radius: 1rem;
     background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-    box-shadow: 0 10px 24px rgba(88, 101, 242, 0.3);
+    box-shadow: 0 0.625rem 1.5rem rgba(88, 101, 242, 0.3);
 }
 
-.server-icon.active::before {
+.server-button.active .server-icon::before {
     content: '';
     position: absolute;
-    left: -10px;
+    left: -0.625rem;
     top: 50%;
     transform: translateY(-50%);
-    width: 4px;
-    height: 30px;
+    width: 0.25rem;
+    height: 1.875rem;
     background-color: var(--text-primary);
-    border-radius: 0 4px 4px 0;
+    border-radius: 0 0.25rem 0.25rem 0;
+}
+
+.server-name {
+    font-size: 0.62rem;
+    color: var(--text-secondary);
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    line-height: 1.1;
+    text-align: center;
+    width: 100%;
+}
+
+.server-button.active .server-name {
+    color: var(--text-primary);
 }
 
 /* ==========================================
@@ -164,8 +192,8 @@ a {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 10px;
-    padding: 14px 12px 12px;
+    gap: 0.625rem;
+    padding: 0.875rem 0.75rem 0.75rem;
 }
 
 .nav-brand {
@@ -186,43 +214,6 @@ a {
     font-weight: 800;
     letter-spacing: -0.03em;
     box-shadow: 0 12px 24px rgba(88, 101, 242, 0.24);
-}
-
-.nav-toggle {
-    display: none;
-    background: rgba(148, 163, 184, 0.08);
-    border: 1px solid rgba(148, 163, 184, 0.18);
-    cursor: pointer;
-    flex-direction: column;
-    justify-content: center;
-    gap: 4px;
-    padding: 8px 6px;
-    border-radius: 10px;
-    position: relative;
-    width: 38px;
-    height: 38px;
-}
-
-.nav-toggle span {
-    display: block;
-    width: 18px;
-    height: 2px;
-    background-color: var(--text-secondary);
-    border-radius: 2px;
-    transition: transform 0.2s ease, opacity 0.2s ease, top 0.2s ease;
-    position: relative;
-}
-
-.nav-toggle[aria-expanded="true"] span:nth-child(1) {
-    transform: rotate(45deg) translate(4px, 4px);
-}
-
-.nav-toggle[aria-expanded="true"] span:nth-child(2) {
-    opacity: 0;
-}
-
-.nav-toggle[aria-expanded="true"] span:nth-child(3) {
-    transform: rotate(-45deg) translate(4px, -4px);
 }
 
 .nav-inner {
@@ -276,15 +267,15 @@ a {
 .channel-item {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 10px 12px;
+    gap: 0.625rem;
+    padding: 0.625rem 0.75rem;
     color: var(--text-secondary);
     text-decoration: none;
-    border-radius: 12px;
+    border-radius: 0.75rem;
     font-size: 0.95rem;
     font-weight: 600;
     transition: all 0.15s ease;
-    margin-bottom: 2px;
+    margin-bottom: 0.125rem;
 }
 
 .channel-item:hover {
@@ -372,6 +363,79 @@ main.container {
     max-width: 1240px;
     width: 100%;
     margin: 0 auto;
+}
+
+.adsense-wrap {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: 0 auto 24px;
+    min-height: 90px;
+}
+
+.adsense-wrap--footer {
+    max-width: 1240px;
+    margin: 0 auto 12px;
+    padding: 0 26px;
+}
+
+.adsense-wrap--inline {
+    margin-bottom: 28px;
+}
+
+.adsense-slot {
+    display: block;
+    width: min(100%, 728px);
+    height: 90px;
+    min-height: 90px;
+    max-width: 728px;
+    border-radius: 14px;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(88, 101, 242, 0.06), rgba(124, 58, 237, 0.05));
+    border: 1px solid rgba(148, 163, 184, 0.15);
+    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+    position: relative;
+}
+
+.adsense-slot::before {
+    content: "Advertisement";
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: rgba(148, 163, 184, 0.8);
+    background: rgba(15, 23, 42, 0.02);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.adsbygoogle {
+    position: relative;
+    z-index: 1;
+}
+
+@media (max-width: 768px) {
+    .adsense-wrap,
+    .adsense-wrap--footer {
+        min-height: 50px;
+        margin-bottom: 18px;
+    }
+
+    .adsense-slot {
+        width: min(100%, 320px);
+        height: 50px;
+        min-height: 50px;
+        max-width: 320px;
+    }
+
+    .adsense-slot::before {
+        letter-spacing: 0.08em;
+        font-size: 0.62rem;
+    }
 }
 
 .hero-section {
@@ -1006,30 +1070,38 @@ footer {
         bottom: 0;
         top: auto;
         width: 100%;
-        height: 72px;
-        padding: 10px 14px;
+        height: 4.5rem;
+        padding: 0.625rem 0.875rem;
         flex-direction: row;
         justify-content: center;
-        gap: 10px;
+        gap: 0.625rem;
         border-right: none;
-        border-top: 1px solid rgba(148, 163, 184, 0.12);
+        border-top: 0.0625rem solid rgba(148, 163, 184, 0.12);
         border-bottom: none;
         z-index: 120;
     }
 
+    .server-button {
+        width: 3.25rem;
+    }
+
     .server-icon {
-        width: 42px;
-        height: 42px;
+        width: 2.625rem;
+        height: 2.625rem;
         font-size: 1rem;
     }
 
-    .server-icon.active::before {
+    .server-button.active .server-icon::before {
         left: 50%;
-        top: -8px;
+        top: -0.5rem;
         transform: translateX(-50%);
-        width: 26px;
-        height: 4px;
+        width: 1.625rem;
+        height: 0.25rem;
         border-radius: 999px;
+    }
+
+    .server-name {
+        font-size: 0.56rem;
     }
 
     .sidebar-nav {
