@@ -6,6 +6,6 @@ type Config struct {
 
 func New() *Config {
 	return &Config{
-		SERVER_HTTP_PORT: "localhost:4000",
+		SERVER_HTTP_PORT: "0.0.0.0:4000",
 	}
 }

@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{.Metadata.Title}}</title>
     <meta name="description" content="{{.Metadata.Description}}">
     {{if .Metadata.Keywords}}<meta name="keywords" content="{{.Metadata.Keywords}}">{{end}}
@@ -15,7 +16,7 @@
     
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
-<body>
+<body class="app-layout">
     {{template "navbar" .}}
 
     <header class="top-header">
@@ -29,7 +30,7 @@
         </div>
     </header>
 
-    <main class="container" style="padding: 20px;">
+    <main class="container">
         {{if eq .TemplateName "about.html"}}
             {{template "about.html" .}}
         {{else if eq .TemplateName "contact.html"}}
@@ -92,35 +93,176 @@
         (function() {
             var nav = document.getElementById('sidebarNav');
             var toggle = document.querySelector('.nav-toggle');
-            if (nav && toggle) {
-                toggle.addEventListener('click', function() {
-                    var isOpen = nav.classList.toggle('open');
-                    toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-                });
+            var navInner = document.querySelector('.nav-inner');
+            var serverIcons = document.querySelectorAll('.server-icon');
+            var navGroups = document.querySelectorAll('.channel-list, .sidebar-section');
+            var channelItems = document.querySelectorAll('.channel-item');
+            var storageKey = 'imigi-nav-state';
+            var defaultCategory = 'overview';
+            var activeCategory = '';
+            var groupVisible = false;
+
+            function readState() {
+                try {
+                    return JSON.parse(localStorage.getItem(storageKey)) || {};
+                } catch (error) {
+                    return {};
+                }
             }
 
-            var serverIcons = document.querySelectorAll('.server-icon');
-            var categoryItems = document.querySelectorAll('[data-category]');
+            function writeState(state) {
+                try {
+                    localStorage.setItem(storageKey, JSON.stringify(state));
+                } catch (error) {
+                    // Ignore storage errors so the UI still works.
+                }
+            }
 
-            function setCategory(category) {
-                serverIcons.forEach(function(icon) {
-                    icon.classList.toggle('active', icon.getAttribute('data-category') === category);
+            function getPageCategory() {
+                var path = window.location.pathname || '/';
+                var pageMap = {
+                    '/': 'overview',
+                    '/about': 'overview',
+                    '/images': 'overview',
+                    '/contact': 'overview',
+                    '/image-compressor': 'images',
+                    '/image-resizer': 'images',
+                    '/jpg-to-png': 'images',
+                    '/png-to-jpg': 'images',
+                    '/webp-converter': 'images',
+                    '/png-to-webp': 'images',
+                    '/jpg-to-webp': 'images',
+                    '/image-cropper': 'images',
+                    '/image-rotator': 'images',
+                    '/passport-photo-maker': 'images',
+                    '/merge-pdf': 'pdfs',
+                    '/split-pdf': 'pdfs',
+                    '/compress-pdf': 'pdfs',
+                    '/jpg-to-pdf': 'pdfs',
+                    '/pdf-to-images': 'pdfs',
+                    '/rotate-pdf': 'pdfs',
+                    '/delete-pdf-pages': 'pdfs',
+                    '/extract-pdf-pages': 'pdfs',
+                    '/image-to-base64': 'utility',
+                    '/base64-to-image': 'utility'
+                };
+
+                return pageMap[path] || null;
+            }
+
+            function saveLastChannel(category, href) {
+                if (!category || !href) {
+                    return;
+                }
+
+                var state = readState();
+                if (!state.lastChannelByCategory) {
+                    state.lastChannelByCategory = {};
+                }
+                state.lastCategory = category;
+                state.lastChannelByCategory[category] = href;
+                writeState(state);
+            }
+
+            function setActiveChannel(category, href) {
+                channelItems.forEach(function(item) {
+                    var isActive = item.getAttribute('href') === href;
+                    item.classList.toggle('active', isActive);
+                    if (isActive) {
+                        item.setAttribute('aria-current', 'page');
+                    } else {
+                        item.removeAttribute('aria-current');
+                    }
                 });
 
-                categoryItems.forEach(function(item) {
-                    var itemCategory = item.getAttribute('data-category');
-                    item.classList.toggle('active', itemCategory === category);
+                if (category && href) {
+                    saveLastChannel(category, href);
+                }
+            }
+
+            function setCategory(category, isVisible) {
+                var selected = category || '';
+                activeCategory = selected;
+                groupVisible = isVisible !== false && !!selected;
+
+                if (nav) {
+                    nav.classList.toggle('collapsed', !selected || !groupVisible);
+                    if (groupVisible) {
+                        nav.classList.remove('open');
+                        nav.setAttribute('aria-hidden', 'false');
+                    } else {
+                        nav.setAttribute('aria-hidden', 'true');
+                    }
+                }
+
+                if (navInner) {
+                    navInner.classList.toggle('hidden', !selected || !groupVisible);
+                }
+
+                serverIcons.forEach(function(icon) {
+                    var isActive = icon.getAttribute('data-category') === selected;
+                    icon.classList.toggle('active', isActive);
+                    icon.setAttribute('aria-selected', isActive ? 'true' : 'false');
+                });
+
+                navGroups.forEach(function(group) {
+                    var itemCategory = group.getAttribute('data-category');
+                    group.classList.toggle('active', !!selected && groupVisible && itemCategory === selected);
+                });
+
+                if (selected) {
+                    var state = readState();
+                    state.lastCategory = selected;
+                    writeState(state);
+                }
+            }
+
+            if (nav && toggle) {
+                toggle.addEventListener('click', function() {
+                    nav.classList.remove('collapsed');
+                    var isOpen = nav.classList.toggle('open');
+                    toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
                 });
             }
 
             if (serverIcons.length) {
                 serverIcons.forEach(function(icon) {
                     icon.addEventListener('click', function() {
-                        setCategory(icon.getAttribute('data-category'));
+                        var category = icon.getAttribute('data-category');
+                        if (activeCategory === category) {
+                            setCategory(category, !groupVisible);
+                            return;
+                        }
+
+                        setCategory(category, true);
                     });
                 });
+            }
 
-                setCategory('overview');
+            channelItems.forEach(function(item) {
+                item.addEventListener('click', function() {
+                    var section = item.closest('[data-category]');
+                    var category = section ? section.getAttribute('data-category') : (getPageCategory() || activeCategory || defaultCategory);
+                    var href = item.getAttribute('href');
+
+                    setCategory(category, true);
+                    setActiveChannel(category, href);
+                });
+            });
+
+            var initialCategory = getPageCategory() || readState().lastCategory || defaultCategory;
+            setCategory(initialCategory, true);
+
+            var state = readState();
+            var lastChannelForCategory = state.lastChannelByCategory && state.lastChannelByCategory[initialCategory];
+            if (lastChannelForCategory) {
+                setActiveChannel(initialCategory, lastChannelForCategory);
+            } else {
+                var currentPath = window.location.pathname || '/';
+                var matchingItem = document.querySelector('.channel-item[href="' + currentPath + '"]');
+                if (matchingItem) {
+                    setActiveChannel(initialCategory, currentPath);
+                }
             }
         })();
     </script>
