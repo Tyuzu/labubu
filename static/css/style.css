@@ -56,6 +56,27 @@ body {
     overflow-x: hidden;
 }
 
+body.light-mode {
+    --bg-base: #f3f6fb;
+    --bg-rail: #edf2ff;
+    --bg-sidebar: #ffffff;
+    --bg-header: rgba(255, 255, 255, 0.93);
+    --bg-card: #ffffff;
+    --bg-card-hover: #eef3ff;
+    --bg-soft: #f5f7ff;
+    --bg-panel: rgba(255, 255, 255, 0.92);
+    --border-color: rgba(99, 102, 241, 0.12);
+    --border-strong: rgba(88, 101, 242, 0.28);
+    --text-primary: #0f172a;
+    --text-secondary: #334155;
+    --text-muted: #64748b;
+    --shadow-soft: 0 1.125rem 2.5rem rgba(15, 23, 42, 0.10);
+    --shadow-card: 0 0.75rem 1.875rem rgba(15, 23, 42, 0.08);
+    background:
+        radial-gradient(circle at top, rgba(88, 101, 242, 0.08), transparent 28%),
+        linear-gradient(180deg, #eef3ff 0%, #f8fafc 100%);
+}
+
 img {
     max-width: 100%;
     display: block;
@@ -332,6 +353,28 @@ a {
     box-shadow: 0 0 0 1px rgba(88, 101, 242, 0.12);
 }
 
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.theme-toggle {
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 1px solid var(--border-color);
+    background: rgba(148, 163, 184, 0.08);
+    color: var(--text-primary);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.theme-toggle:hover {
+    transform: translateY(-1px);
+    border-color: var(--border-strong);
+}
+
 .header-user {
     display: flex;
     align-items: center;
@@ -435,6 +478,27 @@ main.container {
     .adsense-slot::before {
         letter-spacing: 0.08em;
         font-size: 0.62rem;
+    }
+
+    .hero-section {
+        grid-template-columns: 1fr;
+        padding: 24px 18px;
+    }
+
+    .action-choice-grid,
+    .feature-grid,
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .primary-btn,
+    .secondary-btn {
+        width: 100%;
     }
 }
 
@@ -596,6 +660,119 @@ button[type="submit"]:hover {
     font-weight: 700;
 }
 
+.action-choice-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 12px;
+}
+
+.action-choice {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 18px;
+    min-height: 220px;
+    background: rgba(17, 24, 39, 0.75);
+    border: 1px solid var(--border-color);
+    border-radius: 18px;
+    box-shadow: var(--shadow-card);
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.action-choice.alt {
+    background: linear-gradient(135deg, rgba(88, 101, 242, 0.12), rgba(124, 58, 237, 0.12));
+}
+
+.action-choice:hover {
+    transform: translateY(-2px);
+    border-color: var(--border-strong);
+}
+
+.choice-icon {
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(88, 101, 242, 0.16), rgba(124, 58, 237, 0.18));
+    font-size: 1.6rem;
+}
+
+.choice-copy h3 {
+    margin: 0 0 6px;
+    font-size: 1.12rem;
+    color: var(--text-primary);
+}
+
+.choice-copy p {
+    margin: 0;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-size: 0.9rem;
+}
+
+.format-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.format-list li {
+    padding: 5px 9px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    background: rgba(148, 163, 184, 0.08);
+    color: var(--text-secondary);
+    border: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.choice-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: auto;
+}
+
+.choice-meta span {
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.choice-meta strong {
+    color: var(--text-primary);
+    font-size: 0.9rem;
+}
+
+.trust-panel {
+    background: rgba(17, 24, 39, 0.72);
+}
+
+.trust-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 10px;
+    border-radius: 999px;
+    background: rgba(88, 101, 242, 0.1);
+    color: var(--text-primary);
+    font-size: 0.75rem;
+    border: 1px solid rgba(88, 101, 242, 0.18);
+}
+
 .chip-list {
     display: flex;
     flex-wrap: wrap;
@@ -611,14 +788,61 @@ button[type="submit"]:hover {
     border: 1px solid rgba(148, 163, 184, 0.12);
 }
 
+.recent-tools-panel {
+    margin: 0 0 28px;
+    background: rgba(25, 29, 39, 0.9);
+    border: 1px solid var(--border-color);
+    border-radius: 18px;
+    padding: 22px 20px;
+    box-shadow: var(--shadow-card);
+}
+
+.recent-tool-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+}
+
+.recent-tool-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: rgba(148, 163, 184, 0.06);
+    border: 1px solid rgba(148, 163, 184, 0.12);
+    color: var(--text-primary);
+}
+
+.recent-tool-item span {
+    font-size: 0.92rem;
+    font-weight: 700;
+}
+
+.recent-tool-item small {
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
 /* ==========================================
    6. Feature Grids & Tool Showcase Tiles
    ========================================== */
-.feature-grid {
+.content-panel {
+    margin-bottom: 36px;
+}
+
+.feature-grid,
+.info-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 20px;
     margin-bottom: 40px;
+}
+
+.info-grid.three-up {
+    margin-bottom: 0;
 }
 
 .feature-card {
@@ -667,6 +891,44 @@ button[type="submit"]:hover {
     font-weight: 700;
     color: var(--text-primary);
     line-height: 1.3;
+}
+
+.faq-panel {
+    background: rgba(25, 29, 39, 0.9);
+    border: 1px solid var(--border-color);
+    border-radius: 18px;
+    padding: 22px 20px;
+    box-shadow: var(--shadow-card);
+}
+
+.faq-list {
+    display: grid;
+    gap: 12px;
+}
+
+.faq-item {
+    background: rgba(148, 163, 184, 0.04);
+    border: 1px solid rgba(148, 163, 184, 0.12);
+    border-radius: 14px;
+    padding: 0 16px;
+}
+
+.faq-item summary {
+    cursor: pointer;
+    list-style: none;
+    padding: 16px 0;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.faq-item summary::-webkit-details-marker {
+    display: none;
+}
+
+.faq-item p {
+    margin: 0 0 16px;
+    color: var(--text-secondary);
+    line-height: 1.7;
 }
 
 .tool-grid {

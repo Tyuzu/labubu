@@ -79,6 +79,19 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
+      const fileToValidate = files[0] || null;
+      if (fileToValidate) {
+        if (fileToValidate.size > 25 * 1024 * 1024) {
+          setFormStatus(form, 'This file is too large. Please choose a file under 25MB.', true);
+          return;
+        }
+
+        if (form.dataset.tool === 'qr-code-scanner' && !fileToValidate.type.startsWith('image/')) {
+          setFormStatus(form, 'Please upload a valid image containing a QR code.', true);
+          return;
+        }
+      }
+
       if (submitButton) {
         submitButton.disabled = true;
         submitButton.textContent = 'Compressing...';
@@ -347,6 +360,14 @@ function bindRangeValue(form) {
 
 async function runTool(toolName, form, files) {
   const file = files[0] || null;
+
+  if (toolName === 'qr-code-scanner' && !window.jsQR) {
+    throw new Error('QR scanning support is not available in this browser yet. Please try a modern browser or upload a clear image.');
+  }
+
+  if ((toolName === 'merge-pdf' || toolName === 'split-pdf' || toolName === 'compress-pdf' || toolName === 'jpg-to-pdf' || toolName === 'pdf-to-images' || toolName === 'rotate-pdf' || toolName === 'delete-pdf-pages' || toolName === 'extract-pdf-pages') && !window.PDFLib) {
+    throw new Error('PDF support is still loading. Please wait a moment and try again.');
+  }
 
   switch (toolName) {
     case 'compress':
@@ -695,6 +716,10 @@ async function scanQrCode(file, form) {
     throw new Error('Please upload a QR code image or use the camera first.');
   }
 
+  if (!window.jsQR) {
+    throw new Error('QR scanning support is not available in this browser yet.');
+  }
+
   const image = await readImage(file);
   const canvas = document.createElement('canvas');
   canvas.width = image.width;
@@ -703,7 +728,7 @@ async function scanQrCode(file, form) {
   context.drawImage(image, 0, 0, canvas.width, canvas.height);
 
   const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-  const code = window.jsQR?.(imageData.data, imageData.width, imageData.height);
+  const code = window.jsQR(imageData.data, imageData.width, imageData.height);
 
   if (!code || !code.data) {
     throw new Error('No QR code was detected. Try a clearer image or a closer shot.');

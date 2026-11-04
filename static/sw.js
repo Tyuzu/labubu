@@ -1,8 +1,8 @@
-const CACHE_NAME = 'imigi-v1';
+const CACHE_NAME = 'imigi-v20261104';
 const APP_SHELL = [
   '/',
   '/static/manifest.webmanifest',
-  '/static/css/style.css',
+  '/static/css/style.css?v=20261104',
   '/static/js/image-tools.js',
   '/static/js/pwa.js',
   '/static/icons/imigi-icon.svg'

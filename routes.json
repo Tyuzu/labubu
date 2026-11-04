@@ -23,6 +23,54 @@
       "canonical": "https://example.com/about"
     }
   },
+  "IMAGE_TOOLS_PAGE_URL": {
+    "path": "/image-tools",
+    "template": "image-tools.html",
+    "metadata": {
+      "title": "Image Tools - Compress, Resize, Convert, and Edit Photos",
+      "description": "Use Imigi's image tools to compress, resize, crop, rotate, and convert JPG, PNG, and WebP files in seconds.",
+      "keywords": "image tools, photo resizer, image compressor, jpg to png, png to webp, photo converter",
+      "og_image": "/static/images/image-tools-og.jpg",
+      "robots": "index, follow",
+      "canonical": "https://example.com/image-tools"
+    }
+  },
+  "PDF_TOOLS_PAGE_URL": {
+    "path": "/pdf-tools",
+    "template": "pdf-tools.html",
+    "metadata": {
+      "title": "PDF Tools - Merge, Split, Compress, and Convert PDFs",
+      "description": "Merge, split, rotate, compress, and convert PDF documents with fast browser-based PDF tools built for everyday work.",
+      "keywords": "pdf tools, merge pdf, split pdf, compress pdf, pdf to images, jpg to pdf",
+      "og_image": "/static/images/pdf-tools-og.jpg",
+      "robots": "index, follow",
+      "canonical": "https://example.com/pdf-tools"
+    }
+  },
+  "VIDEO_TOOLS_PAGE_URL": {
+    "path": "/video-tools",
+    "template": "video-tools.html",
+    "metadata": {
+      "title": "Video Tools - Crop, Trim, and Add Filters Online",
+      "description": "Edit videos online with crop, trim, and filter tools designed for creators, teams, and quick social media content workflows.",
+      "keywords": "video tools, crop video, trim video, video filters, online video editor",
+      "og_image": "/static/images/video-tools-og.jpg",
+      "robots": "index, follow",
+      "canonical": "https://example.com/video-tools"
+    }
+  },
+  "SCANNER_TOOLS_PAGE_URL": {
+    "path": "/scanner-tools",
+    "template": "scanner-tools.html",
+    "metadata": {
+      "title": "Scanner Tools - Document and QR Code Scanning",
+      "description": "Scan documents, capture receipts, and decode QR codes directly from your camera or uploaded files with a browser-first scanner workflow.",
+      "keywords": "document scanner, qr code scanner, scan using camera, image scanner, camscanner alternative",
+      "og_image": "/static/images/scanner-tools-og.jpg",
+      "robots": "index, follow",
+      "canonical": "https://example.com/scanner-tools"
+    }
+  },
   "IMAGES_PAGE_URL": {
     "path": "/images",
     "template": "images.html",

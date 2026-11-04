@@ -1,14 +1,14 @@
 {{define "index.html"}}
-<section class="hero-section">
+<section class="hero-section" aria-label="Hero section">
     <div class="hero-copy">
         <span class="eyebrow">All-in-one media toolkit</span>
         <h1>Transform, optimize, and manage your images and PDFs in one place.</h1>
         <p>
-            Imigi helps creators, teams, and businesses compress, convert, split, merge, resize, and polish their media without leaving the browser.
+            Imigi helps creators, teams, and businesses compress, convert, split, merge, resize, and scan media securely without leaving the browser.
         </p>
         <div class="hero-actions">
-            <a class="primary-btn" href="/image-compressor">Try Image Tools</a>
-            <a class="secondary-btn" href="/merge-pdf">Try PDF Tools</a>
+            <a class="primary-btn" href="/image-compressor" aria-label="Explore Image Tools">Try Image Tools</a>
+            <a class="secondary-btn" href="/merge-pdf" aria-label="Explore PDF Tools">Try PDF Tools</a>
         </div>
         <div class="hero-metrics">
             <div>
@@ -27,48 +27,88 @@
     </div>
 
     <div class="hero-panel">
-        <div class="mini-panel gradient-panel">
-            <span>Quick actions</span>
-            <ul>
-                <li>Compress image</li>
-                <li>Resize photo</li>
-                <li>Convert to WebP</li>
-                <li>Merge PDFs</li>
-            </ul>
+        <div class="action-choice-grid">
+            <a class="action-choice" href="/image-compressor" aria-label="Upload file to start editing">
+                <div class="choice-icon" aria-hidden="true">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                </div>
+                <div class="choice-copy">
+                    <h3>Upload file</h3>
+                    <p>Drop a file or browse to start editing instantly.</p>
+                </div>
+                <ul class="format-list" aria-label="Supported file formats">
+                    <li>JPG</li>
+                    <li>PNG</li>
+                    <li>WEBP</li>
+                    <li>PDF</li>
+                </ul>
+                <div class="choice-meta">
+                    <span>File privacy promise</span>
+                    <strong>No file upload stored</strong>
+                </div>
+            </a>
+
+            <a class="action-choice alt" href="/document-scanner" aria-label="Scan using camera">
+                <div class="choice-icon" aria-hidden="true">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                </div>
+                <div class="choice-copy">
+                    <h3>Scan using camera</h3>
+                    <p>Capture documents or QR codes directly from your camera.</p>
+                </div>
+                <ul class="format-list" aria-label="Supported scan modes">
+                    <li>Document</li>
+                    <li>QR</li>
+                    <li>Photo</li>
+                    <li>Notes</li>
+                </ul>
+                <div class="choice-meta">
+                    <span>Secure browser processing</span>
+                    <strong>Encrypted in browser</strong>
+                </div>
+            </a>
         </div>
-        <div class="mini-panel">
-            <span>Popular tools</span>
-            <div class="chip-list">
-                <span>JPG to PNG</span>
-                <span>PDF to Images</span>
-                <span>Rotate PDF</span>
-                <span>Passport Photo</span>
-            </div>
+
+        <div class="mini-panel trust-panel">
+            <span>Privacy &amp; Security</span>
+            <ul class="trust-row">
+                <li class="badge">🔒 File privacy promise</li>
+                <li class="badge">🛡️ No server storage</li>
+                <li class="badge">✅ Client-side processing</li>
+            </ul>
         </div>
     </div>
 </section>
 
-<section class="feature-grid">
+<section class="recent-tools-panel" id="recent-tools-panel" hidden aria-label="Recent tools">
+    <div class="section-header">
+        <span class="eyebrow">Recent tools</span>
+        <h2>Jump back in</h2>
+    </div>
+    <div class="recent-tool-list" id="recent-tools-list"></div>
+</section>
+
+<section class="feature-grid" aria-label="Core features">
     <article class="feature-card">
-        <div class="feature-icon">🖼️</div>
+        <div class="feature-icon" aria-hidden="true">🖼️</div>
         <h3>Image Workflow</h3>
         <p>Resize, crop, rotate, convert, and compress images without external software.</p>
     </article>
 
     <article class="feature-card">
-        <div class="feature-icon">📄</div>
+        <div class="feature-icon" aria-hidden="true">📄</div>
         <h3>PDF Workflow</h3>
         <p>Merge, split, extract, rotate, and compress PDFs for smoother document handling.</p>
     </article>
 
     <article class="feature-card">
-        <div class="feature-icon">⚡</div>
-        <h3>Fast & Simple</h3>
+        <div class="feature-icon" aria-hidden="true">⚡</div>
+        <h3>Fast &amp; Simple</h3>
         <p>Easy upload flows, instant previews, and straightforward downloads in a clean UI.</p>
     </article>
 </section>
 
-<section class="ad-space">
+<section class="ad-space" aria-label="Advertisement">
     <div class="adsense-wrap adsense-wrap--inline">
         <ins class="adsbygoogle adsense-slot adsense-slot--desktop"
              style="display:block; width:min(100%, 728px); height:90px; min-height:90px; background:rgba(148,163,184,0.08); border:1px solid rgba(148,163,184,0.15); border-radius:14px;"
@@ -79,7 +119,7 @@
     </div>
 </section>
 
-<section class="tool-showcase">
+<section class="tool-showcase" aria-label="Popular utilities">
     <div class="section-header">
         <span class="eyebrow">Popular utilities</span>
         <h2>Everything you need for image and PDF editing</h2>
@@ -120,4 +160,116 @@
         </a>
     </div>
 </section>
+
+<section class="content-panel">
+    <div class="section-header">
+        <span class="eyebrow">How it works</span>
+        <h2>Fast, private, browser-based media processing</h2>
+    </div>
+
+    <ol class="info-grid three-up">
+        <li class="feature-card">
+            <div class="feature-icon" aria-hidden="true">1️⃣</div>
+            <h3>Upload or capture</h3>
+            <p>Choose a file from your device or use your camera to scan a document or QR code directly in the browser.</p>
+        </li>
+        <li class="feature-card">
+            <div class="feature-icon" aria-hidden="true">2️⃣</div>
+            <h3>Adjust and preview</h3>
+            <p>Pick the exact settings you need, preview the result instantly, and keep the workflow lightweight and friction-free.</p>
+        </li>
+        <li class="feature-card">
+            <div class="feature-icon" aria-hidden="true">3️⃣</div>
+            <h3>Download</h3>
+            <p>Export the optimized file in seconds — no signup, no heavy desktop software, no unnecessary waiting.</p>
+        </li>
+    </ol>
+</section>
+
+<section class="content-panel">
+    <div class="section-header">
+        <span class="eyebrow">Best for</span>
+        <h2>Built for creators, teams, and everyday document workflows</h2>
+    </div>
+
+    <div class="info-grid three-up">
+        <article class="feature-card">
+            <div class="feature-icon" aria-hidden="true">📸</div>
+            <h3>Photographers</h3>
+            <p>Resize, convert, and compress large image batches without leaving the browser.</p>
+        </article>
+        <article class="feature-card">
+            <div class="feature-icon" aria-hidden="true">📄</div>
+            <h3>Document teams</h3>
+            <p>Scan, crop, and clean paper documents using a camera-first workflow that feels fast and simple.</p>
+        </article>
+        <article class="feature-card">
+            <div class="feature-icon" aria-hidden="true">🧾</div>
+            <h3>PDF users</h3>
+            <p>Merge pages, split files, rotate content, and convert images into PDF documents in a few clicks.</p>
+        </article>
+    </div>
+</section>
+
+<section class="content-panel faq-panel" aria-label="Frequently Asked Questions">
+    <div class="section-header">
+        <span class="eyebrow">FAQ</span>
+        <h2>Questions people ask before using Imigi</h2>
+    </div>
+
+    <div class="faq-list">
+        <details class="faq-item" open>
+            <summary>Is my file stored on the server?</summary>
+            <p>No. The app is designed for secure browser processing, and most tools operate directly in the browser without sending your file to a server.</p>
+        </details>
+        <details class="faq-item">
+            <summary>What file types are supported?</summary>
+            <p>Common supported formats include JPG, PNG, WEBP, PDF, and image-based QR and document captures. The exact support depends on the tool you are using.</p>
+        </details>
+        <details class="faq-item">
+            <summary>Can I scan a document using my phone camera?</summary>
+            <p>Yes. The document scanner and QR scanner support camera capture on supported mobile and desktop browsers.</p>
+        </details>
+        <details class="faq-item">
+            <summary>Do I need to install anything?</summary>
+            <p>No. The experience is built to work in the browser and can also be installed as a PWA for a more app-like experience.</p>
+        </details>
+    </div>
+</section>
+
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Imigi",
+    "url": "https://example.com/",
+    "applicationCategory": "MultimediaApplication",
+    "operatingSystem": "All",
+    "description": "A fast browser-based toolkit for image conversion, PDF editing, document scanning, and QR code decoding."
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is my file stored on the server?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Most tools process files directly in the browser, and the app emphasizes secure browser processing and privacy-first tooling."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What file types are supported?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Common file types include JPG, PNG, WEBP, PDF, and image-based QR and document capture formats."
+        }
+      }
+    ]
+  }
+]
+</script>
 {{end}}

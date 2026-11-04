@@ -9,6 +9,7 @@ import (
 	"imigi/infra"
 	"io"
 	"log"
+	"mime"
 	"net/http"
 	"os"
 	"os/exec"
@@ -72,11 +73,14 @@ func main() {
 		panic("Failed to parse routes.json: " + err.Error())
 	}
 
+	routes = normalizeRoutes(routes)
+
 	router := httprouter.New()
 
+	staticHandler := withCacheHeaders(http.StripPrefix("/static", http.FileServer(http.Dir("static"))))
 	// 1. Serve Static Assets (CSS, JS, Images)
 	// Any request starting with /static/ will look inside the local "static" directory
-	router.ServeFiles("/static/*filepath", http.Dir("static"))
+	router.Handler(http.MethodGet, "/static/*filepath", staticHandler)
 
 	// 2. Custom Panic Recovery Handler (500 Error)
 	router.PanicHandler = func(w http.ResponseWriter, r *http.Request, err interface{}) {
@@ -103,7 +107,8 @@ func main() {
 	})
 
 	// 4. Register XML Sitemap Endpoint
-	router.HandlerFunc(http.MethodGet, "/sitemap.xml", SitemapHandler(routes, "https://example.com"))
+	baseURL := defaultBaseURL()
+	router.HandlerFunc(http.MethodGet, "/sitemap.xml", SitemapHandler(routes, baseURL))
 
 	// 5. Self-hosted video processing endpoint using native FFmpeg
 	router.POST("/api/video/process", VideoProcessHandler)
@@ -133,11 +138,95 @@ func PageHandler(t *template.Template, app *infra.Deps, templateName string, met
 			TemplateName: templateName,
 		}
 
+		w.Header().Set("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")
 		err := t.ExecuteTemplate(w, "layout", data)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
 	}
+}
+
+func defaultBaseURL() string {
+	if value := strings.TrimSpace(os.Getenv("PUBLIC_BASE_URL")); value != "" {
+		return strings.TrimRight(value, "/")
+	}
+	if value := strings.TrimSpace(os.Getenv("APP_BASE_URL")); value != "" {
+		return strings.TrimRight(value, "/")
+	}
+	return "https://imigi.app"
+}
+
+func normalizeRoutes(routes RouteMap) RouteMap {
+	baseURL := defaultBaseURL()
+	for key, route := range routes {
+		route.Metadata = normalizeRouteMetadata(baseURL, route.Path, route.Metadata)
+		routes[key] = route
+	}
+	return routes
+}
+
+func normalizeRouteMetadata(baseURL, routePath string, meta Metadata) Metadata {
+	meta.Canonical = normalizeCanonicalURL(baseURL, routePath, meta.Canonical)
+	if strings.HasPrefix(meta.OgImage, "/") {
+		meta.OgImage = strings.TrimRight(baseURL, "/") + meta.OgImage
+	}
+	return meta
+}
+
+func normalizeCanonicalURL(baseURL, routePath, raw string) string {
+	if strings.TrimSpace(raw) == "" {
+		return strings.TrimRight(baseURL, "/") + routePath
+	}
+	trimmed := strings.TrimSpace(raw)
+	if strings.Contains(strings.ToLower(trimmed), "example.com") {
+		return strings.TrimRight(baseURL, "/") + routePath
+	}
+	return strings.TrimRight(trimmed, "/")
+}
+
+func withCacheHeaders(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if strings.HasPrefix(r.URL.Path, "/static/") {
+			w.Header().Set("Cache-Control", "public, max-age=86400, immutable")
+			if contentType := staticContentType(r.URL.Path); contentType != "" {
+				w.Header().Set("Content-Type", contentType)
+			}
+		} else {
+			w.Header().Set("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")
+		}
+		next.ServeHTTP(w, r)
+	})
+}
+
+func staticContentType(path string) string {
+	if strings.HasSuffix(strings.ToLower(path), ".css") {
+		return "text/css; charset=utf-8"
+	}
+	if strings.HasSuffix(strings.ToLower(path), ".js") {
+		return "application/javascript; charset=utf-8"
+	}
+	if strings.HasSuffix(strings.ToLower(path), ".json") {
+		return "application/json; charset=utf-8"
+	}
+	if strings.HasSuffix(strings.ToLower(path), ".svg") {
+		return "image/svg+xml; charset=utf-8"
+	}
+	if strings.HasSuffix(strings.ToLower(path), ".webmanifest") {
+		return "application/manifest+json; charset=utf-8"
+	}
+	if strings.HasSuffix(strings.ToLower(path), ".png") {
+		return "image/png"
+	}
+	if strings.HasSuffix(strings.ToLower(path), ".jpg") || strings.HasSuffix(strings.ToLower(path), ".jpeg") {
+		return "image/jpeg"
+	}
+	if strings.HasSuffix(strings.ToLower(path), ".webp") {
+		return "image/webp"
+	}
+	if detected := mime.TypeByExtension(filepath.Ext(path)); detected != "" {
+		return detected
+	}
+	return ""
 }
 
 func SitemapHandler(routes RouteMap, baseURL string) http.HandlerFunc {
