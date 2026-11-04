@@ -1,10 +1,6 @@
 {{define "content"}}
 <section class="page-shell">
-  <div class="page-header">
-    <p class="eyebrow">Workspace</p>
-    <h1>Page</h1>
-    <p>This page is being rendered from the default content template.</p>
-  </div>
+  {{template "pageHeader" (pageHeaderData "Workspace" "Page" "This page is being rendered from the default content template.")}}
 
   <div class="page-card">
     <h2>Content area</h2>

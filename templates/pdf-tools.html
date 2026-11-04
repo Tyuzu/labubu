@@ -1,45 +1,26 @@
 {{define "pdf-tools.html"}}
-<section class="seo-page">
-    <div class="page-header">
-        <p class="eyebrow">PDF tools</p>
-        <h1>PDF utilities for merging, splitting, compressing, and exporting documents.</h1>
-        <p>Organize paperless workflows with a clean set of tools for PDF editing, page extraction, and fast document optimization.</p>
-    </div>
-
-    <div class="feature-grid">
-        <article class="feature-card">
-            <div class="feature-icon">🧩</div>
-            <h3>Merge PDFs</h3>
-            <p>Combine multiple pages and documents into a single file for cleaner handoff and quicker sharing.</p>
-        </article>
-        <article class="feature-card">
-            <div class="feature-icon">✂️</div>
-            <h3>Split and extract pages</h3>
-            <p>Break large files into smaller documents or selectively extract individual pages you need to keep.</p>
-        </article>
-        <article class="feature-card">
-            <div class="feature-icon">🗜️</div>
-            <h3>Reduce file size</h3>
-            <p>Compress heavy PDF files for easier emailing, uploading, and storage without a heavy desktop app.</p>
-        </article>
-    </div>
-
-    <div class="tool-showcase">
-        <div class="section-header">
-            <span class="eyebrow">Common PDF actions</span>
-            <h2>Everything you need to manage PDFs</h2>
-        </div>
-
-        <div class="tool-grid">
-            <a href="/merge-pdf" class="tool-tile"><span>Merge PDF</span><small>Combine files</small></a>
-            <a href="/split-pdf" class="tool-tile"><span>Split PDF</span><small>Divide pages</small></a>
-            <a href="/compress-pdf" class="tool-tile"><span>Compress PDF</span><small>Reduce size</small></a>
-            <a href="/jpg-to-pdf" class="tool-tile"><span>JPG to PDF</span><small>Create document</small></a>
-            <a href="/pdf-to-images" class="tool-tile"><span>PDF to Images</span><small>Export pages</small></a>
-            <a href="/rotate-pdf" class="tool-tile"><span>Rotate PDF</span><small>Fix orientation</small></a>
-            <a href="/delete-pdf-pages" class="tool-tile"><span>Delete PDF Pages</span><small>Remove pages</small></a>
-            <a href="/extract-pdf-pages" class="tool-tile"><span>Extract PDF Pages</span><small>Save only what you need</small></a>
-        </div>
-    </div>
-</section>
+{{template "toolCategoryPage" (toolPage
+    "PDF tools"
+    "PDF utilities for merging, splitting, compressing, and exporting documents."
+    "Organize paperless workflows with a clean set of tools for PDF editing, page extraction, and fast document optimization."
+    (slice
+        (feature "🧩" "Merge PDFs" "Combine multiple pages and documents into a single file for cleaner handoff and quicker sharing.")
+        (feature "✂️" "Split and extract pages" "Break large files into smaller documents or selectively extract individual pages you need to keep.")
+        (feature "🗜️" "Reduce file size" "Compress heavy PDF files for easier emailing, uploading, and storage without a heavy desktop app.")
+    )
+    (toolSection
+        "Common PDF actions"
+        "Everything you need to manage PDFs"
+        (slice
+            (toolTile "/merge-pdf" "Merge PDF" "Combine files")
+            (toolTile "/split-pdf" "Split PDF" "Divide pages")
+            (toolTile "/compress-pdf" "Compress PDF" "Reduce size")
+            (toolTile "/jpg-to-pdf" "JPG to PDF" "Create document")
+            (toolTile "/pdf-to-images" "PDF to Images" "Export pages")
+            (toolTile "/rotate-pdf" "Rotate PDF" "Fix orientation")
+            (toolTile "/delete-pdf-pages" "Delete PDF Pages" "Remove pages")
+            (toolTile "/extract-pdf-pages" "Extract PDF Pages" "Save only what you need")
+        )
+    )
+)}}
 {{end}}

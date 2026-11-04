@@ -1,41 +1,22 @@
 {{define "video-tools.html"}}
-<section class="seo-page">
-    <div class="page-header">
-        <p class="eyebrow">Video tools</p>
-        <h1>Browser-based video editing tools for cropping, trimming, and polishing media.</h1>
-        <p>Handle quick edits for social media, product videos, and content workflows using lightweight tools that run directly in the browser.</p>
-    </div>
-
-    <div class="feature-grid">
-        <article class="feature-card">
-            <div class="feature-icon">✂️</div>
-            <h3>Crop video</h3>
-            <p>Adjust the frame to focus on the main subject or match a specific platform ratio for better results.</p>
-        </article>
-        <article class="feature-card">
-            <div class="feature-icon">⏱️</div>
-            <h3>Trim clips</h3>
-            <p>Cut long recordings down to the exact start and end points you want to keep or share.</p>
-        </article>
-        <article class="feature-card">
-            <div class="feature-icon">🎨</div>
-            <h3>Apply filters</h3>
-            <p>Improve contrast and mood instantly with cinematic or color-focused presets built for fast edits.</p>
-        </article>
-    </div>
-
-    <div class="tool-showcase">
-        <div class="section-header">
-            <span class="eyebrow">Start creating</span>
-            <h2>Powerful tools for faster editing</h2>
-        </div>
-
-        <div class="tool-grid">
-            <a href="/videos" class="tool-tile"><span>Video Studio</span><small>Overview</small></a>
-            <a href="/video-cropper" class="tool-tile"><span>Video Cropper</span><small>Adjust the frame</small></a>
-            <a href="/video-trimmer" class="tool-tile"><span>Video Trimmer</span><small>Cut scenes</small></a>
-            <a href="/video-filters" class="tool-tile"><span>Video Filters</span><small>Enhance look</small></a>
-        </div>
-    </div>
-</section>
+{{template "toolCategoryPage" (toolPage
+    "Video tools"
+    "Browser-based video editing tools for cropping, trimming, and polishing media."
+    "Handle quick edits for social media, product videos, and content workflows using lightweight tools that run directly in the browser."
+    (slice
+        (feature "✂️" "Crop video" "Adjust the frame to focus on the main subject or match a specific platform ratio for better results.")
+        (feature "⏱️" "Trim clips" "Cut long recordings down to the exact start and end points you want to keep or share.")
+        (feature "🎨" "Apply filters" "Improve contrast and mood instantly with cinematic or color-focused presets built for fast edits.")
+    )
+    (toolSection
+        "Start creating"
+        "Powerful tools for faster editing"
+        (slice
+            (toolTile "/videos" "Video Studio" "Overview")
+            (toolTile "/video-cropper" "Video Cropper" "Adjust the frame")
+            (toolTile "/video-trimmer" "Video Trimmer" "Cut scenes")
+            (toolTile "/video-filters" "Video Filters" "Enhance look")
+        )
+    )
+)}}
 {{end}}

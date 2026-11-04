@@ -1,10 +1,6 @@
 {{define "contact.html"}}
 <section class="page-shell contact-page">
-  <div class="page-header">
-    <p class="eyebrow">Contact</p>
-    <h1>Say hello.</h1>
-    <p>Need help with a file workflow, feature request, or a quick question? Reach out and we will get back to you as soon as possible.</p>
-  </div>
+  {{template "pageHeader" (pageHeaderData "Contact" "Say hello." "Need help with a file workflow, feature request, or a quick question? Reach out and we will get back to you as soon as possible.")}}
 
   <div class="contact-grid">
     <article class="contact-card contact-form-card">

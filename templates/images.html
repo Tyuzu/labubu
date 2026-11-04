@@ -1,10 +1,6 @@
 {{define "images.html"}}
 <section class="page-shell">
-  <div class="page-header">
-    <p class="eyebrow">Gallery</p>
-    <h1>Media Gallery</h1>
-    <p>Explore quick examples of workflows, design assets, and export-ready results.</p>
-  </div>
+  {{template "pageHeader" (pageHeaderData "Gallery" "Media Gallery" "Explore quick examples of workflows, design assets, and export-ready results.")}}
 
   <div class="gallery-grid">
     <article class="gallery-card">

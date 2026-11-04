@@ -1,0 +1,45 @@
+{{define "pageHeader"}}
+<div class="page-header">
+    <p class="eyebrow">{{.Eyebrow}}</p>
+    <h1>{{.Title}}</h1>
+    {{if .Description}}<p>{{.Description}}</p>{{end}}
+</div>
+{{end}}
+
+{{define "featureGrid"}}
+<div class="feature-grid">
+    {{range .}}
+    <article class="feature-card">
+        <div class="feature-icon">{{.Icon}}</div>
+        <h3>{{.Title}}</h3>
+        <p>{{.Description}}</p>
+    </article>
+    {{end}}
+</div>
+{{end}}
+
+{{define "toolShowcase"}}
+<div class="tool-showcase">
+    <div class="section-header">
+        <span class="eyebrow">{{.Eyebrow}}</span>
+        <h2>{{.Title}}</h2>
+    </div>
+
+    <div class="tool-grid">
+        {{range .Items}}
+        <a href="{{.Href}}" class="tool-tile">
+            <span>{{.Label}}</span>
+            <small>{{.Meta}}</small>
+        </a>
+        {{end}}
+    </div>
+</div>
+{{end}}
+
+{{define "toolCategoryPage"}}
+<section class="seo-page">
+    {{template "pageHeader" .}}
+    {{template "featureGrid" .Features}}
+    {{template "toolShowcase" .ToolSection}}
+</section>
+{{end}}

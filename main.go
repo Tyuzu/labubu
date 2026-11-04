@@ -15,7 +15,60 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-var tmpl = template.Must(template.ParseGlob("templates/*.html"))
+func slice(values ...interface{}) []interface{} {
+	return values
+}
+
+func feature(icon, title, description string) map[string]string {
+	return map[string]string{
+		"Icon":        icon,
+		"Title":       title,
+		"Description": description,
+	}
+}
+
+func toolTile(href, label, meta string) map[string]string {
+	return map[string]string{
+		"Href":  href,
+		"Label": label,
+		"Meta":  meta,
+	}
+}
+
+func toolSection(eyebrow, title string, items []interface{}) map[string]interface{} {
+	return map[string]interface{}{
+		"Eyebrow": eyebrow,
+		"Title":   title,
+		"Items":   items,
+	}
+}
+
+func toolPage(eyebrow, title, description string, features []interface{}, section map[string]interface{}) map[string]interface{} {
+	return map[string]interface{}{
+		"Eyebrow":     eyebrow,
+		"Title":       title,
+		"Description": description,
+		"Features":    features,
+		"ToolSection": section,
+	}
+}
+
+func pageHeaderData(eyebrow, title, description string) map[string]string {
+	return map[string]string{
+		"Eyebrow":     eyebrow,
+		"Title":       title,
+		"Description": description,
+	}
+}
+
+var tmpl = template.Must(template.New("").Funcs(template.FuncMap{
+	"slice":          slice,
+	"feature":        feature,
+	"toolTile":       toolTile,
+	"toolSection":    toolSection,
+	"toolPage":       toolPage,
+	"pageHeaderData": pageHeaderData,
+}).ParseGlob("templates/*.html"))
 
 func main() {
 	cfg := config.New()
