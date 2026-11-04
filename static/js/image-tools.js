@@ -409,21 +409,21 @@ async function runTool(toolName, form, files) {
     case 'qr-code-scanner':
       return scanQrCode(file, form);
     case 'merge-pdf':
-      return mergePdf(files);
+      return processPdfTool(files, form, 'merge');
     case 'split-pdf':
-      return splitPdf(file, form.querySelector('#split-range')?.value || '1-3');
+      return processPdfTool(file, form, 'split', { range: form.querySelector('#split-range')?.value || '1-3' });
     case 'compress-pdf':
-      return compressPdf(file, form.querySelector('#compress-level')?.value || 'medium');
+      return processPdfTool(file, form, 'compress', { level: form.querySelector('#compress-level')?.value || 'medium' });
     case 'jpg-to-pdf':
-      return jpgToPdf(files);
+      return processPdfTool(files, form, 'jpg-to-pdf');
     case 'pdf-to-images':
-      return pdfToImages(file, form.querySelector('#pdf-images-format')?.value || 'jpg');
+      return processPdfTool(file, form, 'pdf-to-images', { format: form.querySelector('#pdf-images-format')?.value || 'jpg' });
     case 'rotate-pdf':
-      return rotatePdf(file, Number(form.querySelector('#rotate-pdf-angle')?.value || 90));
+      return processPdfTool(file, form, 'rotate', { angle: Number(form.querySelector('#rotate-pdf-angle')?.value || 90) });
     case 'delete-pdf-pages':
-      return deletePdfPages(file, form.querySelector('#delete-page-range')?.value || '2');
+      return processPdfTool(file, form, 'delete-pages', { range: form.querySelector('#delete-page-range')?.value || '2' });
     case 'extract-pdf-pages':
-      return extractPdfPages(file, form.querySelector('#extract-page-range')?.value || '1-2');
+      return processPdfTool(file, form, 'extract-pages', { range: form.querySelector('#extract-page-range')?.value || '1-2' });
     case 'video-cropper':
       return processVideoTool(file, form, 'crop', {
         x: getNumber(form, 'video-crop-x', 0),
@@ -450,21 +450,34 @@ function getVideoProcessingMode(form) {
   return mode === 'self-hosted' ? 'self-hosted' : 'cdn';
 }
 
+function getVideoOutputFormat(form) {
+  const format = form.querySelector('#video-output-format')?.value || 'mp4';
+  return String(format).toLowerCase();
+}
+
 async function processVideoTool(file, form, action, params) {
   const mode = getVideoProcessingMode(form);
+  const format = getVideoOutputFormat(form);
+  const nextParams = { ...params, format };
+
   if (mode === 'self-hosted') {
-    return processVideoOnServer(file, action, params);
+    return processVideoOnServer(file, action, nextParams);
   }
 
-  switch (action) {
-    case 'crop':
-      return cropVideo(file, params);
-    case 'trim':
-      return trimVideo(file, params);
-    case 'filter':
-      return applyVideoFilter(file, params.filter || 'cinematic');
-    default:
-      throw new Error('Unknown video action.');
+  try {
+    switch (action) {
+      case 'crop':
+        return cropVideo(file, nextParams);
+      case 'trim':
+        return trimVideo(file, nextParams);
+      case 'filter':
+        return applyVideoFilter(file, nextParams.filter || 'cinematic', nextParams.format || 'mp4');
+      default:
+        throw new Error('Unknown video action.');
+    }
+  } catch (error) {
+    console.warn('[video] CDN processing failed, falling back to self-hosted backend:', error);
+    return processVideoOnServer(file, action, nextParams);
   }
 }
 
@@ -501,6 +514,85 @@ async function processVideoOnServer(file, action, params) {
     url: URL.createObjectURL(blob),
     fileName
   };
+}
+
+async function processPdfTool(input, form, action, params = {}) {
+  try {
+    if (Array.isArray(input)) {
+      if (action === 'merge') {
+        return mergePdf(input);
+      }
+      if (action === 'jpg-to-pdf') {
+        return jpgToPdf(input);
+      }
+      throw new Error('Unsupported PDF action in browser runtime.');
+    }
+
+    if (input && action === 'split') {
+      return splitPdf(input, params.range || '1-3');
+    }
+    if (input && action === 'compress') {
+      return compressPdf(input, params.level || 'medium');
+    }
+    if (input && action === 'pdf-to-images') {
+      return pdfToImages(input, params.format || 'jpg');
+    }
+    if (input && action === 'rotate') {
+      return rotatePdf(input, Number(params.angle || 90));
+    }
+    if (input && action === 'delete-pages') {
+      return deletePdfPages(input, params.range || '2');
+    }
+    if (input && action === 'extract-pages') {
+      return extractPdfPages(input, params.range || '1-2');
+    }
+
+    throw new Error('Unsupported PDF action in browser runtime.');
+  } catch (error) {
+    console.warn('[pdf] Browser PDF processing failed, falling back to backend:', error);
+
+    if (!input) {
+      throw error;
+    }
+
+    const formData = new FormData();
+    formData.append('action', action);
+
+    if (Array.isArray(input)) {
+      input.forEach((file) => {
+        if (file) formData.append('pdfs', file, file.name);
+      });
+    } else {
+      formData.append('pdf', input, input.name);
+    }
+
+    Object.entries(params || {}).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        formData.append(key, String(value));
+      }
+    });
+
+    const response = await fetch('/api/pdf/process', {
+      method: 'POST',
+      body: formData
+    });
+
+    if (!response.ok) {
+      const text = await response.text();
+      throw new Error(text || 'The server-side PDF backend could not complete this action.');
+    }
+
+    const blob = await response.blob();
+    const contentDisposition = response.headers.get('Content-Disposition') || '';
+    const match = contentDisposition.match(/filename="?([^";]+)"?/i);
+    const fileName = match ? match[1] : 'processed.pdf';
+
+    return {
+      url: URL.createObjectURL(blob),
+      fileName,
+      type: 'blob'
+    };
+  }
 }
 
 function displayResult(form, result) {
@@ -1032,7 +1124,7 @@ async function getFFmpeg() {
   return ffmpeg;
 }
 
-async function runVideoFFmpeg(file, args, outputName) {
+async function runVideoFFmpeg(file, args, outputName, outputFormat) {
   if (!file) {
     throw new Error('Please upload a video before processing.');
   }
@@ -1045,7 +1137,21 @@ async function runVideoFFmpeg(file, args, outputName) {
   await ffmpeg.exec(args);
   const data = await ffmpeg.readFile(outputName);
 
-  return new Blob([data.buffer], { type: 'video/mp4' });
+  return new Blob([data.buffer], { type: resolveVideoMimeType(outputFormat) });
+}
+
+function resolveVideoOutputExtension(format) {
+  const value = String(format || 'mp4').toLowerCase();
+  if (value === 'webm') return 'webm';
+  if (value === 'mov') return 'mov';
+  return 'mp4';
+}
+
+function resolveVideoMimeType(format) {
+  const value = String(format || 'mp4').toLowerCase();
+  if (value === 'webm') return 'video/webm';
+  if (value === 'mov') return 'video/quicktime';
+  return 'video/mp4';
 }
 
 async function cropVideo(file, options) {
@@ -1053,65 +1159,74 @@ async function cropVideo(file, options) {
   const height = Math.max(1, Number(options.height) || 720);
   const x = Math.max(0, Number(options.x) || 0);
   const y = Math.max(0, Number(options.y) || 0);
+  const outputFormat = resolveVideoOutputExtension(options.format);
 
   const inputName = `input.${getFileExtension(file.name)}`;
-  const outputName = `cropped-${Date.now()}.mp4`;
+  const outputName = `cropped-${Date.now()}.${outputFormat}`;
   const blob = await runVideoFFmpeg(file, [
     '-i', inputName,
     '-vf', `crop=${width}:${height}:${x}:${y}`,
-    '-c:v', 'libx264',
+    '-c:v', outputFormat === 'webm' ? 'libvpx-vp9' : 'libx264',
     '-preset', 'veryfast',
-    '-c:a', 'aac',
+    '-c:a', outputFormat === 'webm' ? 'libopus' : 'aac',
     '-movflags', '+faststart',
     outputName
-  ], outputName);
+  ], outputName, outputFormat);
 
-  return createDownloadResult(blob, `${getBaseName(file.name)}-cropped.mp4`);
+  return createDownloadResult(blob, `${getBaseName(file.name)}-cropped.${outputFormat}`);
 }
 
 async function trimVideo(file, options) {
   const start = Math.max(0, Number(options.start) || 0);
   const end = Math.max(start + 0.1, Number(options.end) || 10);
+  const outputFormat = resolveVideoOutputExtension(options.format);
 
   const inputName = `input.${getFileExtension(file.name)}`;
-  const outputName = `trimmed-${Date.now()}.mp4`;
+  const outputName = `trimmed-${Date.now()}.${outputFormat}`;
   const blob = await runVideoFFmpeg(file, [
     '-i', inputName,
     '-ss', String(start),
     '-to', String(end),
-    '-c:v', 'libx264',
+    '-c:v', outputFormat === 'webm' ? 'libvpx-vp9' : 'libx264',
     '-preset', 'veryfast',
-    '-c:a', 'aac',
+    '-c:a', outputFormat === 'webm' ? 'libopus' : 'aac',
     '-movflags', '+faststart',
     outputName
-  ], outputName);
+  ], outputName, outputFormat);
 
-  return createDownloadResult(blob, `${getBaseName(file.name)}-trimmed.mp4`);
+  return createDownloadResult(blob, `${getBaseName(file.name)}-trimmed.${outputFormat}`);
 }
 
-async function applyVideoFilter(file, preset) {
+async function applyVideoFilter(file, preset, format) {
   const presetMap = {
     cinematic: 'eq=contrast=1.15:saturation=1.35:brightness=0.04',
     warm: 'eq=contrast=1.1:saturation=1.4:brightness=0.08',
     cool: 'eq=contrast=1.2:saturation=0.95:brightness=-0.03',
     vintage: 'eq=contrast=1.35:saturation=0.8:brightness=0.06',
-    contrast: 'eq=contrast=1.6:saturation=1.2:brightness=0.02'
+    contrast: 'eq=contrast=1.6:saturation=1.2:brightness=0.02',
+    grayscale: 'eq=contrast=1.12:saturation=0.1:brightness=0.02',
+    sepia: 'eq=contrast=1.18:saturation=0.8:brightness=0.05, colorchannelmixer=rr=1.2:gg=0.8:bb=0.6',
+    noir: 'curves=r=' + '0.2' + ':' + '0.4' + ':1.0/0.0:1.0, curves=g=' + '0.2' + ':' + '0.4' + ':1.0/0.0:1.0, curves=b=' + '0.2' + ':' + '0.4' + ':1.0/0.0:1.0',
+    sharp: 'unsharp=5:5:1.2:5:5:0.8',
+    sunset: 'eq=contrast=1.25:saturation=1.5:brightness=0.09',
+    dreamy: 'eq=contrast=1.08:saturation=1.1:brightness=0.08'
   };
 
   const filter = presetMap[preset] || presetMap.cinematic;
+  const outputFormat = resolveVideoOutputExtension(format);
   const inputName = `input.${getFileExtension(file.name)}`;
-  const outputName = `filtered-${Date.now()}.mp4`;
+  const outputName = `filtered-${Date.now()}.${outputFormat}`;
   const blob = await runVideoFFmpeg(file, [
     '-i', inputName,
     '-vf', filter,
-    '-c:v', 'libx264',
+    '-c:v', outputFormat === 'webm' ? 'libvpx-vp9' : 'libx264',
     '-preset', 'veryfast',
-    '-c:a', 'aac',
+    '-c:a', outputFormat === 'webm' ? 'libopus' : 'aac',
     '-movflags', '+faststart',
     outputName
-  ], outputName);
+  ], outputName, outputFormat);
 
-  return createDownloadResult(blob, `${getBaseName(file.name)}-filtered.mp4`);
+  return createDownloadResult(blob, `${getBaseName(file.name)}-filtered.${outputFormat}`);
 }
 
 function getFileExtension(name) {
