@@ -6,9 +6,9 @@
       "title": "Home Page - Imigi",
       "description": "Welcome to our home page description",
       "keywords": "imigi, home, app, welcome",
-      "og_image": "/static/images/home-og.jpg",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
       "robots": "index, follow",
-      "canonical": "https://example.com/"
+      "canonical": "https://allok.com/"
     }
   },
   "ABOUT_PAGE_URL": {
@@ -18,9 +18,9 @@
       "title": "About Us - Imigi",
       "description": "Learn more about our team and mission",
       "keywords": "about, team, mission, company",
-      "og_image": "/static/images/about-og.jpg",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
       "robots": "index, follow",
-      "canonical": "https://example.com/about"
+      "canonical": "https://allok.com/about"
     }
   },
   "IMAGE_TOOLS_PAGE_URL": {
@@ -30,9 +30,9 @@
       "title": "Image Tools - Compress, Resize, Convert, and Edit Photos",
       "description": "Use Imigi's image tools to compress, resize, crop, rotate, and convert JPG, PNG, and WebP files in seconds.",
       "keywords": "image tools, photo resizer, image compressor, jpg to png, png to webp, photo converter",
-      "og_image": "/static/images/image-tools-og.jpg",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
       "robots": "index, follow",
-      "canonical": "https://example.com/image-tools"
+      "canonical": "https://allok.com/image-tools"
     }
   },
   "PDF_TOOLS_PAGE_URL": {
@@ -42,9 +42,9 @@
       "title": "PDF Tools - Merge, Split, Compress, and Convert PDFs",
       "description": "Merge, split, rotate, compress, and convert PDF documents with fast browser-based PDF tools built for everyday work.",
       "keywords": "pdf tools, merge pdf, split pdf, compress pdf, pdf to images, jpg to pdf",
-      "og_image": "/static/images/pdf-tools-og.jpg",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
       "robots": "index, follow",
-      "canonical": "https://example.com/pdf-tools"
+      "canonical": "https://allok.com/pdf-tools"
     }
   },
   "VIDEO_TOOLS_PAGE_URL": {
@@ -54,9 +54,9 @@
       "title": "Video Tools - Crop, Trim, and Add Filters Online",
       "description": "Edit videos online with crop, trim, and filter tools designed for creators, teams, and quick social media content workflows.",
       "keywords": "video tools, crop video, trim video, video filters, online video editor",
-      "og_image": "/static/images/video-tools-og.jpg",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
       "robots": "index, follow",
-      "canonical": "https://example.com/video-tools"
+      "canonical": "https://allok.com/video-tools"
     }
   },
   "SCANNER_TOOLS_PAGE_URL": {
@@ -66,9 +66,9 @@
       "title": "Scanner Tools - Document and QR Code Scanning",
       "description": "Scan documents, capture receipts, and decode QR codes directly from your camera or uploaded files with a browser-first scanner workflow.",
       "keywords": "document scanner, qr code scanner, scan using camera, image scanner, camscanner alternative",
-      "og_image": "/static/images/scanner-tools-og.jpg",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
       "robots": "index, follow",
-      "canonical": "https://example.com/scanner-tools"
+      "canonical": "https://allok.com/scanner-tools"
     }
   },
   "IMAGES_PAGE_URL": {
@@ -78,9 +78,9 @@
       "title": "Gallery - Imigi",
       "description": "Explore our collection of images and media",
       "keywords": "images, gallery, photos",
-      "og_image": "/static/images/images-og.jpg",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
       "robots": "index, follow",
-      "canonical": "https://example.com/images"
+      "canonical": "https://allok.com/images"
     }
   },
   "CONTACT_PAGE_URL": {
@@ -90,9 +90,9 @@
       "title": "Contact Us - Imigi",
       "description": "Get in touch with us today",
       "keywords": "contact, support, help",
-      "og_image": "/static/images/contact-og.jpg",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
       "robots": "index, follow",
-      "canonical": "https://example.com/contact"
+      "canonical": "https://allok.com/contact"
     }
   },
   "VIDEO_STUDIO_URL": {
@@ -102,9 +102,9 @@
       "title": "Video Studio - Imigi",
       "description": "Edit and enhance videos with crop, trim, and filter tools designed for fast browser workflows.",
       "keywords": "video editor, crop video, trim video, video filters",
-      "og_image": "/static/images/videos-og.jpg",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
       "robots": "index, follow",
-      "canonical": "https://example.com/videos"
+      "canonical": "https://allok.com/videos"
     }
   },
   "VIDEO_CROPPER_URL": {
@@ -114,9 +114,9 @@
       "title": "Video Cropper - Imigi",
       "description": "Crop uploaded videos to focus on the exact frame or aspect ratio you need.",
       "keywords": "video cropper, crop video, trim aspect ratio",
-      "og_image": "/static/images/video-cropper.jpg",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
       "robots": "index, follow",
-      "canonical": "https://example.com/video-cropper"
+      "canonical": "https://allok.com/video-cropper"
     }
   },
   "VIDEO_TRIMMER_URL": {
@@ -126,9 +126,9 @@
       "title": "Video Trimmer - Imigi",
       "description": "Trim clips to keep only the moments you need from longer video files.",
       "keywords": "video trimmer, trim video, cut clip",
-      "og_image": "/static/images/video-trimmer.jpg",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
       "robots": "index, follow",
-      "canonical": "https://example.com/video-trimmer"
+      "canonical": "https://allok.com/video-trimmer"
     }
   },
   "VIDEO_FILTERS_URL": {
@@ -138,9 +138,9 @@
       "title": "Video Filters - Imigi",
       "description": "Apply cinematic filters and color styles to improve the mood of your video clips.",
       "keywords": "video filters, color grade, cinematic filter",
-      "og_image": "/static/images/video-filters.jpg",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
       "robots": "index, follow",
-      "canonical": "https://example.com/video-filters"
+      "canonical": "https://allok.com/video-filters"
     }
   },
   "IMAGE_COMPRESSOR_URL": {
@@ -150,9 +150,9 @@
       "title": "Image Compressor - Imigi",
       "description": "Compress images and reduce file size without losing too much quality.",
       "keywords": "image compressor, compress image, web optimization",
-      "og_image": "/static/images/image-compressor.jpg",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
       "robots": "index, follow",
-      "canonical": "https://example.com/image-compressor"
+      "canonical": "https://allok.com/image-compressor"
     }
   },
   "IMAGE_RESIZER_URL": {
@@ -162,9 +162,9 @@
       "title": "Image Resizer - Imigi",
       "description": "Resize images to exact dimensions for web, print, or social media.",
       "keywords": "image resizer, resize image, dimensions",
-      "og_image": "/static/images/image-resizer.jpg",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
       "robots": "index, follow",
-      "canonical": "https://example.com/image-resizer"
+      "canonical": "https://allok.com/image-resizer"
     }
   },
   "JPG_TO_PNG_URL": {
@@ -174,9 +174,9 @@
       "title": "JPG to PNG - Imigi",
       "description": "Convert JPG files to PNG format for crisp, transparent-friendly results.",
       "keywords": "jpg to png, convert jpg to png, image conversion",
-      "og_image": "/static/images/jpg-to-png.jpg",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
       "robots": "index, follow",
-      "canonical": "https://example.com/jpg-to-png"
+      "canonical": "https://allok.com/jpg-to-png"
     }
   },
   "PNG_TO_JPG_URL": {
@@ -186,9 +186,9 @@
       "title": "PNG to JPG - Imigi",
       "description": "Convert PNG images into JPG files for sharing and compatibility.",
       "keywords": "png to jpg, convert png to jpg, file conversion",
-      "og_image": "/static/images/png-to-jpg.jpg",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
       "robots": "index, follow",
-      "canonical": "https://example.com/png-to-jpg"
+      "canonical": "https://allok.com/png-to-jpg"
     }
   },
   "WEBP_CONVERTER_URL": {
@@ -198,9 +198,9 @@
       "title": "WebP Converter - Imigi",
       "description": "Convert images to WebP for quicker loading and smaller file sizes.",
       "keywords": "webp converter, convert to webp, image format",
-      "og_image": "/static/images/webp-converter.jpg",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
       "robots": "index, follow",
-      "canonical": "https://example.com/webp-converter"
+      "canonical": "https://allok.com/webp-converter"
     }
   },
   "PNG_TO_WEBP_URL": {
@@ -210,9 +210,9 @@
       "title": "PNG to WebP - Imigi",
       "description": "Convert PNG artwork and graphics to efficient WebP files.",
       "keywords": "png to webp, convert png to webp",
-      "og_image": "/static/images/png-to-webp.jpg",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
       "robots": "index, follow",
-      "canonical": "https://example.com/png-to-webp"
+      "canonical": "https://allok.com/png-to-webp"
     }
   },
   "JPG_TO_WEBP_URL": {
@@ -222,9 +222,9 @@
       "title": "JPG to WebP - Imigi",
       "description": "Turn JPG images into compact WebP files with adjustable quality.",
       "keywords": "jpg to webp, convert jpg to webp",
-      "og_image": "/static/images/jpg-to-webp.jpg",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
       "robots": "index, follow",
-      "canonical": "https://example.com/jpg-to-webp"
+      "canonical": "https://allok.com/jpg-to-webp"
     }
   },
   "IMAGE_CROPPER_URL": {
@@ -234,9 +234,9 @@
       "title": "Image Cropper - Imigi",
       "description": "Crop images to focus on the exact part you need in your composition.",
       "keywords": "image cropper, crop image, trim photo",
-      "og_image": "/static/images/image-cropper.jpg",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
       "robots": "index, follow",
-      "canonical": "https://example.com/image-cropper"
+      "canonical": "https://allok.com/image-cropper"
     }
   },
   "IMAGE_ROTATOR_URL": {
@@ -246,9 +246,9 @@
       "title": "Image Rotator - Imigi",
       "description": "Rotate images quickly to correct orientation or create a new composition.",
       "keywords": "image rotator, rotate image, photo orientation",
-      "og_image": "/static/images/image-rotator.jpg",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
       "robots": "index, follow",
-      "canonical": "https://example.com/image-rotator"
+      "canonical": "https://allok.com/image-rotator"
     }
   },
   "DOCUMENT_SCANNER_URL": {
@@ -258,9 +258,9 @@
       "title": "Document Scanner - Imigi",
       "description": "Turn photos of documents into clean, contrast-boosted scans with a CamScanner-style enhancement flow.",
       "keywords": "document scanner, scan document, camscanner, image enhancement",
-      "og_image": "/static/images/document-scanner.jpg",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
       "robots": "index, follow",
-      "canonical": "https://example.com/document-scanner"
+      "canonical": "https://allok.com/document-scanner"
     }
   },
   "QR_CODE_SCANNER_URL": {
@@ -270,9 +270,9 @@
       "title": "QR Code Scanner - Imigi",
       "description": "Scan QR codes from uploaded images or a live camera feed and read the decoded content instantly.",
       "keywords": "qr code scanner, scan qr code, qr reader, camera scanner",
-      "og_image": "/static/images/qr-code-scanner.jpg",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
       "robots": "index, follow",
-      "canonical": "https://example.com/qr-code-scanner"
+      "canonical": "https://allok.com/qr-code-scanner"
     }
   },
   "IMAGE_TO_BASE64_URL": {
@@ -282,9 +282,9 @@
       "title": "Image to Base64 - Imigi",
       "description": "Convert image files into Base64 strings for embedding, testing, or transfer.",
       "keywords": "image to base64, encode image, data uri",
-      "og_image": "/static/images/image-to-base64.jpg",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
       "robots": "index, follow",
-      "canonical": "https://example.com/image-to-base64"
+      "canonical": "https://allok.com/image-to-base64"
     }
   },
   "BASE64_TO_IMAGE_URL": {
@@ -294,9 +294,9 @@
       "title": "Base64 to Image - Imigi",
       "description": "Decode a Base64 string back into an image preview and download.",
       "keywords": "base64 to image, decode image, base64 converter",
-      "og_image": "/static/images/base64-to-image.jpg",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
       "robots": "index, follow",
-      "canonical": "https://example.com/base64-to-image"
+      "canonical": "https://allok.com/base64-to-image"
     }
   },
   "PASSPORT_PHOTO_MAKER_URL": {
@@ -306,9 +306,9 @@
       "title": "Passport Photo Maker - Imigi",
       "description": "Create a simple passport-style image with a clean, centered composition.",
       "keywords": "passport photo maker, visa photo, photo template",
-      "og_image": "/static/images/passport-photo-maker.jpg",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
       "robots": "index, follow",
-      "canonical": "https://example.com/passport-photo-maker"
+      "canonical": "https://allok.com/passport-photo-maker"
     }
   },
   "MERGE_PDF_URL": {
@@ -318,9 +318,9 @@
       "title": "Merge PDF - Imigi",
       "description": "Merge multiple PDF files into a single document with a simple upload workflow.",
       "keywords": "merge pdf, combine pdf, pdf merger",
-      "og_image": "/static/images/merge-pdf.jpg",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
       "robots": "index, follow",
-      "canonical": "https://example.com/merge-pdf"
+      "canonical": "https://allok.com/merge-pdf"
     }
   },
   "SPLIT_PDF_URL": {
@@ -330,9 +330,9 @@
       "title": "Split PDF - Imigi",
       "description": "Split a PDF into smaller files or chosen page ranges with ease.",
       "keywords": "split pdf, separate pdf pages, pdf splitter",
-      "og_image": "/static/images/split-pdf.jpg",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
       "robots": "index, follow",
-      "canonical": "https://example.com/split-pdf"
+      "canonical": "https://allok.com/split-pdf"
     }
   },
   "COMPRESS_PDF_URL": {
@@ -342,9 +342,9 @@
       "title": "Compress PDF - Imigi",
       "description": "Compress PDF files to reduce their size and improve sharing convenience.",
       "keywords": "compress pdf, reduce pdf size, optimize pdf",
-      "og_image": "/static/images/compress-pdf.jpg",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
       "robots": "index, follow",
-      "canonical": "https://example.com/compress-pdf"
+      "canonical": "https://allok.com/compress-pdf"
     }
   },
   "JPG_TO_PDF_URL": {
@@ -354,9 +354,9 @@
       "title": "JPG to PDF - Imigi",
       "description": "Convert JPG images into a convenient PDF file with a single action.",
       "keywords": "jpg to pdf, image to pdf, convert jpg to pdf",
-      "og_image": "/static/images/jpg-to-pdf.jpg",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
       "robots": "index, follow",
-      "canonical": "https://example.com/jpg-to-pdf"
+      "canonical": "https://allok.com/jpg-to-pdf"
     }
   },
   "PDF_TO_IMAGES_URL": {
@@ -366,9 +366,9 @@
       "title": "PDF to Images - Imigi",
       "description": "Convert PDF pages into individual JPG or PNG images for editing or sharing.",
       "keywords": "pdf to images, convert pdf to jpg, export pdf pages",
-      "og_image": "/static/images/pdf-to-images.jpg",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
       "robots": "index, follow",
-      "canonical": "https://example.com/pdf-to-images"
+      "canonical": "https://allok.com/pdf-to-images"
     }
   },
   "ROTATE_PDF_URL": {
@@ -378,9 +378,9 @@
       "title": "Rotate PDF - Imigi",
       "description": "Rotate PDF pages to correct orientation and keep document layouts tidy.",
       "keywords": "rotate pdf, pdf orientation, rotate pages",
-      "og_image": "/static/images/rotate-pdf.jpg",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
       "robots": "index, follow",
-      "canonical": "https://example.com/rotate-pdf"
+      "canonical": "https://allok.com/rotate-pdf"
     }
   },
   "DELETE_PDF_PAGES_URL": {
@@ -390,9 +390,9 @@
       "title": "Delete PDF Pages - Imigi",
       "description": "Delete selected pages from PDF files to create cleaner and more focused documents.",
       "keywords": "delete pdf pages, remove pages from pdf, pdf editing",
-      "og_image": "/static/images/delete-pdf-pages.jpg",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
       "robots": "index, follow",
-      "canonical": "https://example.com/delete-pdf-pages"
+      "canonical": "https://allok.com/delete-pdf-pages"
     }
   },
   "EXTRACT_PDF_PAGES_URL": {
@@ -402,9 +402,9 @@
       "title": "Extract PDF Pages - Imigi",
       "description": "Extract selected PDF pages into a new file for easier sharing and organization.",
       "keywords": "extract pdf pages, pdf page extraction, pdf pages",
-      "og_image": "/static/images/extract-pdf-pages.jpg",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
       "robots": "index, follow",
-      "canonical": "https://example.com/extract-pdf-pages"
+      "canonical": "https://allok.com/extract-pdf-pages"
     }
   }
 }

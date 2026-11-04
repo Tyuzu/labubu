@@ -20,8 +20,6 @@
     <link rel="icon" type="image/svg+xml" href="/static/icons/imigi-icon.svg">
     <link rel="apple-touch-icon" href="/static/icons/imigi-icon.svg">
 
-    <link rel="preconnect" href="https://pagead2.googlesyndication.com">
-    <link rel="preconnect" href="https://googleads.g.doubleclick.net">
     <link rel="stylesheet" href="/static/css/style.css?v=20261104" media="screen">
 </head>
 <body class="app-layout">
@@ -42,13 +40,9 @@
     </header>
 
     <main class="container">
-        <div class="adsense-wrap">
-            <ins class="adsbygoogle adsense-slot"
-                 style="display:block; width:min(100%, 728px); height:90px; min-height:90px; background:rgba(148,163,184,0.08); border:1px solid rgba(148,163,184,0.15); border-radius:14px;"
-                 data-ad-client="ca-pub-XXXXXXXXXXXXXX"
-                 data-ad-slot="1234567890"
-                 data-ad-format="auto"
-                 data-full-width-responsive="true"></ins>
+        <div class="adsense-wrap" aria-label="Advertisement placeholder">
+            <div class="adsense-slot"
+                 style="display:block; width:min(100%, 728px); height:90px; min-height:90px; background:rgba(148,163,184,0.08); border:1px solid rgba(148,163,184,0.15); border-radius:14px;"></div>
         </div>
         {{if eq .TemplateName "about.html"}}
             {{template "about.html" .}}
@@ -123,17 +117,12 @@
         {{end}}
     </main>
 
-    <div class="adsense-wrap adsense-wrap--footer">
-        <ins class="adsbygoogle adsense-slot adsense-slot--mobile"
-             style="display:block; width:min(100%, 728px); height:90px; min-height:90px; background:rgba(148,163,184,0.08); border:1px solid rgba(148,163,184,0.15); border-radius:14px;"
-             data-ad-client="ca-pub-XXXXXXXXXXXXXX"
-             data-ad-slot="0987654321"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
+    <div class="adsense-wrap adsense-wrap--footer" aria-label="Advertisement placeholder">
+        <div class="adsense-slot adsense-slot--mobile"
+             style="display:block; width:min(100%, 728px); height:90px; min-height:90px; background:rgba(148,163,184,0.08); border:1px solid rgba(148,163,184,0.15); border-radius:14px;"></div>
     </div>
 
     {{template "footer" .}}
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXX" crossorigin="anonymous"></script>
     <script src="/static/js/image-tools.js"></script>
     <script src="/static/js/pwa.js"></script>
     <script>
