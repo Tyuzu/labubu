@@ -2,16 +2,21 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"html/template"
 	"io/fs"
 	"log"
 	"net/http"
 	"os"
+	"os/signal"
 	"path/filepath"
 	"sort"
 	"strings"
+	"syscall"
+	"time"
 
 	"imigi/config"
 	"imigi/handlers"
@@ -124,6 +129,95 @@ func templateFuncMap() template.FuncMap {
 	}
 }
 
+func withSecurityHeaders(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		headers := w.Header()
+		headers.Set("X-Content-Type-Options", "nosniff")
+		headers.Set("X-Frame-Options", "DENY")
+		headers.Set("X-XSS-Protection", "0")
+		headers.Set("Referrer-Policy", "strict-origin-when-cross-origin")
+		headers.Set("Permissions-Policy", "camera=(self), microphone=(self), geolocation=()")
+		headers.Set("Content-Security-Policy", "default-src 'self'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'")
+		if r.TLS != nil {
+			headers.Set("Strict-Transport-Security", "max-age=31536000; includeSubDomains")
+		}
+		next.ServeHTTP(w, r)
+	})
+}
+
+func newHTTPServer(cfg *config.Config, handler http.Handler) *http.Server {
+	if cfg == nil {
+		cfg = config.New()
+	}
+
+	if cfg.ReadTimeout == 0 {
+		cfg.ReadTimeout = 5 * time.Second
+	}
+	if cfg.WriteTimeout == 0 {
+		cfg.WriteTimeout = 15 * time.Second
+	}
+	if cfg.IdleTimeout == 0 {
+		cfg.IdleTimeout = 30 * time.Second
+	}
+	if cfg.ReadHeaderTimeout == 0 {
+		cfg.ReadHeaderTimeout = 5 * time.Second
+	}
+	if cfg.MaxHeaderBytes == 0 {
+		cfg.MaxHeaderBytes = 1 << 20
+	}
+	if cfg.ShutdownTimeout == 0 {
+		cfg.ShutdownTimeout = 10 * time.Second
+	}
+
+	return &http.Server{
+		Addr:              cfg.SERVER_HTTP_PORT,
+		Handler:           withSecurityHeaders(handler),
+		ReadTimeout:       cfg.ReadTimeout,
+		WriteTimeout:      cfg.WriteTimeout,
+		IdleTimeout:       cfg.IdleTimeout,
+		ReadHeaderTimeout: cfg.ReadHeaderTimeout,
+		MaxHeaderBytes:    cfg.MaxHeaderBytes,
+		ErrorLog:          log.Default(),
+	}
+}
+
+func serveWithGracefulShutdown(cfg *config.Config, handler http.Handler) error {
+	if cfg == nil {
+		cfg = config.New()
+	}
+
+	server := newHTTPServer(cfg, handler)
+	shutdownErrCh := make(chan error, 1)
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
+	defer signal.Stop(stop)
+
+	go func() {
+		if err := server.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+			shutdownErrCh <- err
+			return
+		}
+		shutdownErrCh <- nil
+	}()
+
+	select {
+	case sig := <-stop:
+		log.Printf("Received shutdown signal %v; beginning graceful shutdown", sig)
+	case err := <-shutdownErrCh:
+		if err != nil {
+			return err
+		}
+		return nil
+	}
+
+	shutdownCtx, cancel := context.WithTimeout(context.Background(), cfg.ShutdownTimeout)
+	defer cancel()
+	if err := server.Shutdown(shutdownCtx); err != nil {
+		return fmt.Errorf("graceful shutdown failed: %w", err)
+	}
+	return nil
+}
+
 func loadTemplates(dir string) (*template.Template, error) {
 	root := filepath.Clean(dir)
 	tmpl := template.New("").Funcs(templateFuncMap())
@@ -206,7 +300,7 @@ func main() {
 	}
 
 	log.Printf("Server starting on port %s...", cfg.SERVER_HTTP_PORT)
-	if err := http.ListenAndServe(cfg.SERVER_HTTP_PORT, router); err != nil {
+	if err := serveWithGracefulShutdown(cfg, router); err != nil {
 		log.Fatal(err)
 	}
 }
