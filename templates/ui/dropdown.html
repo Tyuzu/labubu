@@ -1,7 +1,7 @@
 {{define "uiDropdown"}}
 <label class="ui-dropdown">
     <span>{{if .Label}}{{.Label}}{{else}}Select option{{end}}</span>
-    <select class="ui-dropdown__select" {{if .Name}}name="{{.Name}}"{{end}}>
+    <select class="ui-dropdown__select{{if .Class}} {{.Class}}{{end}}" {{if .Id}}id="{{.Id}}"{{end}} {{if .Name}}name="{{.Name}}"{{end}} {{if .Required}}required{{end}}>
         {{range .Options}}
         <option value="{{.Value}}" {{if .Selected}}selected{{end}}>{{.Label}}</option>
         {{end}}

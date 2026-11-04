@@ -5,7 +5,7 @@
     <h1>Base64 to Image</h1>
     <p>Paste a Base64 string to instantly render the image preview or download it.</p>
   </div>
-
+    {{template "adBanner" .}}
   <div class="tool-card">
     <form class="base64-form" data-tool="base64-to-image">
       <div class="field">
@@ -13,7 +13,7 @@
         <textarea id="decode-base64" placeholder="Paste Base64 here..." rows="8"></textarea>
       </div>
 
-      <button type="submit">Decode image</button>
+      {{template "uiButton" (dict "Label" "Decode image" "Type" "submit")}}
     </form>
 
     <div class="result-block">

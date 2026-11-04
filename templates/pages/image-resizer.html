@@ -5,13 +5,10 @@
     <h1>Image Resizer</h1>
     <p>Change the dimensions of your image to fit a specific size requirement.</p>
   </div>
-
+    {{template "adBanner" .}}
   <div class="tool-card">
     <form class="image-tool" data-tool="resize">
-      <div class="field">
-        <label for="resize-file">Upload image</label>
-        <input id="resize-file" type="file" accept="image/*" />
-      </div>
+      {{template "uiFileUpload" (dict "Id" "resize-file" "Label" "Upload image" "Accept" "image/*" "Title" "Drag &amp; drop your image here" "Hint" "or browse" "Placeholder" "No file selected")}}
 
       <div class="field-row two-col">
         <div class="field">
@@ -24,7 +21,7 @@
         </div>
       </div>
 
-      <button type="submit">Resize image</button>
+      {{template "uiButton" (dict "Label" "Resize image" "Type" "submit")}}
     </form>
 
     <div class="result-block">

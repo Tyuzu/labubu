@@ -5,15 +5,12 @@
     <h1>Merge PDF</h1>
     <p>Combine multiple PDF files into one clean document in a few steps.</p>
   </div>
-
+    {{template "adBanner" .}}
   <div class="tool-card">
     <form class="image-tool" data-tool="merge-pdf">
-      <div class="field">
-        <label for="merge-pdf-files">Choose PDF files</label>
-        <input id="merge-pdf-files" type="file" accept="application/pdf" multiple />
-      </div>
+      {{template "uiFileUpload" (dict "Id" "merge-pdf-files" "Label" "Choose PDF files" "Accept" "application/pdf" "Multiple" true "Title" "Drag &amp; drop your PDFs here" "Hint" "or browse" "Placeholder" "No files selected")}}
 
-      <button type="submit">Merge PDFs</button>
+      {{template "uiButton" (dict "Label" "Merge PDFs" "Type" "submit")}}
     </form>
 
     <div class="result-block">

@@ -5,20 +5,17 @@
     <h1>Split PDF</h1>
     <p>Break a multi-page PDF into smaller documents or selected page ranges.</p>
   </div>
-
+    {{template "adBanner" .}}
   <div class="tool-card">
     <form class="image-tool" data-tool="split-pdf">
-      <div class="field">
-        <label for="split-pdf-file">Upload PDF</label>
-        <input id="split-pdf-file" type="file" accept="application/pdf" />
-      </div>
+      {{template "uiFileUpload" (dict "Id" "split-pdf-file" "Label" "Upload PDF" "Accept" "application/pdf" "Title" "Drag &amp; drop your PDF here" "Hint" "or browse" "Placeholder" "No file selected")}}
 
       <div class="field">
         <label for="split-range">Page range</label>
         <input id="split-range" type="text" value="1-3" placeholder="Example: 1-3, 5-7" />
       </div>
 
-      <button type="submit">Split PDF</button>
+      {{template "uiButton" (dict "Label" "Split PDF" "Type" "submit")}}
     </form>
 
     <div class="result-block">

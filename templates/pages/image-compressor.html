@@ -5,7 +5,7 @@
     <h1>Image Compressor</h1>
     <p>Reduce file size without losing the overall visual quality of your image.</p>
   </div>
-
+    {{template "adBanner" .}}
   <div class="tool-card">
     <form class="image-tool" data-tool="compress">
       {{template "uiFileUpload" (dict "Id" "compress-file" "Label" "Upload image" "Accept" "image/*" "Title" "Drag &amp; drop your image here" "Hint" "or browse" "Placeholder" "No file selected")}}
@@ -15,7 +15,7 @@
         <span data-quality-value>0.70</span>
       </div>
 
-      <button type="submit">Compress image</button>
+      {{template "uiButton" (dict "Label" "Compress image" "Type" "submit")}}
     </form>
 
     <div class="result-block">

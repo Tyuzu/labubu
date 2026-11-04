@@ -5,7 +5,7 @@
     <h1>Document Scanner</h1>
     <p>Turn a photo of a sheet or document into a cleaner, higher-contrast scan with auto-cropping and grayscale enhancement.</p>
   </div>
-
+    {{template "adBanner" .}}
   <div class="tool-card">
     <form class="image-tool" data-tool="document-scanner">
       {{template "uiFileUpload" (dict "Id" "scanner-file" "Label" "Upload document photo" "Accept" "image/*" "Capture" "environment" "Title" "Choose a document photo" "Hint" "or browse from your device")}}
@@ -30,7 +30,7 @@
         </div>
       </div>
 
-      <button type="submit">Scan document</button>
+      {{template "uiButton" (dict "Label" "Scan document" "Type" "submit")}}
     </form>
 
     <div class="result-block">

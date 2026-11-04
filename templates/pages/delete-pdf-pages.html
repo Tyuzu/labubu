@@ -5,20 +5,17 @@
     <h1>Delete PDF Pages</h1>
     <p>Remove selected pages from a PDF so the final file stays concise and focused.</p>
   </div>
-
+    {{template "adBanner" .}}
   <div class="tool-card">
     <form class="image-tool" data-tool="delete-pdf-pages">
-      <div class="field">
-        <label for="delete-pdf-file">Upload PDF</label>
-        <input id="delete-pdf-file" type="file" accept="application/pdf" />
-      </div>
+      {{template "uiFileUpload" (dict "Id" "delete-pdf-file" "Label" "Upload PDF" "Accept" "application/pdf" "Title" "Drag &amp; drop your PDF here" "Hint" "or browse" "Placeholder" "No file selected")}}
 
       <div class="field">
         <label for="delete-page-range">Pages to remove</label>
         <input id="delete-page-range" type="text" value="2, 4-5" placeholder="Example: 1, 3-4" />
       </div>
 
-      <button type="submit">Delete pages</button>
+      {{template "uiButton" (dict "Label" "Delete pages" "Type" "submit")}}
     </form>
 
     <div class="result-block">

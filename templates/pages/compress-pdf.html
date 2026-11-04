@@ -5,24 +5,16 @@
     <h1>Compress PDF</h1>
     <p>Reduce the size of large PDFs for email sharing, web uploads, and storage.</p>
   </div>
-
+    {{template "adBanner" .}}
   <div class="tool-card">
     <form class="image-tool" data-tool="compress-pdf">
-      <div class="field">
-        <label for="compress-pdf-file">Upload PDF</label>
-        <input id="compress-pdf-file" type="file" accept="application/pdf" />
-      </div>
+      {{template "uiFileUpload" (dict "Id" "compress-pdf-file" "Label" "Upload PDF" "Accept" "application/pdf" "Title" "Drag &amp; drop your PDF here" "Hint" "or browse" "Placeholder" "No file selected")}}
 
       <div class="field">
-        <label for="compress-level">Compression level</label>
-        <select id="compress-level">
-          <option value="low">Low</option>
-          <option value="medium" selected>Medium</option>
-          <option value="high">High</option>
-        </select>
+        {{template "uiDropdown" (dict "Id" "compress-level" "Name" "compress-level" "Label" "Compression level" "Options" (slice (dict "Value" "low" "Label" "Low") (dict "Value" "medium" "Label" "Medium" "Selected" true) (dict "Value" "high" "Label" "High")))}}
       </div>
 
-      <button type="submit">Compress PDF</button>
+      {{template "uiButton" (dict "Label" "Compress PDF" "Type" "submit")}}
     </form>
 
     <div class="result-block">
