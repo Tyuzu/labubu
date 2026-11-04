@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"encoding/json"
 	"errors"
 	"net/http"
 	"strconv"
@@ -34,6 +35,28 @@ func PdfProcessHandler(w http.ResponseWriter, r *http.Request, _ httprouter.Para
 	w.Header().Set("Content-Disposition", "attachment; filename=\""+fileName+"\"")
 	w.Header().Set("Content-Length", strconv.Itoa(len(result)))
 	_, _ = w.Write(result)
+}
+
+func HealthHandler() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		status := services.CheckBackendHealth()
+		payload := map[string]interface{}{
+			"status":    "ok",
+			"available": status.ServerAvailable(),
+			"backends": map[string]bool{
+				"ffmpeg":      status.FFmpeg,
+				"pdfcpu":      status.PDFCPU,
+				"ghostscript": status.Ghostscript,
+			},
+			"editors": map[string]bool{
+				"browserVideo": true,
+				"browserPDF":   true,
+			},
+			"message": status.Message(),
+		}
+		w.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(w).Encode(payload)
+	}
 }
 
 func writeServiceError(w http.ResponseWriter, err error) {

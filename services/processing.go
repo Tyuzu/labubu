@@ -25,7 +25,7 @@ func newStatusError(code int, msg string) error {
 }
 
 func ProcessVideoUpload(r *http.Request) ([]byte, string, string, error) {
-	if err := r.ParseMultipartForm(200 << 20); err != nil {
+	if err := r.ParseMultipartForm(MaxVideoUploadSize + (10 << 20)); err != nil {
 		return nil, "", "", newStatusError(http.StatusBadRequest, "Unable to parse upload")
 	}
 	if err := ValidateVideoUpload(r.MultipartForm); err != nil {
@@ -45,7 +45,7 @@ func ProcessVideoUpload(r *http.Request) ([]byte, string, string, error) {
 
 	ffmpegPath, err := exec.LookPath("ffmpeg")
 	if err != nil {
-		return nil, "", "", newStatusError(http.StatusServiceUnavailable, "Self-hosted FFmpeg is not available on this server. Choose the CDN option instead.")
+		return nil, "", "", newStatusError(http.StatusServiceUnavailable, "Self-hosted FFmpeg is not available on this server right now. Use the browser-based option or try again later.")
 	}
 
 	tempDir, err := os.MkdirTemp("", "imigi-video-")
@@ -157,7 +157,7 @@ func ProcessVideoUpload(r *http.Request) ([]byte, string, string, error) {
 }
 
 func ProcessPDFUpload(r *http.Request) ([]byte, string, string, error) {
-	if err := r.ParseMultipartForm(50 << 20); err != nil {
+	if err := r.ParseMultipartForm(MaxPDFUploadSize + (10 << 20)); err != nil {
 		return nil, "", "", newStatusError(http.StatusBadRequest, "Unable to parse upload")
 	}
 
@@ -219,7 +219,7 @@ func ProcessPDFUpload(r *http.Request) ([]byte, string, string, error) {
 				return nil, "", "", newStatusError(http.StatusInternalServerError, fmt.Sprintf("The PDF merge backend failed: %s", strings.TrimSpace(string(output))))
 			}
 		} else {
-			return nil, "", "", newStatusError(http.StatusServiceUnavailable, "No PDF backend is available on this server. Use the browser PDF tools instead.")
+			return nil, "", "", newStatusError(http.StatusServiceUnavailable, "No PDF backend is available on this server right now. Use the browser PDF tools or try again later.")
 		}
 	case "split":
 		rangeText := r.FormValue("range")
@@ -245,7 +245,7 @@ func ProcessPDFUpload(r *http.Request) ([]byte, string, string, error) {
 			}
 			outputFile = filepath.Join(outDir, "page-1.pdf")
 		} else {
-			return nil, "", "", newStatusError(http.StatusServiceUnavailable, "No PDF backend is available on this server. Use the browser PDF tools instead.")
+			return nil, "", "", newStatusError(http.StatusServiceUnavailable, "No PDF backend is available on this server right now. Use the browser PDF tools or try again later.")
 		}
 	case "compress":
 		if pdfcpuPath != "" {
@@ -261,7 +261,7 @@ func ProcessPDFUpload(r *http.Request) ([]byte, string, string, error) {
 				return nil, "", "", newStatusError(http.StatusInternalServerError, fmt.Sprintf("The PDF compression backend failed: %s", strings.TrimSpace(string(output))))
 			}
 		} else {
-			return nil, "", "", newStatusError(http.StatusServiceUnavailable, "No PDF backend is available on this server. Use the browser PDF tools instead.")
+			return nil, "", "", newStatusError(http.StatusServiceUnavailable, "No PDF backend is available on this server right now. Use the browser PDF tools or try again later.")
 		}
 	case "rotate":
 		targetAngle := r.FormValue("angle")
@@ -281,7 +281,7 @@ func ProcessPDFUpload(r *http.Request) ([]byte, string, string, error) {
 				return nil, "", "", newStatusError(http.StatusInternalServerError, fmt.Sprintf("The PDF rotate backend failed: %s", strings.TrimSpace(string(output))))
 			}
 		} else {
-			return nil, "", "", newStatusError(http.StatusServiceUnavailable, "No PDF backend is available on this server. Use the browser PDF tools instead.")
+			return nil, "", "", newStatusError(http.StatusServiceUnavailable, "No PDF backend is available on this server right now. Use the browser PDF tools or try again later.")
 		}
 	case "delete-pages":
 		rangeText := r.FormValue("range")
@@ -297,7 +297,7 @@ func ProcessPDFUpload(r *http.Request) ([]byte, string, string, error) {
 		} else if gsPath != "" {
 			return nil, "", "", newStatusError(http.StatusNotImplemented, "The Ghostscript backend does not currently support deleting arbitrary PDF pages on this server.")
 		} else {
-			return nil, "", "", newStatusError(http.StatusServiceUnavailable, "No PDF backend is available on this server. Use the browser PDF tools instead.")
+			return nil, "", "", newStatusError(http.StatusServiceUnavailable, "No PDF backend is available on this server right now. Use the browser PDF tools or try again later.")
 		}
 	case "extract-pages":
 		rangeText := r.FormValue("range")
@@ -317,7 +317,7 @@ func ProcessPDFUpload(r *http.Request) ([]byte, string, string, error) {
 				return nil, "", "", newStatusError(http.StatusInternalServerError, fmt.Sprintf("The PDF extraction backend failed: %s", strings.TrimSpace(string(output))))
 			}
 		} else {
-			return nil, "", "", newStatusError(http.StatusServiceUnavailable, "No PDF backend is available on this server. Use the browser PDF tools instead.")
+			return nil, "", "", newStatusError(http.StatusServiceUnavailable, "No PDF backend is available on this server right now. Use the browser PDF tools or try again later.")
 		}
 	default:
 		return nil, "", "", newStatusError(http.StatusBadRequest, "Unsupported PDF action")

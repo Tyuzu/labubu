@@ -40,6 +40,7 @@ func main() {
 
 	baseURL := rts.DefaultBaseURL()
 	router.HandlerFunc(http.MethodGet, "/sitemap.xml", handlers.SitemapHandler(routeMap, baseURL))
+	router.HandlerFunc(http.MethodGet, "/api/health", handlers.HealthHandler())
 	router.POST("/api/video/process", handlers.VideoProcessHandler)
 	router.POST("/api/pdf/process", handlers.PdfProcessHandler)
 

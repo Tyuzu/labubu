@@ -40,6 +40,11 @@
     </header>
 
     <main class="container">
+        {{if .BackendWarning}}
+        <div class="processing-banner" style="margin: 1rem 0; padding: 0.9rem 1rem; border: 1px solid rgba(245,158,11,0.45); border-radius: 12px; background: rgba(245,158,11,0.1); color: #fef3c7; font-size: 0.95rem;">
+            Some processing tools are temporarily running in the browser only. Server-side video/PDF backends are unavailable right now, so browser-based tools remain available.
+        </div>
+        {{end}}
         <div class="adsense-wrap" aria-label="Advertisement placeholder">
             <div class="adsense-slot"
                  style="display:block; width:min(100%, 728px); height:90px; min-height:90px; background:rgba(148,163,184,0.08); border:1px solid rgba(148,163,184,0.15); border-radius:14px;"></div>

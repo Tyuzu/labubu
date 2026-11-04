@@ -12,12 +12,15 @@ import (
 
 	"imigi/infra"
 	rts "imigi/routes"
+	"imigi/services"
 )
 
 type PageData struct {
-	Metadata     rts.Metadata
-	App          *infra.Deps
-	TemplateName string
+	Metadata       rts.Metadata
+	App            *infra.Deps
+	TemplateName   string
+	BackendStatus  services.BackendStatus
+	BackendWarning bool
 }
 
 func PageHandler(t *template.Template, app *infra.Deps, templateName string, meta rts.Metadata) http.HandlerFunc {
@@ -26,10 +29,13 @@ func PageHandler(t *template.Template, app *infra.Deps, templateName string, met
 			templateName = "content"
 		}
 
+		backendStatus := services.CheckBackendHealth()
 		data := PageData{
-			Metadata:     meta,
-			App:          app,
-			TemplateName: templateName,
+			Metadata:       meta,
+			App:            app,
+			TemplateName:   templateName,
+			BackendStatus:  backendStatus,
+			BackendWarning: backendStatus.ServerUnavailable(),
 		}
 
 		w.Header().Set("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")
@@ -48,7 +54,8 @@ func PanicHandler(app *infra.Deps, t *template.Template) func(http.ResponseWrite
 			Title:       "Internal Server Error",
 			Description: "An unexpected error occurred.",
 		}
-		data := PageData{Metadata: meta, App: app, TemplateName: "content"}
+		backendStatus := services.CheckBackendHealth()
+		data := PageData{Metadata: meta, App: app, TemplateName: "content", BackendStatus: backendStatus, BackendWarning: backendStatus.ServerUnavailable()}
 		_ = t.ExecuteTemplate(w, "layout", data)
 	}
 }
@@ -60,7 +67,8 @@ func NotFoundHandler(app *infra.Deps, t *template.Template) http.HandlerFunc {
 			Title:       "Page Not Found",
 			Description: "The requested page could not be found.",
 		}
-		data := PageData{Metadata: meta, App: app, TemplateName: "content"}
+		backendStatus := services.CheckBackendHealth()
+		data := PageData{Metadata: meta, App: app, TemplateName: "content", BackendStatus: backendStatus, BackendWarning: backendStatus.ServerUnavailable()}
 		_ = t.ExecuteTemplate(w, "layout", data)
 	}
 }
