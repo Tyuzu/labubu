@@ -314,6 +314,10 @@
                 }
             }
 
+            function isMobileNav() {
+                return window.matchMedia('(max-width: 760px)').matches;
+            }
+
             function setCategory(category, isVisible) {
                 var selected = category || '';
                 activeCategory = selected;
@@ -321,11 +325,12 @@
 
                 if (nav) {
                     nav.classList.remove('collapsed');
-                    nav.setAttribute('aria-hidden', 'false');
+                    nav.classList.toggle('is-open', !isMobileNav() || groupVisible);
+                    nav.setAttribute('aria-hidden', (!isMobileNav() || groupVisible) ? 'false' : 'true');
                 }
 
                 if (navInner) {
-                    navInner.classList.remove('hidden');
+                    navInner.classList.toggle('hidden', isMobileNav() && !groupVisible);
                 }
 
                 serverButtons.forEach(function(button) {
@@ -336,7 +341,12 @@
 
                 navGroups.forEach(function(group) {
                     var itemCategory = group.getAttribute('data-category');
-                    group.classList.toggle('active', !!selected && itemCategory === selected);
+                    var isMatch = !!selected && itemCategory === selected;
+                    var shouldShow = isMatch && groupVisible;
+                    group.classList.toggle('active', shouldShow);
+                    if (typeof group.hidden !== 'undefined') {
+                        group.hidden = !shouldShow;
+                    }
                 });
 
                 if (selected) {
@@ -350,8 +360,8 @@
                 serverButtons.forEach(function(button) {
                     button.addEventListener('click', function() {
                         var category = button.getAttribute('data-category');
-                        if (activeCategory === category) {
-                            setCategory(category, !groupVisible);
+                        if (isMobileNav() && activeCategory === category) {
+                            setCategory(category, false);
                             return;
                         }
 
@@ -372,7 +382,7 @@
             });
 
             var initialCategory = getPageCategory() || readState().lastCategory || defaultCategory;
-            setCategory(initialCategory, true);
+            setCategory(initialCategory, !isMobileNav());
 
             var state = readState();
             var lastChannelForCategory = state.lastChannelByCategory && state.lastChannelByCategory[initialCategory];
