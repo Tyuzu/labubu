@@ -1,25 +1,48 @@
 {{define "contact.html"}}
-<section class="page-shell">
+<section class="page-shell contact-page">
   <div class="page-header">
     <p class="eyebrow">Contact</p>
     <h1>Say hello.</h1>
+    <p>Need help with a file workflow, feature request, or a quick question? Reach out and we will get back to you as soon as possible.</p>
   </div>
 
-  <div class="info-grid">
-    <article class="info-card">
-      <h2>Email</h2>
-      <p>hello@imigi.example</p>
+  <div class="contact-grid">
+    <article class="contact-card contact-form-card">
+      <h2>Send a message</h2>
+      <form class="contact-form">
+        <div class="field-row two-col">
+          <div class="field">
+            <label for="contact-name">Name</label>
+            <input id="contact-name" type="text" placeholder="Your name" />
+          </div>
+          <div class="field">
+            <label for="contact-email">Email</label>
+            <input id="contact-email" type="email" placeholder="you@example.com" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="contact-subject">Subject</label>
+          <input id="contact-subject" type="text" placeholder="How can we help?" />
+        </div>
+
+        <div class="field">
+          <label for="contact-message">Message</label>
+          <textarea id="contact-message" rows="5" placeholder="Tell us what you need..."></textarea>
+        </div>
+
+        <button type="submit">Send message</button>
+      </form>
     </article>
 
-    <article class="info-card">
-      <h2>Response time</h2>
-      <p>We usually reply within one business day.</p>
-    </article>
-
-    <article class="info-card">
-      <h2>Support focus</h2>
-      <p>Questions about conversions, upload issues, or feature requests are all welcome.</p>
-    </article>
+    <aside class="contact-card contact-info-card">
+      <h2>Contact details</h2>
+      <ul class="contact-list">
+        <li><strong>Email</strong><span>hello@imigi.example</span></li>
+        <li><strong>Response time</strong><span>Usually within 1 business day</span></li>
+        <li><strong>Support focus</strong><span>Conversions, uploads, bug reports, and feature requests</span></li>
+      </ul>
+    </aside>
   </div>
 </section>
 {{end}}
