@@ -1,0 +1,12 @@
+{{define "componentPageShell"}}
+<section class="page-shell">
+    <div class="page-shell__header">
+        <p class="eyebrow">{{.Eyebrow}}</p>
+        <h2>{{.Title}}</h2>
+    </div>
+    {{if .Description}}
+    <p class="page-shell__description">{{.Description}}</p>
+    {{end}}
+    {{template "uiButton" .PrimaryAction}}
+</section>
+{{end}}

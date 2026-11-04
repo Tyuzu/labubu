@@ -1,11 +1,17 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
+	"fmt"
 	"html/template"
+	"io/fs"
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
+	"sort"
+	"strings"
 
 	"imigi/config"
 	"imigi/handlers"
@@ -61,14 +67,112 @@ func pageHeaderData(eyebrow, title, description string) map[string]string {
 	}
 }
 
-var tmpl = template.Must(template.New("").Funcs(template.FuncMap{
-	"slice":          slice,
-	"feature":        feature,
-	"toolTile":       toolTile,
-	"toolSection":    toolSection,
-	"toolPage":       toolPage,
-	"pageHeaderData": pageHeaderData,
-}).ParseGlob("templates/*.html"))
+func dict(values ...interface{}) map[string]interface{} {
+	if len(values)%2 != 0 {
+		panic("dict requires an even number of key/value arguments")
+	}
+	result := make(map[string]interface{}, len(values)/2)
+	for i := 0; i < len(values); i += 2 {
+		key, ok := values[i].(string)
+		if !ok {
+			key = fmt.Sprint(values[i])
+		}
+		result[key] = values[i+1]
+	}
+	return result
+}
+
+var templateRenderer = func(name string, data interface{}) template.HTML {
+	return template.HTML("")
+}
+
+func renderPage(data interface{}) template.HTML {
+	name := "content"
+	payload := data
+
+	switch v := data.(type) {
+	case handlers.PageData:
+		if v.TemplateName != "" {
+			name = v.TemplateName
+		}
+		payload = v
+	case map[string]interface{}:
+		if templateName, ok := v["TemplateName"].(string); ok && templateName != "" {
+			name = templateName
+		}
+		payload = v
+	case map[string]string:
+		if templateName, ok := v["TemplateName"]; ok && templateName != "" {
+			name = templateName
+		}
+		payload = v
+	}
+
+	return templateRenderer(name, payload)
+}
+
+func templateFuncMap() template.FuncMap {
+	return template.FuncMap{
+		"slice":          slice,
+		"feature":        feature,
+		"toolTile":       toolTile,
+		"toolSection":    toolSection,
+		"toolPage":       toolPage,
+		"pageHeaderData": pageHeaderData,
+		"dict":           dict,
+		"renderPage":     renderPage,
+	}
+}
+
+func loadTemplates(dir string) (*template.Template, error) {
+	root := filepath.Clean(dir)
+	tmpl := template.New("").Funcs(templateFuncMap())
+
+	var matches []string
+	if err := filepath.WalkDir(root, func(path string, entry fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if entry.IsDir() || !strings.EqualFold(filepath.Ext(path), ".html") {
+			return nil
+		}
+		matches = append(matches, path)
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	sort.Strings(matches)
+	for _, match := range matches {
+		parsed, err := tmpl.ParseFiles(match)
+		if err != nil {
+			return nil, fmt.Errorf("parse template %s: %w", match, err)
+		}
+		tmpl = parsed
+	}
+
+	return tmpl, nil
+}
+
+var tmpl = mustLoadTemplates("templates")
+
+func init() {
+	templateRenderer = func(name string, data interface{}) template.HTML {
+		var buf bytes.Buffer
+		if err := tmpl.ExecuteTemplate(&buf, name, data); err != nil {
+			_ = tmpl.ExecuteTemplate(&buf, "content", data)
+		}
+		return template.HTML(buf.String())
+	}
+}
+
+func mustLoadTemplates(dir string) *template.Template {
+	parsed, err := loadTemplates(dir)
+	if err != nil {
+		panic("Failed to load templates: " + err.Error())
+	}
+	return parsed
+}
 
 func main() {
 	cfg := config.New()

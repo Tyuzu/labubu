@@ -1,0 +1,10 @@
+{{define "uiCamera"}}
+<div class="ui-camera">
+  <div class="ui-camera__actions">
+    <button type="button" class="camera-toggle ui-button ui-button--secondary" {{if .ToggleId}}id="{{.ToggleId}}"{{end}}>{{if .ToggleLabel}}{{.ToggleLabel}}{{else}}Use camera{{end}}</button>
+    <button type="button" class="camera-capture ui-button" hidden {{if .CaptureId}}id="{{.CaptureId}}"{{end}}>{{if .CaptureLabel}}{{.CaptureLabel}}{{else}}Capture photo{{end}}</button>
+  </div>
+  <video id="{{if .VideoId}}{{.VideoId}}{{else}}camera-feed{{end}}" autoplay playsinline muted hidden></video>
+  <canvas id="{{if .CanvasId}}{{.CanvasId}}{{else}}camera-canvas{{end}}" hidden></canvas>
+</div>
+{{end}}

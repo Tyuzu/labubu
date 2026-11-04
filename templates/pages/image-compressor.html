@@ -1,0 +1,27 @@
+{{define "image-compressor.html"}}
+<section class="tool-page">
+  <div class="tool-header">
+    <p class="eyebrow">Image Utility</p>
+    <h1>Image Compressor</h1>
+    <p>Reduce file size without losing the overall visual quality of your image.</p>
+  </div>
+
+  <div class="tool-card">
+    <form class="image-tool" data-tool="compress">
+      {{template "uiFileUpload" (dict "Id" "compress-file" "Label" "Upload image" "Accept" "image/*" "Title" "Drag &amp; drop your image here" "Hint" "or browse" "Placeholder" "No file selected")}}
+
+      <div class="field range-field">
+        {{template "uiSlider" (dict "Id" "compress-quality" "Label" "Compression quality" "Min" 0.1 "Max" 1 "Step" 0.05 "Value" 0.7)}}
+        <span data-quality-value>0.70</span>
+      </div>
+
+      <button type="submit">Compress image</button>
+    </form>
+
+    <div class="result-block">
+      <img class="tool-preview" alt="Compressed preview" hidden />
+      <a class="download-link" href="#" hidden>Download compressed image</a>
+    </div>
+  </div>
+</section>
+{{end}}

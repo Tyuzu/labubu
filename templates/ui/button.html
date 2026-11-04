@@ -1,0 +1,14 @@
+{{define "uiButton"}}
+<button class="ui-button{{if .Class}} {{.Class}}{{end}}" {{if .Id}}id="{{.Id}}"{{end}} type="{{if .Type}}{{.Type}}{{else}}button{{end}}" {{if .Disabled}}disabled{{end}} {{if .Name}}name="{{.Name}}"{{end}}>
+    {{if .Icon}}{{.Icon}}{{end}}
+    {{if .Label}}{{.Label}}{{else}}{{.}}{{end}}
+</button>
+{{end}}
+
+{{define "uiButtonGroup"}}
+<div class="ui-button-group">
+    {{range .}}
+        {{template "uiButton" .}}
+    {{end}}
+</div>
+{{end}}

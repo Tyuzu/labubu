@@ -1,0 +1,17 @@
+{{define "pageToolList"}}
+<section class="page-tool-list">
+    <div class="tool-list__header">
+        <h3>{{.Title}}</h3>
+        {{if .Subtitle}}<p>{{.Subtitle}}</p>{{end}}
+    </div>
+    <div class="tool-list__items">
+        {{range .Items}}
+        <article class="tool-list__item">
+            <h4>{{.Label}}</h4>
+            <p>{{.Meta}}</p>
+            {{template "uiButton" (dict "Label" "Open" "Class" "secondary")}}
+        </article>
+        {{end}}
+    </div>
+</section>
+{{end}}

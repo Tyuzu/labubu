@@ -1,0 +1,6 @@
+{{define "uiSlider"}}
+<label class="ui-slider">
+    <span>{{if .Label}}{{.Label}}{{else}}Value{{end}}</span>
+    <input {{if .Id}}id="{{.Id}}"{{end}} type="range" min="{{if .Min}}{{.Min}}{{else}}0{{end}}" max="{{if .Max}}{{.Max}}{{else}}100{{end}}" value="{{if .Value}}{{.Value}}{{else}}50{{end}}" {{if .Step}}step="{{.Step}}"{{end}} {{if .Name}}name="{{.Name}}"{{end}}>
+</label>
+{{end}}

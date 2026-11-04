@@ -1,0 +1,16 @@
+{{define "uiFileUpload"}}
+<div class="ui-file-upload{{if .Class}} {{.Class}}{{end}}">
+  <label class="ui-file-upload__label" for="{{if .Id}}{{.Id}}{{else}}file-upload{{end}}">{{if .Label}}{{.Label}}{{else}}Upload file{{end}}</label>
+  <div class="file-dropzone ui-file-upload__dropzone" data-dropzone data-input="{{if .Id}}{{.Id}}{{else}}file-upload{{end}}" tabindex="0" role="button" aria-label="{{if .AriaLabel}}{{.AriaLabel}}{{else}}{{if .Label}}{{.Label}}{{else}}Upload file{{end}}{{end}}">
+    <input id="{{if .Id}}{{.Id}}{{else}}file-upload{{end}}" type="file" {{if .Accept}}accept="{{.Accept}}"{{else}}accept="*/*"{{end}} {{if .Capture}}capture="{{.Capture}}"{{end}} {{if .Multiple}}multiple{{end}} hidden />
+    <div class="dropzone-content">
+      <span class="dropzone-icon">⇪</span>
+      <div class="dropzone-copy">
+        <strong>{{if .Title}}{{.Title}}{{else}}Drag &amp; drop your file here{{end}}</strong>
+        <span>{{if .Hint}}{{.Hint}}{{else}}or browse{{end}}</span>
+      </div>
+    </div>
+    <small class="dropzone-filename">{{if .Placeholder}}{{.Placeholder}}{{else}}No file selected{{end}}</small>
+  </div>
+</div>
+{{end}}

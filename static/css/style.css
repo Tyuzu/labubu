@@ -916,6 +916,69 @@ input[type="range"] {
   accent-color: var(--accent);
 }
 
+.ui-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-app);
+  color: var(--text-main);
+  padding: 10px 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.ui-button:hover {
+  border-color: var(--accent);
+}
+
+.ui-button--secondary {
+  background-color: transparent;
+}
+
+.ui-button[hidden] {
+  display: none;
+}
+
+.ui-camera {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ui-camera__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.ui-file-upload {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ui-file-upload__label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.ui-slider {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ui-slider span {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
 button[type="submit"] {
   background-color: var(--accent);
   color: var(--accent-text);

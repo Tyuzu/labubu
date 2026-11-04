@@ -4,6 +4,10 @@ import (
 	"bytes"
 	"fmt"
 	"html/template"
+	"io/fs"
+	"path/filepath"
+	"sort"
+	"strings"
 	"testing"
 	"time"
 )
@@ -39,9 +43,51 @@ func TestReusableToolCategoryTemplateRenders(t *testing.T) {
 			return map[string]interface{}{"Eyebrow": eyebrow, "Title": title, "Description": description, "Features": features, "ToolSection": section}
 		}, "pageHeaderData": func(eyebrow, title, description string) map[string]string {
 			return map[string]string{"Eyebrow": eyebrow, "Title": title, "Description": description}
+		}, "dict": func(values ...interface{}) map[string]interface{} {
+			result := make(map[string]interface{}, len(values)/2)
+			for i := 0; i < len(values); i += 2 {
+				key, ok := values[i].(string)
+				if !ok {
+					key = fmt.Sprint(values[i])
+				}
+				result[key] = values[i+1]
+			}
+			return result
+		}, "renderPage": func(data interface{}) template.HTML {
+			if data == nil {
+				return template.HTML("")
+			}
+			if page, ok := data.(map[string]interface{}); ok {
+				if name, ok := page["TemplateName"].(string); ok && name != "" {
+					return template.HTML("<section>" + name + "</section>")
+				}
+			}
+			return template.HTML("<section>content</section>")
 		}}
 
-	tmpl := template.Must(template.New("").Funcs(funcMap).ParseGlob("../templates/*.html"))
+	root := filepath.Clean("../templates")
+	tmpl := template.New("").Funcs(funcMap)
+	var matches []string
+	if err := filepath.WalkDir(root, func(path string, entry fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if entry.IsDir() || !strings.EqualFold(filepath.Ext(path), ".html") {
+			return nil
+		}
+		matches = append(matches, path)
+		return nil
+	}); err != nil {
+		t.Fatalf("walk templates: %v", err)
+	}
+	sort.Strings(matches)
+	for _, match := range matches {
+		var parseErr error
+		tmpl, parseErr = tmpl.ParseFiles(match)
+		if parseErr != nil {
+			t.Fatalf("parse nested template %s: %v", match, parseErr)
+		}
+	}
 
 	data := funcMap["toolPage"].(func(string, string, string, []interface{}, map[string]interface{}) map[string]interface{})(
 		"Image tools",

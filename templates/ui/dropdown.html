@@ -1,0 +1,10 @@
+{{define "uiDropdown"}}
+<label class="ui-dropdown">
+    <span>{{if .Label}}{{.Label}}{{else}}Select option{{end}}</span>
+    <select class="ui-dropdown__select" {{if .Name}}name="{{.Name}}"{{end}}>
+        {{range .Options}}
+        <option value="{{.Value}}" {{if .Selected}}selected{{end}}>{{.Label}}</option>
+        {{end}}
+    </select>
+</label>
+{{end}}
