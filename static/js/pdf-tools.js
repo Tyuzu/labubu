@@ -44,9 +44,7 @@
       }
     };
 
-    document.addEventListener('pointerdown', activate, { once: true, passive: true });
-    document.addEventListener('keydown', activate, { once: true });
-    document.addEventListener('touchstart', activate, { once: true, passive: true });
+    activate();
 
     if (window.requestIdleCallback) {
       window.requestIdleCallback(trigger, { timeout: 1500 });

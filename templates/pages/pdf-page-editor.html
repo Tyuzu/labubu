@@ -1,0 +1,70 @@
+{{define "pdf-page-editor.html"}}
+<section class="tool-page">
+  <div class="tool-header">
+    <p class="eyebrow">Document Utility</p>
+    <h1>PDF Page Editor</h1>
+    <p>Reorder pages, insert page numbers, add a faint watermark, or rotate selected pages in a clean one-page workflow.</p>
+  </div>
+    {{template "adBanner" .}}
+  <div class="tool-card">
+    <form class="image-tool" data-tool="pdf-page-editor">
+      {{template "uiFileUpload" (dict "Id" "pdf-editor-file" "Label" "Choose a PDF" "Accept" "application/pdf" "Title" "Upload a PDF to edit" "Hint" "or browse from your device")}}
+
+      <div class="field">
+        <label for="pdf-editor-action">Edit action</label>
+        <select id="pdf-editor-action">
+          <option value="reorder-pages" selected>Reorder pages</option>
+          <option value="watermark">Add watermark</option>
+          <option value="page-numbers">Add page numbers</option>
+          <option value="rotate-selected-pages">Rotate selected pages</option>
+        </select>
+      </div>
+
+      <div class="field-row two-col">
+        <div class="field">
+          <label for="pdf-reorder-range">Page order</label>
+          <input id="pdf-reorder-range" type="text" value="2,1" placeholder="Example: 2,1,3" />
+        </div>
+        <div class="field">
+          <label for="pdf-rotate-range">Rotate pages</label>
+          <input id="pdf-rotate-range" type="text" value="1,3" placeholder="Example: 1-3" />
+        </div>
+      </div>
+
+      <div class="field-row two-col">
+        <div class="field">
+          <label for="pdf-watermark-text">Watermark text</label>
+          <input id="pdf-watermark-text" type="text" value="Imigi" placeholder="Imigi" />
+        </div>
+        <div class="field">
+          <label for="pdf-watermark-size">Watermark size</label>
+          <input id="pdf-watermark-size" type="number" min="10" max="80" value="28" />
+        </div>
+      </div>
+
+      <div class="field-row two-col">
+        <div class="field">
+          <label for="pdf-page-number-text">Page number text</label>
+          <input id="pdf-page-number-text" type="text" value="Page {n}" placeholder="Page {n}" />
+        </div>
+        <div class="field">
+          <label for="pdf-page-number-size">Page number size</label>
+          <input id="pdf-page-number-size" type="number" min="8" max="24" value="14" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="pdf-rotate-angle">Rotation angle</label>
+        <input id="pdf-rotate-angle" type="number" min="0" max="360" step="90" value="90" />
+      </div>
+
+      {{template "uiButton" (dict "Label" "Apply page edits" "Type" "submit")}}
+    </form>
+
+    <div class="result-block">
+      <img class="tool-preview" alt="Edited PDF preview" hidden />
+      <a class="download-link" href="#" hidden>Download edited PDF</a>
+    </div>
+  </div>
+</section>
+{{end}}

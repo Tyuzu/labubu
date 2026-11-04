@@ -1,4 +1,322 @@
+const workflowState = {
+  queue: [],
+  history: [],
+  redo: [],
+  processing: false
+};
+
+function getWorkflowStorageKey() {
+  return 'imigi-workflow-history';
+}
+
+function readWorkflowHistory() {
+  try {
+    const data = JSON.parse(localStorage.getItem(getWorkflowStorageKey()) || '[]');
+    return Array.isArray(data) ? data : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function persistWorkflowHistory() {
+  try {
+    localStorage.setItem(getWorkflowStorageKey(), JSON.stringify(workflowState.history.slice(0, 10)));
+  } catch (error) {
+    console.warn('[workflow] unable to store history', error);
+  }
+}
+
+function formatToolLabel(toolName) {
+  const labels = {
+    'compress': 'Image compression',
+    'resize': 'Image resize',
+    'jpg-to-png': 'JPG to PNG',
+    'png-to-jpg': 'PNG to JPG',
+    'webp-converter': 'Image conversion',
+    'png-to-webp': 'PNG to WebP',
+    'jpg-to-webp': 'JPG to WebP',
+    'crop': 'Image crop',
+    'rotate': 'Image rotate',
+    'passport': 'Passport photo',
+    'document-scanner': 'Document scan',
+    'document-enhancer': 'Document enhancement',
+    'ocr-text': 'OCR text extraction',
+    'qr-code-scanner': 'QR scan',
+    'merge-pdf': 'PDF merge',
+    'split-pdf': 'PDF split',
+    'compress-pdf': 'PDF compress',
+    'jpg-to-pdf': 'JPG to PDF',
+    'pdf-to-images': 'PDF to images',
+    'rotate-pdf': 'PDF rotate',
+    'delete-pdf-pages': 'Delete PDF pages',
+    'extract-pdf-pages': 'Extract PDF pages',
+    'video-cropper': 'Video crop',
+    'video-trimmer': 'Video trim',
+    'video-filters': 'Video filter'
+  };
+
+  return labels[toolName] || 'Tool action';
+}
+
+function initializeWorkflowUI() {
+  if (document.getElementById('imigi-workflow-panel')) {
+    renderWorkflowPanel();
+    return;
+  }
+
+  const panel = document.createElement('aside');
+  panel.id = 'imigi-workflow-panel';
+  panel.className = 'workflow-panel';
+  panel.innerHTML = [
+    '<div class="workflow-panel__header">',
+    '  <div>',
+    '    <span class="workflow-eyebrow">Workflow</span>',
+    '    <h3>Queue, history, and exports</h3>',
+    '  </div>',
+    '  <div class="workflow-actions">',
+    '    <button type="button" class="ui-button ui-button--secondary" data-workflow-action="undo">Undo</button>',
+    '    <button type="button" class="ui-button ui-button--secondary" data-workflow-action="redo">Redo</button>',
+    '  </div>',
+    '</div>',
+    '<div class="workflow-stack">',
+    '  <div class="workflow-group">',
+    '    <h4>Queue</h4>',
+    '    <ul id="imigi-workflow-queue" class="workflow-list workflow-list--queue"></ul>',
+    '  </div>',
+    '  <div class="workflow-group">',
+    '    <h4>Recent history</h4>',
+    '    <ul id="imigi-workflow-history" class="workflow-list workflow-list--history"></ul>',
+    '  </div>',
+    '</div>'
+  ].join('');
+
+  const target = document.querySelector('main.container');
+  if (target) {
+    target.insertBefore(panel, target.firstChild);
+  }
+
+  panel.addEventListener('click', (event) => {
+    const button = event.target.closest('[data-workflow-action]');
+    if (!button) return;
+    const action = button.dataset.workflowAction;
+    if (action === 'undo') {
+      const form = document.querySelector('.image-tool.active-history') || document.querySelector('.image-tool');
+      if (form) {
+        undoWorkflowLatest(form);
+      }
+      return;
+    }
+    if (action === 'redo') {
+      const form = document.querySelector('.image-tool.active-history') || document.querySelector('.image-tool');
+      if (form) {
+        redoWorkflowLatest(form);
+      }
+    }
+  });
+
+  renderWorkflowPanel();
+}
+
+function renderWorkflowPanel() {
+  const panel = document.getElementById('imigi-workflow-panel');
+  if (!panel) return;
+
+  const queueList = document.getElementById('imigi-workflow-queue');
+  const historyList = document.getElementById('imigi-workflow-history');
+  if (!queueList || !historyList) return;
+
+  queueList.innerHTML = workflowState.queue.length
+    ? workflowState.queue.map((job) => '<li><span>' + (job.label || 'Queued job') + '</span><small>' + (job.status || 'Queued') + '</small></li>').join('')
+    : '<li class="workflow-empty"><span>No jobs queued</span><small>Waiting for your next upload</small></li>';
+
+  historyList.innerHTML = workflowState.history.length
+    ? workflowState.history.slice(0, 5).map((item) => '<li><button type="button" data-restore-history="' + item.id + '"><span>' + (item.label || item.fileName || 'Recent result') + '</span><small>' + (item.fileName || 'Output') + '</small></button></li>').join('')
+    : '<li class="workflow-empty"><span>No recent history</span><small>Your last edits will appear here</small></li>';
+
+  historyList.querySelectorAll('[data-restore-history]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const item = workflowState.history.find((entry) => String(entry.id) === button.dataset.restoreHistory);
+      if (!item) return;
+      const form = document.querySelector('.image-tool');
+      if (!form) return;
+      form.classList.add('active-history');
+      restoreWorkflowHistory(form, item);
+    });
+  });
+}
+
+function queueWorkflowJob(label, task) {
+  return new Promise((resolve, reject) => {
+    workflowState.queue.push({
+      id: Date.now() + Math.random(),
+      label,
+      status: 'Queued',
+      task,
+      resolve,
+      reject
+    });
+    renderWorkflowPanel();
+    processWorkflowQueue();
+  });
+}
+
+async function processWorkflowQueue() {
+  if (workflowState.processing || !workflowState.queue.length) {
+    renderWorkflowPanel();
+    return;
+  }
+
+  workflowState.processing = true;
+  const current = workflowState.queue.shift();
+  if (current) {
+    current.status = 'Running';
+    renderWorkflowPanel();
+    try {
+      const result = await current.task();
+      current.resolve(result);
+    } catch (error) {
+      current.reject(error);
+    } finally {
+      renderWorkflowPanel();
+    }
+  }
+
+  workflowState.processing = false;
+  if (workflowState.queue.length) {
+    processWorkflowQueue();
+  }
+}
+
+function restoreWorkflowHistory(form, item) {
+  const preview = form.parentElement.querySelector('.tool-preview');
+  const downloadLink = form.parentElement.querySelector('.download-link');
+  const output = form.parentElement.querySelector('.tool-output');
+  const copyButton = form.parentElement.querySelector('[data-copy-output]');
+
+  if (downloadLink) {
+    downloadLink.href = item.url;
+    downloadLink.download = item.fileName;
+    downloadLink.hidden = false;
+    downloadLink.textContent = item.fileName && item.fileName.toLowerCase().endsWith('.zip') ? 'Download ZIP archive' : 'Download processed file';
+  }
+
+  if (preview) {
+    preview.src = item.url;
+    preview.hidden = false;
+  }
+
+  if (output) {
+    output.hidden = true;
+  }
+
+  if (copyButton) {
+    copyButton.hidden = true;
+  }
+
+  setFormStatus(form, 'Restored a recent result from history.', false);
+}
+
+function undoWorkflowLatest(form) {
+  if (workflowState.history.length < 2) {
+    setFormStatus(form, 'There is no earlier result to undo.', false);
+    return;
+  }
+
+  const current = workflowState.history.shift();
+  workflowState.redo.unshift(current);
+  const previous = workflowState.history[0];
+  persistWorkflowHistory();
+  renderWorkflowPanel();
+
+  if (previous) {
+    restoreWorkflowHistory(form, previous);
+    return;
+  }
+
+  setFormStatus(form, 'Undo complete. Nothing earlier is available.', false);
+}
+
+function redoWorkflowLatest(form) {
+  if (!workflowState.redo.length) {
+    setFormStatus(form, 'There is no redo item ready.', false);
+    return;
+  }
+
+  const item = workflowState.redo.shift();
+  workflowState.history.unshift(item);
+  persistWorkflowHistory();
+  renderWorkflowPanel();
+  restoreWorkflowHistory(form, item);
+}
+
+function recordWorkflowHistory(entry) {
+  if (!entry || !entry.fileName || !entry.url) {
+    return;
+  }
+
+  const nextEntry = {
+    id: Date.now() + Math.random(),
+    label: entry.label || entry.fileName,
+    fileName: entry.fileName,
+    url: entry.url,
+    createdAt: Date.now()
+  };
+
+  workflowState.history = [nextEntry].concat(workflowState.history.filter((item) => !(item.url === nextEntry.url && item.fileName === nextEntry.fileName))).slice(0, 8);
+  workflowState.redo = [];
+  persistWorkflowHistory();
+  renderWorkflowPanel();
+}
+
+function canProcessBatch(toolName) {
+  return ['compress', 'resize', 'jpg-to-png', 'png-to-jpg', 'webp-converter', 'png-to-webp', 'jpg-to-webp', 'crop', 'rotate'].includes(toolName);
+}
+
+async function createBatchZip(fileLabel, results) {
+  if (!window.JSZip || !results || results.length === 0) {
+    return null;
+  }
+
+  const zip = new JSZip();
+  for (let index = 0; index < results.length; index += 1) {
+    const result = results[index];
+    const name = (result && result.fileName) || 'result-' + (index + 1) + '.bin';
+    if (!result || !result.url) {
+      continue;
+    }
+    const blob = await fetch(result.url).then((response) => response.blob());
+    zip.file(name, blob);
+  }
+
+  const zipBlob = await zip.generateAsync({ type: 'blob' });
+  return {
+    type: 'blob',
+    url: URL.createObjectURL(zipBlob),
+    fileName: (fileLabel || 'batch-export') + '.zip',
+    isZip: true
+  };
+}
+
+async function processBatchTool(form, files) {
+  const toolName = form.dataset.tool;
+  if (!canProcessBatch(toolName) || files.length < 2) {
+    return runTool(toolName, form, files);
+  }
+
+  const results = [];
+  for (const file of files) {
+    const result = await queueWorkflowJob(formatToolLabel(toolName) + ' · ' + file.name, () => runTool(toolName, form, [file]));
+    results.push(result);
+  }
+
+  const zipResult = await createBatchZip((form.dataset.tool || 'batch-export').replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '').toLowerCase() || 'batch-export', results);
+  return zipResult || results[0];
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+  workflowState.history = readWorkflowHistory();
+  initializeWorkflowUI();
+
   if (window.pdfjsLib && window.pdfjsLib.GlobalWorkerOptions) {
     window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
   }
@@ -94,15 +412,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (submitButton) {
         submitButton.disabled = true;
-        submitButton.textContent = 'Compressing...';
+        submitButton.textContent = 'Queued...';
       }
 
-      setFormStatus(form, 'Processing your file...', false);
+      setFormStatus(form, files.length > 1 ? 'Queuing your batch for processing...' : 'Processing your file...', false);
 
       try {
-        const result = await runTool(form.dataset.tool, form, files);
+        const result = await queueWorkflowJob(formatToolLabel(form.dataset.tool), () => {
+          if (files.length > 1 && canProcessBatch(form.dataset.tool)) {
+            return processBatchTool(form, files);
+          }
+          return runTool(form.dataset.tool, form, files);
+        });
+
         displayResult(form, result);
-        setFormStatus(form, 'Your file is ready to download.', false);
+        recordWorkflowHistory({
+          label: formatToolLabel(form.dataset.tool),
+          fileName: result && result.fileName ? result.fileName : 'result-file',
+          url: result && result.url ? result.url : ''
+        });
+        setFormStatus(form, files.length > 1 ? 'Your batch is ready to download.' : 'Your file is ready to download.', false);
       } catch (error) {
         setFormStatus(form, error.message || 'Unable to process the file.', true);
       } finally {
@@ -406,6 +735,19 @@ async function runTool(toolName, form, files) {
         padding: Number(form.querySelector('#scanner-padding')?.value || 18),
         contrast: Number(form.querySelector('#scanner-contrast')?.value || 1.6)
       });
+    case 'document-enhancer':
+      return enhanceDocument(file, {
+        threshold: Number(form.querySelector('#doc-enhance-threshold')?.value || 180),
+        contrast: Number(form.querySelector('#doc-enhance-contrast')?.value || 1.6),
+        sharpen: Number(form.querySelector('#doc-enhance-sharpen')?.value || 1.2),
+        cleanup: Boolean(form.querySelector('#doc-enhance-cleanup')?.checked ?? true),
+        autocrop: Boolean(form.querySelector('#doc-enhance-autocrop')?.checked ?? true)
+      });
+    case 'ocr-text':
+      return ocrText(file, {
+        language: form.querySelector('#ocr-language')?.value || 'eng',
+        mode: form.querySelector('#ocr-mode')?.value || 'document'
+      });
     case 'qr-code-scanner':
       return scanQrCode(file, form);
     case 'merge-pdf':
@@ -424,6 +766,30 @@ async function runTool(toolName, form, files) {
       return processPdfTool(file, form, 'delete-pages', { range: form.querySelector('#delete-page-range')?.value || '2' });
     case 'extract-pdf-pages':
       return processPdfTool(file, form, 'extract-pages', { range: form.querySelector('#extract-page-range')?.value || '1-2' });
+    case 'pdf-page-editor': {
+      const action = form.querySelector('#pdf-editor-action')?.value || 'reorder-pages';
+      if (action === 'watermark') {
+        return processPdfTool(file, form, 'watermark', {
+          text: form.querySelector('#pdf-watermark-text')?.value || 'Imigi',
+          size: Number(form.querySelector('#pdf-watermark-size')?.value || 28)
+        });
+      }
+      if (action === 'page-numbers') {
+        return processPdfTool(file, form, 'page-numbers', {
+          text: form.querySelector('#pdf-page-number-text')?.value || 'Page {n}',
+          size: Number(form.querySelector('#pdf-page-number-size')?.value || 14)
+        });
+      }
+      if (action === 'rotate-selected-pages') {
+        return processPdfTool(file, form, 'rotate-selected-pages', {
+          range: form.querySelector('#pdf-rotate-range')?.value || '1,3',
+          angle: Number(form.querySelector('#pdf-rotate-angle')?.value || 90)
+        });
+      }
+      return processPdfTool(file, form, 'reorder-pages', {
+        range: form.querySelector('#pdf-reorder-range')?.value || '2,1'
+      });
+    }
     case 'video-cropper':
       return processVideoTool(file, form, 'crop', {
         x: getNumber(form, 'video-crop-x', 0),
@@ -546,6 +912,18 @@ async function processPdfTool(input, form, action, params = {}) {
     if (input && action === 'extract-pages') {
       return extractPdfPages(input, params.range || '1-2');
     }
+    if (input && action === 'reorder-pages') {
+      return reorderPdfPages(input, params.range || '2,1');
+    }
+    if (input && action === 'watermark') {
+      return watermarkPdf(input, params);
+    }
+    if (input && action === 'page-numbers') {
+      return addPageNumbers(input, params);
+    }
+    if (input && action === 'rotate-selected-pages') {
+      return rotateSelectedPdfPages(input, params.range || '1', Number(params.angle || 90));
+    }
 
     throw new Error('Unsupported PDF action in browser runtime.');
   } catch (error) {
@@ -604,6 +982,26 @@ function displayResult(form, result) {
 
   if (submitButton) {
     submitButton.textContent = 'Compress another image';
+  }
+
+  if (result && result.isZip) {
+    if (preview) {
+      preview.hidden = true;
+      preview.removeAttribute('src');
+    }
+    if (downloadLink) {
+      downloadLink.href = result.url;
+      downloadLink.download = result.fileName;
+      downloadLink.hidden = false;
+      downloadLink.textContent = 'Download ZIP archive';
+    }
+    if (output) {
+      output.hidden = true;
+    }
+    if (copyButton) {
+      copyButton.hidden = true;
+    }
+    return;
   }
 
   if (result && (result.type === 'base64' || result.type === 'text')) {
@@ -917,6 +1315,183 @@ async function scanDocument(file, options = {}) {
   };
 }
 
+async function enhanceDocument(file, options = {}) {
+  if (!file) {
+    throw new Error('Please upload a document image before enhancing it.');
+  }
+
+  const image = await readImage(file);
+  const canvas = document.createElement('canvas');
+  const context = canvas.getContext('2d');
+  canvas.width = image.width;
+  canvas.height = image.height;
+  context.drawImage(image, 0, 0);
+
+  let sourceData = context.getImageData(0, 0, canvas.width, canvas.height);
+  const threshold = Number(options.threshold) || 180;
+  const contrast = Number(options.contrast) || 1.6;
+  const sharpenAmount = Number(options.sharpen) || 1.2;
+  const cleanup = options.cleanup !== false;
+
+  if (options.autocrop !== false) {
+    const bounds = detectDocumentBounds(sourceData.data, canvas.width, canvas.height, threshold);
+    if (bounds) {
+      const { x, y, width, height } = bounds;
+      const cropped = document.createElement('canvas');
+      cropped.width = width;
+      cropped.height = height;
+      cropped.getContext('2d').drawImage(canvas, x, y, width, height, 0, 0, width, height);
+      canvas.width = width;
+      canvas.height = height;
+      context.clearRect(0, 0, width, height);
+      context.drawImage(cropped, 0, 0);
+      sourceData = context.getImageData(0, 0, canvas.width, canvas.height);
+    }
+  }
+
+  const pixelData = sourceData.data;
+  for (let index = 0; index < pixelData.length; index += 4) {
+    const r = pixelData[index];
+    const g = pixelData[index + 1];
+    const b = pixelData[index + 2];
+    const brightness = (r + g + b) / 3;
+    const adjusted = Math.min(255, Math.max(0, (brightness - 128) * contrast + 128));
+    const gray = cleanup ? Math.min(255, Math.max(0, adjusted)) : brightness;
+    const finalValue = gray > threshold ? 255 : Math.max(0, gray - 10);
+    pixelData[index] = finalValue;
+    pixelData[index + 1] = finalValue;
+    pixelData[index + 2] = finalValue;
+  }
+
+  context.putImageData(sourceData, 0, 0);
+
+  if (sharpenAmount > 1) {
+    const sharpened = applySharpen(context, canvas.width, canvas.height, sharpenAmount);
+    context.putImageData(sharpened, 0, 0);
+  }
+
+  const blob = await canvasToBlob(canvas, 'image/png', 0.95);
+  return {
+    url: URL.createObjectURL(blob),
+    fileName: `enhanced-${getBaseName(file.name)}.png`
+  };
+}
+
+function detectDocumentBounds(data, width, height, threshold) {
+  let minX = width;
+  let minY = height;
+  let maxX = -1;
+  let maxY = -1;
+
+  for (let y = 0; y < height; y += 2) {
+    for (let x = 0; x < width; x += 2) {
+      const index = (y * width + x) * 4;
+      const brightness = (data[index] + data[index + 1] + data[index + 2]) / 3;
+      if (brightness < threshold) {
+        minX = Math.min(minX, x);
+        maxX = Math.max(maxX, x);
+        minY = Math.min(minY, y);
+        maxY = Math.max(maxY, y);
+      }
+    }
+  }
+
+  if (maxX < 0 || maxY < 0) {
+    return null;
+  }
+
+  return {
+    x: Math.max(0, minX - 12),
+    y: Math.max(0, minY - 12),
+    width: Math.min(width - Math.max(0, minX - 12), maxX - minX + 24),
+    height: Math.min(height - Math.max(0, minY - 12), maxY - minY + 24)
+  };
+}
+
+function applySharpen(context, width, height, amount) {
+  const source = context.getImageData(0, 0, width, height);
+  const output = new ImageData(new Uint8ClampedArray(source.data), width, height);
+  const data = source.data;
+  const result = output.data;
+
+  for (let y = 1; y < height - 1; y += 1) {
+    for (let x = 1; x < width - 1; x += 1) {
+      const index = (y * width + x) * 4;
+      const neighbors = [
+        data[((y - 1) * width + x) * 4], data[((y - 1) * width + x + 1) * 4], data[((y - 1) * width + x - 1) * 4],
+        data[(y * width + x - 1) * 4], data[(y * width + x + 1) * 4],
+        data[((y + 1) * width + x - 1) * 4], data[((y + 1) * width + x) * 4], data[((y + 1) * width + x + 1) * 4]
+      ];
+      const center = data[index];
+      const sharpened = center * (1 + (amount - 1) * 3) - neighbors.reduce((sum, value) => sum + value, 0) * (amount - 1) / 7;
+      const finalValue = Math.min(255, Math.max(0, sharpened));
+      result[index] = finalValue;
+      result[index + 1] = finalValue;
+      result[index + 2] = finalValue;
+      result[index + 3] = data[index + 3];
+    }
+  }
+
+  return output;
+}
+
+async function ocrText(file, options = {}) {
+  if (!file) {
+    throw new Error('Please upload an image or PDF before running OCR.');
+  }
+
+  if (!window.Tesseract) {
+    await new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';
+      script.onload = () => resolve();
+      script.onerror = () => reject(new Error('OCR support could not be loaded.'));
+      document.head.appendChild(script);
+    });
+  }
+
+  if (file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')) {
+    if (!window.pdfjsLib) {
+      throw new Error('PDF rendering support is unavailable for OCR.');
+    }
+
+    const pdfData = await file.arrayBuffer();
+    const doc = await window.pdfjsLib.getDocument({ data: pdfData }).promise;
+    const pageTexts = [];
+
+    for (let i = 1; i <= doc.numPages; i += 1) {
+      const page = await doc.getPage(i);
+      const viewport = page.getViewport({ scale: 1.5 });
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d');
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+      await page.render({ canvasContext: context, viewport }).promise;
+      const result = await window.Tesseract.recognize(canvas, options.language || 'eng');
+      if (result && result.data && result.data.text && result.data.text.trim()) {
+        pageTexts.push(`Page ${i}\n${result.data.text.trim()}`);
+      }
+    }
+
+    const combined = pageTexts.join('\n\n') || 'No text was detected in this PDF.';
+    return {
+      type: 'text',
+      value: combined,
+      fileName: 'ocr-extracted-text.txt'
+    };
+  }
+
+  const result = await window.Tesseract.recognize(file, options.language || 'eng', {
+    logger: options.mode === 'debug' ? (message) => console.debug('[ocr]', message) : undefined
+  });
+
+  return {
+    type: 'text',
+    value: (result && result.data && result.data.text && result.data.text.trim()) || 'No text detected in the uploaded image.',
+    fileName: `ocr-${getBaseName(file.name)}.txt`
+  };
+}
+
 async function mergePdf(files) {
   if (!window.PDFLib || files.length < 2) {
     throw new Error('Please choose at least two PDF files to merge.');
@@ -1059,6 +1634,92 @@ async function extractPdfPages(file, rangeText) {
   return createDownloadResult(bytes, `${getBaseName(file.name)}-extracted.pdf`);
 }
 
+async function reorderPdfPages(file, rangeText) {
+  if (!window.PDFLib || !file) {
+    throw new Error('Please upload a PDF before reordering pages.');
+  }
+
+  const source = await window.PDFLib.PDFDocument.load(await file.arrayBuffer());
+  const order = parseExplicitOrder(rangeText, source.getPageCount());
+  const result = await window.PDFLib.PDFDocument.create();
+  const pages = await result.copyPages(source, order);
+  pages.forEach((page) => result.addPage(page));
+
+  const bytes = await result.save();
+  return createDownloadResult(bytes, `${getBaseName(file.name)}-reordered.pdf`);
+}
+
+async function watermarkPdf(file, options = {}) {
+  if (!window.PDFLib || !file) {
+    throw new Error('Please upload a PDF before adding a watermark.');
+  }
+
+  const source = await window.PDFLib.PDFDocument.load(await file.arrayBuffer());
+  const text = options.text || 'Imigi';
+  const size = Number(options.size) || 28;
+  const pages = source.getPages();
+
+  pages.forEach((page) => {
+    const width = page.getWidth();
+    const height = page.getHeight();
+    page.drawText(text, {
+      x: width / 2 - 80,
+      y: height / 2 - 20,
+      size,
+      rotate: window.PDFLib.degrees(-45),
+      opacity: 0.2,
+      color: window.PDFLib.rgb(0.35, 0.4, 0.8)
+    });
+  });
+
+  const bytes = await source.save();
+  return createDownloadResult(bytes, `${getBaseName(file.name)}-watermarked.pdf`);
+}
+
+async function addPageNumbers(file, options = {}) {
+  if (!window.PDFLib || !file) {
+    throw new Error('Please upload a PDF before adding page numbers.');
+  }
+
+  const source = await window.PDFLib.PDFDocument.load(await file.arrayBuffer());
+  const pages = source.getPages();
+  const template = options.text || 'Page {n}';
+  const size = Number(options.size) || 12;
+
+  pages.forEach((page, index) => {
+    const width = page.getWidth();
+    const height = page.getHeight();
+    page.drawText(template.replace('{n}', String(index + 1)), {
+      x: width / 2 - 35,
+      y: 20,
+      size,
+      color: window.PDFLib.rgb(0.2, 0.2, 0.2)
+    });
+  });
+
+  const bytes = await source.save();
+  return createDownloadResult(bytes, `${getBaseName(file.name)}-numbered.pdf`);
+}
+
+async function rotateSelectedPdfPages(file, rangeText, angle) {
+  if (!window.PDFLib || !file) {
+    throw new Error('Please upload a PDF before rotating selected pages.');
+  }
+
+  const source = await window.PDFLib.PDFDocument.load(await file.arrayBuffer());
+  const set = new Set(parseRange(rangeText, source.getPageCount()));
+  const pages = source.getPages();
+
+  pages.forEach((page, index) => {
+    if (set.has(index)) {
+      page.setRotation(window.PDFLib.degrees(Number(angle) || 90));
+    }
+  });
+
+  const bytes = await source.save();
+  return createDownloadResult(bytes, `${getBaseName(file.name)}-rotated-pages.pdf`);
+}
+
 function parseRange(rangeText, totalPages) {
   if (!rangeText || !rangeText.trim()) {
     return [0];
@@ -1083,6 +1744,45 @@ function parseRange(rangeText, totalPages) {
   });
 
   return Array.from(values).filter((value) => value >= 0 && value < totalPages);
+}
+
+function parseExplicitOrder(rangeText, totalPages) {
+  if (!rangeText || !rangeText.trim()) {
+    return [0];
+  }
+
+  const values = [];
+  const seen = new Set();
+
+  rangeText.split(',').forEach((part) => {
+    const trimmed = part.trim();
+    if (!trimmed) return;
+
+    if (trimmed.includes('-')) {
+      const [startText, endText] = trimmed.split('-');
+      const start = Math.max(1, Number(startText));
+      const end = Math.max(start, Number(endText));
+      for (let i = start; i <= end; i += 1) {
+        if (!seen.has(i)) {
+          seen.add(i);
+          values.push(i - 1);
+        }
+      }
+      return;
+    }
+
+    const value = Math.max(1, Number(trimmed));
+    if (!seen.has(value)) {
+      seen.add(value);
+      values.push(value - 1);
+    }
+  });
+
+  if (!values.length) {
+    return [0];
+  }
+
+  return values.filter((value) => value >= 0 && value < totalPages);
 }
 
 function createDownloadResult(blob, fileName) {

@@ -275,6 +275,30 @@
       "canonical": "https://allok.com/qr-code-scanner"
     }
   },
+  "DOCUMENT_ENHANCER_URL": {
+    "path": "/document-enhancer",
+    "template": "document-enhancer.html",
+    "metadata": {
+      "title": "Document Enhancer - Imigi",
+      "description": "Clean up scans, boost contrast, and sharpen document photos for clearer digital copies.",
+      "keywords": "document enhancer, scan enhancer, sharpen document, improve scan",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/document-enhancer"
+    }
+  },
+  "OCR_TEXT_URL": {
+    "path": "/ocr-text",
+    "template": "ocr-text.html",
+    "metadata": {
+      "title": "OCR Text Extractor - Imigi",
+      "description": "Extract text from uploaded images or PDFs with a browser-first OCR workflow.",
+      "keywords": "ocr, text extractor, scan to text, pdf ocr",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/ocr-text"
+    }
+  },
   "IMAGE_TO_BASE64_URL": {
     "path": "/image-to-base64",
     "template": "image-to-base64.html",
@@ -405,6 +429,18 @@
       "og_image": "https://allok.com/static/icons/imigi-icon.svg",
       "robots": "index, follow",
       "canonical": "https://allok.com/extract-pdf-pages"
+    }
+  },
+  "PDF_PAGE_EDITOR_URL": {
+    "path": "/pdf-page-editor",
+    "template": "pdf-page-editor.html",
+    "metadata": {
+      "title": "PDF Page Editor - Imigi",
+      "description": "Reorder pages, add watermarks, insert page numbers, and rotate selected pages in a single browser workflow.",
+      "keywords": "pdf page editor, reorder pdf pages, watermark pdf, add page numbers",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/pdf-page-editor"
     }
   }
 }

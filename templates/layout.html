@@ -34,19 +34,7 @@
 <body class="app-layout">
     {{template "navbar" .}}
 
-    <header class="top-header">
-        <div class="search-box">
-            <span class="search-icon">⌕</span>
-            <span>Search tools</span>
-        </div>
-        <div class="header-actions">
-            <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle color mode">🌙</button>
-            <div class="header-user">
-                <span class="user-badge">I</span>
-                <span>Imigi</span>
-            </div>
-        </div>
-    </header>
+    {{template "header" .}}
 
     <main class="container">
         {{if .BackendWarning}}
@@ -54,7 +42,6 @@
             Some processing tools are temporarily running in the browser only. Server-side video/PDF backends are unavailable right now, so browser-based tools remain available.
         </div>
         {{end}}
-        {{template "adBanner" .}}
         {{template "adBanner" .}}
         {{renderPage .}}
 
@@ -71,43 +58,49 @@
         (function() {
             const pagePath = window.location.pathname || '/';
             const pageScriptMap = {
-                '/image-tools': '/static/js/image-tools.js',
-                '/image-compressor': '/static/js/image-tools.js',
-                '/image-resizer': '/static/js/image-tools.js',
-                '/jpg-to-png': '/static/js/image-tools.js',
-                '/png-to-jpg': '/static/js/image-tools.js',
-                '/webp-converter': '/static/js/image-tools.js',
-                '/png-to-webp': '/static/js/image-tools.js',
-                '/jpg-to-webp': '/static/js/image-tools.js',
-                '/image-cropper': '/static/js/image-tools.js',
-                '/image-rotator': '/static/js/image-tools.js',
-                '/base64-to-image': '/static/js/image-tools.js',
-                '/image-to-base64': '/static/js/image-tools.js',
-                '/document-scanner': '/static/js/scanner-tools.js',
-                '/qr-code-scanner': '/static/js/scanner-tools.js',
-                '/merge-pdf': '/static/js/pdf-tools.js',
-                '/split-pdf': '/static/js/pdf-tools.js',
-                '/compress-pdf': '/static/js/pdf-tools.js',
-                '/jpg-to-pdf': '/static/js/pdf-tools.js',
-                '/pdf-to-images': '/static/js/pdf-tools.js',
-                '/rotate-pdf': '/static/js/pdf-tools.js',
-                '/delete-pdf-pages': '/static/js/pdf-tools.js',
-                '/extract-pdf-pages': '/static/js/pdf-tools.js',
-                '/video-cropper': '/static/js/video-tools.js',
-                '/video-trimmer': '/static/js/video-tools.js',
-                '/video-filters': '/static/js/video-tools.js'
+                '/image-tools': ['/static/js/image-tools.js'],
+                '/image-compressor': ['/static/js/image-tools.js'],
+                '/image-resizer': ['/static/js/image-tools.js'],
+                '/jpg-to-png': ['/static/js/image-tools.js'],
+                '/png-to-jpg': ['/static/js/image-tools.js'],
+                '/webp-converter': ['/static/js/image-tools.js'],
+                '/png-to-webp': ['/static/js/image-tools.js'],
+                '/jpg-to-webp': ['/static/js/image-tools.js'],
+                '/image-cropper': ['/static/js/image-tools.js'],
+                '/image-rotator': ['/static/js/image-tools.js'],
+                '/base64-to-image': ['/static/js/image-tools.js'],
+                '/image-to-base64': ['/static/js/image-tools.js'],
+                '/document-scanner': ['/static/js/scanner-tools.js'],
+                '/document-enhancer': ['/static/js/image-tools.js'],
+                '/ocr-text': ['/static/js/image-tools.js'],
+                '/qr-code-scanner': ['/static/js/scanner-tools.js'],
+                '/merge-pdf': ['/static/js/image-tools.js', '/static/js/pdf-tools.js'],
+                '/split-pdf': ['/static/js/image-tools.js', '/static/js/pdf-tools.js'],
+                '/compress-pdf': ['/static/js/image-tools.js', '/static/js/pdf-tools.js'],
+                '/jpg-to-pdf': ['/static/js/image-tools.js', '/static/js/pdf-tools.js'],
+                '/pdf-to-images': ['/static/js/image-tools.js', '/static/js/pdf-tools.js'],
+                '/rotate-pdf': ['/static/js/image-tools.js', '/static/js/pdf-tools.js'],
+                '/delete-pdf-pages': ['/static/js/image-tools.js', '/static/js/pdf-tools.js'],
+                '/extract-pdf-pages': ['/static/js/image-tools.js', '/static/js/pdf-tools.js'],
+                '/pdf-page-editor': ['/static/js/image-tools.js', '/static/js/pdf-tools.js'],
+                '/video-cropper': ['/static/js/image-tools.js', '/static/js/video-tools.js'],
+                '/video-trimmer': ['/static/js/image-tools.js', '/static/js/video-tools.js'],
+                '/video-filters': ['/static/js/image-tools.js', '/static/js/video-tools.js']
             };
-            const scriptSrc = pageScriptMap[pagePath];
-            if (scriptSrc) {
-                const existing = document.querySelector('script[data-page-loader="true"]');
+            const scriptSources = pageScriptMap[pagePath]
+                ? (Array.isArray(pageScriptMap[pagePath]) ? pageScriptMap[pagePath] : [pageScriptMap[pagePath]])
+                : [];
+
+            scriptSources.forEach(function(scriptSrc) {
+                const existing = document.querySelector('script[data-page-loader="' + scriptSrc + '"]');
                 if (!existing) {
                     const script = document.createElement('script');
                     script.src = scriptSrc;
                     script.defer = true;
-                    script.dataset.pageLoader = 'true';
+                    script.dataset.pageLoader = scriptSrc;
                     document.body.appendChild(script);
                 }
-            }
+            });
 
             const recentTools = JSON.parse(localStorage.getItem('imigi-recent-tools') || '[]');
             const recentPanel = document.getElementById('recent-tools-panel');
@@ -149,6 +142,124 @@
                     themeToggle.textContent = isLight ? '☀️' : '🌙';
                 });
             }
+
+            const toolCatalog = [
+                { label: 'Image Compressor', href: '/image-compressor', category: 'image', formats: ['jpg', 'png', 'webp'], tags: ['compress', 'optimize', 'resize'] },
+                { label: 'Image Resizer', href: '/image-resizer', category: 'image', formats: ['jpg', 'png', 'webp'], tags: ['resize', 'crop', 'dimensions'] },
+                { label: 'JPG to PNG', href: '/jpg-to-png', category: 'image', formats: ['jpg', 'png'], tags: ['convert', 'format'] },
+                { label: 'PNG to JPG', href: '/png-to-jpg', category: 'image', formats: ['png', 'jpg'], tags: ['convert', 'format'] },
+                { label: 'PNG to WebP', href: '/png-to-webp', category: 'image', formats: ['png', 'webp'], tags: ['convert', 'web', 'optimize'] },
+                { label: 'JPG to WebP', href: '/jpg-to-webp', category: 'image', formats: ['jpg', 'webp'], tags: ['convert', 'web', 'optimize'] },
+                { label: 'Image Cropper', href: '/image-cropper', category: 'image', formats: ['jpg', 'png', 'webp'], tags: ['crop', 'frame', 'trim'] },
+                { label: 'Image Rotator', href: '/image-rotator', category: 'image', formats: ['jpg', 'png', 'webp'], tags: ['rotate', 'orientation', 'angle'] },
+                { label: 'Passport Photo Maker', href: '/passport-photo-maker', category: 'image', formats: ['jpg', 'png'], tags: ['passport', 'photo', 'headshot'] },
+                { label: 'PDF Merge', href: '/merge-pdf', category: 'pdf', formats: ['pdf'], tags: ['merge', 'combine', 'document'] },
+                { label: 'PDF Split', href: '/split-pdf', category: 'pdf', formats: ['pdf'], tags: ['split', 'extract', 'pages'] },
+                { label: 'PDF Compress', href: '/compress-pdf', category: 'pdf', formats: ['pdf'], tags: ['compress', 'optimize', 'reduce'] },
+                { label: 'JPG to PDF', href: '/jpg-to-pdf', category: 'pdf', formats: ['jpg', 'pdf'], tags: ['convert', 'document', 'pages'] },
+                { label: 'PDF to Images', href: '/pdf-to-images', category: 'pdf', formats: ['pdf', 'jpg', 'png'], tags: ['export', 'images', 'pages'] },
+                { label: 'Rotate PDF', href: '/rotate-pdf', category: 'pdf', formats: ['pdf'], tags: ['rotate', 'orientation'] },
+                { label: 'Delete PDF Pages', href: '/delete-pdf-pages', category: 'pdf', formats: ['pdf'], tags: ['delete', 'remove', 'pages'] },
+                { label: 'Extract PDF Pages', href: '/extract-pdf-pages', category: 'pdf', formats: ['pdf'], tags: ['copy', 'extract', 'pages'] },
+                { label: 'PDF Page Editor', href: '/pdf-page-editor', category: 'pdf', formats: ['pdf'], tags: ['watermark', 'numbers', 'reorder', 'rotate'] },
+                { label: 'Video Cropper', href: '/video-cropper', category: 'video', formats: ['mp4', 'mov', 'webm'], tags: ['video', 'crop', 'frame'] },
+                { label: 'Video Trimmer', href: '/video-trimmer', category: 'video', formats: ['mp4', 'mov', 'webm'], tags: ['trim', 'cut', 'timeline'] },
+                { label: 'Video Filters', href: '/video-filters', category: 'video', formats: ['mp4', 'mov', 'webm'], tags: ['filter', 'effect', 'enhance'] },
+                { label: 'Document Scanner', href: '/document-scanner', category: 'scanner', formats: ['jpg', 'png'], tags: ['scan', 'document', 'ocr'] },
+                { label: 'Document Enhancer', href: '/document-enhancer', category: 'scanner', formats: ['jpg', 'png'], tags: ['scan', 'clean', 'enhance', 'deskew'] },
+                { label: 'OCR Text', href: '/ocr-text', category: 'scanner', formats: ['jpg', 'png', 'pdf'], tags: ['ocr', 'text', 'scan', 'export'] },
+                { label: 'QR Code Scanner', href: '/qr-code-scanner', category: 'scanner', formats: ['jpg', 'png'], tags: ['qr', 'scan', 'ocr'] },
+                { label: 'Image to Base64', href: '/image-to-base64', category: 'utility', formats: ['jpg', 'png', 'webp'], tags: ['base64', 'encode'] },
+                { label: 'Base64 to Image', href: '/base64-to-image', category: 'utility', formats: ['base64', 'png'], tags: ['decode', 'base64'] }
+            ];
+
+            const searchInput = document.getElementById('global-tool-search');
+            const searchResults = document.getElementById('global-tool-results');
+            const previewToggle = document.getElementById('preview-toggle');
+            const previewPanel = document.getElementById('lazy-preview-panel');
+            const previewClose = document.getElementById('preview-close');
+
+            function normalize(value) {
+                return String(value || '').toLowerCase().trim();
+            }
+
+            function renderSearchResults(query) {
+                if (!searchInput || !searchResults) return;
+                const rawQuery = normalize(query);
+                const matches = !rawQuery ? toolCatalog.slice(0, 6) : toolCatalog.filter(function(item) {
+                    const haystack = [item.label, item.category, (item.formats || []).join(' '), (item.tags || []).join(' ')].join(' ').toLowerCase();
+                    return haystack.indexOf(rawQuery) !== -1;
+                }).slice(0, 6);
+
+                if (!matches.length) {
+                    searchResults.innerHTML = '<div class="search-empty">No quick matches for this keyword.</div>';
+                    searchResults.hidden = false;
+                    return;
+                }
+
+                searchResults.innerHTML = matches.map(function(item) {
+                    var meta = item.formats ? item.formats.join(' • ') : item.category;
+                    return '<a class="search-result-item" href="' + item.href + '"><span>' + item.label + '</span><small>' + item.category.toUpperCase() + ' • ' + meta + '</small></a>';
+                }).join('');
+                searchResults.hidden = false;
+
+                const visibleKeys = !rawQuery ? [] : matches.map(function(item) { return item.href; });
+                document.querySelectorAll('.tool-tile, .channel-item').forEach(function(node) {
+                    const href = node.getAttribute('href');
+                    if (!href) {
+                        node.hidden = false;
+                        return;
+                    }
+                    const shouldShow = !rawQuery || visibleKeys.indexOf(href) !== -1;
+                    node.hidden = !shouldShow;
+                });
+            }
+
+            if (searchInput && searchResults) {
+                searchInput.addEventListener('input', function(event) {
+                    renderSearchResults(event.target.value);
+                });
+
+                searchInput.addEventListener('focus', function() {
+                    renderSearchResults(searchInput.value);
+                });
+
+                document.addEventListener('click', function(event) {
+                    if (!event.target.closest('.search-box') && !event.target.closest('.search-result-item')) {
+                        searchResults.hidden = true;
+                    }
+                });
+            }
+
+            function openPreviewPanel() {
+                if (!previewPanel) return;
+                previewPanel.hidden = false;
+                previewPanel.classList.add('is-open');
+                if (previewToggle) previewToggle.setAttribute('aria-expanded', 'true');
+            }
+
+            function closePreviewPanel() {
+                if (!previewPanel) return;
+                previewPanel.hidden = true;
+                previewPanel.classList.remove('is-open');
+                if (previewToggle) previewToggle.setAttribute('aria-expanded', 'false');
+            }
+
+            if (previewToggle) {
+                previewToggle.addEventListener('click', function() {
+                    const expanded = previewToggle.getAttribute('aria-expanded') === 'true';
+                    if (expanded) {
+                        closePreviewPanel();
+                    } else {
+                        openPreviewPanel();
+                    }
+                });
+            }
+
+            if (previewClose) {
+                previewClose.addEventListener('click', closePreviewPanel);
+            }
+
             var nav = document.getElementById('sidebarNav');
             var navInner = document.querySelector('.nav-inner');
             var serverButtons = document.querySelectorAll('.server-button');
@@ -200,6 +311,9 @@
                     '/rotate-pdf': 'pdfs',
                     '/delete-pdf-pages': 'pdfs',
                     '/extract-pdf-pages': 'pdfs',
+                    '/pdf-page-editor': 'pdfs',
+                    '/document-enhancer': 'scanner',
+                    '/ocr-text': 'scanner',
                     '/image-compressor': 'images',
                     '/image-resizer': 'images',
                     '/jpg-to-png': 'images',

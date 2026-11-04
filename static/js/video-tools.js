@@ -34,12 +34,7 @@
       });
     };
 
-    document.addEventListener('pointerdown', function() {
-      trigger();
-    }, { once: true, passive: true });
-    document.addEventListener('keydown', function() {
-      trigger();
-    }, { once: true });
+    trigger();
 
     if (window.requestIdleCallback) {
       window.requestIdleCallback(trigger, { timeout: 1500 });

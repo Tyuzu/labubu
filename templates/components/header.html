@@ -1,0 +1,47 @@
+{{define "header"}}
+<header class="top-header">
+    <div class="header-search-wrap" aria-label="Search tools">
+        <div class="search-box">
+            <span class="search-icon">⌕</span>
+            <input id="global-tool-search" type="search" placeholder="Search tools, formats, categories" aria-label="Search tools, formats, and categories" />
+            <div class="search-results" id="global-tool-results" hidden></div>
+        </div>
+    </div>
+    <div class="header-actions">
+        <button type="button" class="preview-toggle" id="preview-toggle" aria-expanded="false" aria-controls="lazy-preview-panel">Preview</button>
+        <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle color mode">🌙</button>
+        <div class="header-user">
+            <span class="user-badge">I</span>
+            <span>Imigi</span>
+        </div>
+    </div>
+</header>
+<div class="lazy-preview-panel" id="lazy-preview-panel" hidden>
+    <div class="preview-header">
+        <div>
+            <span class="eyebrow">Side-by-side preview</span>
+            <h3>Before &amp; after</h3>
+        </div>
+        <button type="button" class="preview-close" id="preview-close" aria-label="Close preview">✕</button>
+    </div>
+    <div class="preview-grid">
+        <div class="preview-card preview-card--before">
+            <span>Before</span>
+            <div class="preview-visual preview-visual--before" aria-hidden="true"></div>
+        </div>
+        <div class="preview-card preview-card--after">
+            <span>After</span>
+            <div class="preview-visual preview-visual--after" aria-hidden="true"></div>
+        </div>
+    </div>
+    <div class="preview-meta">
+        <strong>Best for</strong>
+        <ul>
+            <li>Crop</li>
+            <li>Resize</li>
+            <li>Filter</li>
+            <li>Scan cleanup</li>
+        </ul>
+    </div>
+</div>
+{{end}}

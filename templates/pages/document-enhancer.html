@@ -1,0 +1,50 @@
+{{define "document-enhancer.html"}}
+<section class="tool-page">
+  <div class="tool-header">
+    <p class="eyebrow">Document Utility</p>
+    <h1>Document Enhancer</h1>
+    <p>Clean up scans, boost readability, and sharpen the final document without leaving the browser.</p>
+  </div>
+    {{template "adBanner" .}}
+  <div class="tool-card">
+    <form class="image-tool" data-tool="document-enhancer">
+      {{template "uiFileUpload" (dict "Id" "document-enhancer-file" "Label" "Upload document image" "Accept" "image/*" "Capture" "environment" "Title" "Choose a document photo" "Hint" "or browse from your device")}}
+
+      <div class="field-row two-col">
+        <div class="field">
+          <label for="doc-enhance-threshold">Scan threshold</label>
+          <input id="doc-enhance-threshold" type="range" min="80" max="220" step="5" value="180" />
+        </div>
+        <div class="field">
+          <label for="doc-enhance-contrast">Contrast</label>
+          <input id="doc-enhance-contrast" type="range" min="1" max="3" step="0.1" value="1.6" />
+        </div>
+      </div>
+
+      <div class="field-row two-col">
+        <div class="field">
+          <label for="doc-enhance-sharpen">Sharpen</label>
+          <input id="doc-enhance-sharpen" type="range" min="1" max="2.5" step="0.1" value="1.2" />
+        </div>
+        <div class="field checkbox-field">
+          <label>
+            <input id="doc-enhance-autocrop" type="checkbox" checked />
+            Auto-crop page bounds
+          </label>
+          <label>
+            <input id="doc-enhance-cleanup" type="checkbox" checked />
+            Background cleanup
+          </label>
+        </div>
+      </div>
+
+      {{template "uiButton" (dict "Label" "Enhance document" "Type" "submit")}}
+    </form>
+
+    <div class="result-block">
+      <img class="tool-preview" alt="Enhanced document preview" hidden />
+      <a class="download-link" href="#" hidden>Download enhanced file</a>
+    </div>
+  </div>
+</section>
+{{end}}

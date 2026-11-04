@@ -1,0 +1,42 @@
+{{define "ocr-text.html"}}
+<section class="tool-page">
+  <div class="tool-header">
+    <p class="eyebrow">Scanner Utility</p>
+    <h1>OCR Text Extractor</h1>
+    <p>Turn scanned pages or camera captures into readable text for notes, search, and quick copy-paste workflows.</p>
+  </div>
+    {{template "adBanner" .}}
+  <div class="tool-card">
+    <form class="image-tool" data-tool="ocr-text">
+      {{template "uiFileUpload" (dict "Id" "ocr-file" "Label" "Upload image or PDF" "Accept" ".pdf,image/*" "Capture" "environment" "Title" "Choose a file to extract text from" "Hint" "or browse from your device")}}
+
+      <div class="field-row two-col">
+        <div class="field">
+          <label for="ocr-language">Language</label>
+          <select id="ocr-language">
+            <option value="eng" selected>English</option>
+            <option value="spa">Spanish</option>
+            <option value="fra">French</option>
+            <option value="deu">German</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="ocr-mode">Mode</label>
+          <select id="ocr-mode">
+            <option value="document" selected>Document</option>
+            <option value="fast">Fast</option>
+          </select>
+        </div>
+      </div>
+
+      {{template "uiButton" (dict "Label" "Extract text" "Type" "submit")}}
+    </form>
+
+    <div class="result-block">
+      <img class="tool-preview" alt="OCR input preview" hidden />
+      <textarea class="tool-output" rows="10" readonly hidden></textarea>
+      <a class="download-link" href="#" hidden>Download OCR output</a>
+    </div>
+  </div>
+</section>
+{{end}}
