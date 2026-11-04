@@ -287,6 +287,30 @@
       "canonical": "https://allok.com/document-enhancer"
     }
   },
+  "VIDEO_ENHANCER_URL": {
+    "path": "/video-enhancer",
+    "template": "video-enhancer.html",
+    "metadata": {
+      "title": "Video Enhancer - Imigi",
+      "description": "Improve videos with subtitle burn-in, speed changes, background music fade, and format conversion in one browser flow.",
+      "keywords": "video enhancer, subtitle burn in, audio fade, video speed control, format conversion",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/video-enhancer"
+    }
+  },
+  "IMAGE_BATCH_CONVERTER_URL": {
+    "path": "/image-batch-converter",
+    "template": "image-batch-converter.html",
+    "metadata": {
+      "title": "Batch Image Converter - Imigi",
+      "description": "Convert folders of images to PNG, JPG, or WebP in one batch workflow.",
+      "keywords": "batch image converter, folder conversion, convert jpg png webp, image batch",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/image-batch-converter"
+    }
+  },
   "OCR_TEXT_URL": {
     "path": "/ocr-text",
     "template": "ocr-text.html",
