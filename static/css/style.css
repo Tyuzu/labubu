@@ -258,7 +258,7 @@ a {
 
 .channel-list,
 .sidebar-section {
-    display: none;
+    display: block;
 }
 
 .channel-list.active,
@@ -406,6 +406,8 @@ main.container {
     max-width: 1240px;
     width: 100%;
     margin: 0 auto;
+    content-visibility: auto;
+    contain-intrinsic-size: 1200px 1200px;
 }
 
 .adsense-wrap {
@@ -414,6 +416,7 @@ main.container {
     width: 100%;
     margin: 0 auto 24px;
     min-height: 90px;
+    contain: layout paint;
 }
 
 .adsense-wrap--footer {
@@ -432,6 +435,8 @@ main.container {
     height: 90px;
     min-height: 90px;
     max-width: 728px;
+    aspect-ratio: 728 / 90;
+    contain: layout paint;
     border-radius: 14px;
     overflow: hidden;
     background: linear-gradient(135deg, rgba(88, 101, 242, 0.06), rgba(124, 58, 237, 0.05));
@@ -441,16 +446,10 @@ main.container {
 }
 
 .adsense-slot::before {
-    content: "Advertisement";
+    content: "";
     position: absolute;
     inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: rgba(148, 163, 184, 0.8);
+    display: block;
     background: rgba(15, 23, 42, 0.02);
     pointer-events: none;
     z-index: 0;
@@ -476,8 +475,7 @@ main.container {
     }
 
     .adsense-slot::before {
-        letter-spacing: 0.08em;
-        font-size: 0.62rem;
+        display: block;
     }
 
     .hero-section {

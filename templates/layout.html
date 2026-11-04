@@ -16,11 +16,20 @@
     <meta name="theme-color" content="#5865f2">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="manifest" href="/static/manifest.webmanifest">
     <link rel="icon" type="image/svg+xml" href="/static/icons/imigi-icon.svg">
     <link rel="apple-touch-icon" href="/static/icons/imigi-icon.svg">
 
-    <link rel="stylesheet" href="/static/css/style.css?v=20261104" media="screen">
+    <script>
+        (function() {
+            if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+                var link = document.createElement('link');
+                link.rel = 'manifest';
+                link.href = '/static/manifest.webmanifest';
+                document.head.appendChild(link);
+            }
+        })();
+    </script>
+    <link rel="stylesheet" href="/static/css/style.css?v=20261104">
 </head>
 <body class="app-layout">
     {{template "navbar" .}}
@@ -45,7 +54,7 @@
             Some processing tools are temporarily running in the browser only. Server-side video/PDF backends are unavailable right now, so browser-based tools remain available.
         </div>
         {{end}}
-        <div class="adsense-wrap" aria-label="Advertisement placeholder">
+        <div class="adsense-wrap" aria-hidden="true">
             <div class="adsense-slot"
                  style="display:block; width:min(100%, 728px); height:90px; min-height:90px; background:rgba(148,163,184,0.08); border:1px solid rgba(148,163,184,0.15); border-radius:14px;"></div>
         </div>
@@ -122,71 +131,54 @@
         {{end}}
     </main>
 
-    <div class="adsense-wrap adsense-wrap--footer" aria-label="Advertisement placeholder">
+    <div class="adsense-wrap adsense-wrap--footer" aria-hidden="true">
         <div class="adsense-slot adsense-slot--mobile"
              style="display:block; width:min(100%, 728px); height:90px; min-height:90px; background:rgba(148,163,184,0.08); border:1px solid rgba(148,163,184,0.15); border-radius:14px;"></div>
     </div>
 
     {{template "footer" .}}
-    <script src="/static/js/image-tools.js"></script>
-    <script src="/static/js/pwa.js"></script>
+    <script defer src="/static/js/pwa.js"></script>
     <script>
         (function() {
             const pagePath = window.location.pathname || '/';
-            const lazyLibs = {
-                pdf: [
-                    'https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js',
-                    'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js',
-                    'https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js'
-                ],
-                qr: ['https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js']
+            const pageScriptMap = {
+                '/image-tools': '/static/js/image-tools.js',
+                '/image-compressor': '/static/js/image-tools.js',
+                '/image-resizer': '/static/js/image-tools.js',
+                '/jpg-to-png': '/static/js/image-tools.js',
+                '/png-to-jpg': '/static/js/image-tools.js',
+                '/webp-converter': '/static/js/image-tools.js',
+                '/png-to-webp': '/static/js/image-tools.js',
+                '/jpg-to-webp': '/static/js/image-tools.js',
+                '/image-cropper': '/static/js/image-tools.js',
+                '/image-rotator': '/static/js/image-tools.js',
+                '/base64-to-image': '/static/js/image-tools.js',
+                '/image-to-base64': '/static/js/image-tools.js',
+                '/document-scanner': '/static/js/scanner-tools.js',
+                '/qr-code-scanner': '/static/js/scanner-tools.js',
+                '/merge-pdf': '/static/js/pdf-tools.js',
+                '/split-pdf': '/static/js/pdf-tools.js',
+                '/compress-pdf': '/static/js/pdf-tools.js',
+                '/jpg-to-pdf': '/static/js/pdf-tools.js',
+                '/pdf-to-images': '/static/js/pdf-tools.js',
+                '/rotate-pdf': '/static/js/pdf-tools.js',
+                '/delete-pdf-pages': '/static/js/pdf-tools.js',
+                '/extract-pdf-pages': '/static/js/pdf-tools.js',
+                '/video-cropper': '/static/js/video-tools.js',
+                '/video-trimmer': '/static/js/video-tools.js',
+                '/video-filters': '/static/js/video-tools.js'
             };
-
-            function loadScript(src) {
-                return new Promise((resolve, reject) => {
-                    const existing = document.querySelector('script[src="' + src + '"]');
-                    if (existing) {
-                        if (existing.dataset.loaded === 'true') {
-                            resolve();
-                            return;
-                        }
-                        existing.addEventListener('load', () => resolve(), { once: true });
-                        existing.addEventListener('error', () => reject(new Error('Script failed to load: ' + src)), { once: true });
-                        return;
-                    }
-
+            const scriptSrc = pageScriptMap[pagePath];
+            if (scriptSrc) {
+                const existing = document.querySelector('script[data-page-loader="true"]');
+                if (!existing) {
                     const script = document.createElement('script');
-                    script.src = src;
-                    script.async = true;
-                    script.onload = function() {
-                        script.dataset.loaded = 'true';
-                        resolve();
-                    };
-                    script.onerror = function() {
-                        reject(new Error('Script failed to load: ' + src));
-                    };
-                    document.head.appendChild(script);
-                });
-            }
-
-            function lazyLoadForPage() {
-                const pdfPages = ['/merge-pdf', '/split-pdf', '/compress-pdf', '/jpg-to-pdf', '/pdf-to-images', '/rotate-pdf', '/delete-pdf-pages', '/extract-pdf-pages'];
-                const qrPages = ['/qr-code-scanner'];
-
-                if (pdfPages.includes(pagePath)) {
-                    Promise.all(lazyLibs.pdf.map(loadScript)).catch(function() {
-                        console.warn('One or more PDF helper scripts failed to load.');
-                    });
-                }
-
-                if (qrPages.includes(pagePath)) {
-                    Promise.all(lazyLibs.qr.map(loadScript)).catch(function() {
-                        console.warn('QR reader script failed to load.');
-                    });
+                    script.src = scriptSrc;
+                    script.defer = true;
+                    script.dataset.pageLoader = 'true';
+                    document.body.appendChild(script);
                 }
             }
-
-            lazyLoadForPage();
 
             const recentTools = JSON.parse(localStorage.getItem('imigi-recent-tools') || '[]');
             const recentPanel = document.getElementById('recent-tools-panel');
@@ -328,17 +320,12 @@
                 groupVisible = isVisible !== false && !!selected;
 
                 if (nav) {
-                    nav.classList.toggle('collapsed', !selected || !groupVisible);
-                    if (groupVisible) {
-                        nav.classList.remove('open');
-                        nav.setAttribute('aria-hidden', 'false');
-                    } else {
-                        nav.setAttribute('aria-hidden', 'true');
-                    }
+                    nav.classList.remove('collapsed');
+                    nav.setAttribute('aria-hidden', 'false');
                 }
 
                 if (navInner) {
-                    navInner.classList.toggle('hidden', !selected || !groupVisible);
+                    navInner.classList.remove('hidden');
                 }
 
                 serverButtons.forEach(function(button) {
@@ -349,7 +336,7 @@
 
                 navGroups.forEach(function(group) {
                     var itemCategory = group.getAttribute('data-category');
-                    group.classList.toggle('active', !!selected && groupVisible && itemCategory === selected);
+                    group.classList.toggle('active', !!selected && itemCategory === selected);
                 });
 
                 if (selected) {
