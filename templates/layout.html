@@ -29,7 +29,8 @@
             }
         })();
     </script>
-    <link rel="stylesheet" href="/static/css/style.css?v=20261104">
+    <!-- <link rel="stylesheet" href="/static/css/style.css?v=20261104"> -->
+    <link rel="stylesheet" href="/static/css/newstyle.css?v=20261104">
 </head>
 <body class="app-layout">
     {{template "navbar" .}}
@@ -179,12 +180,18 @@
 
             const searchInput = document.getElementById('global-tool-search');
             const searchResults = document.getElementById('global-tool-results');
+            const searchBox = document.querySelector('.search-box');
             const previewToggle = document.getElementById('preview-toggle');
             const previewPanel = document.getElementById('lazy-preview-panel');
             const previewClose = document.getElementById('preview-close');
 
             function normalize(value) {
                 return String(value || '').toLowerCase().trim();
+            }
+
+            function setSearchResultsVisible(visible) {
+                if (!searchResults) return;
+                searchResults.hidden = !visible;
             }
 
             function renderSearchResults(query) {
@@ -197,7 +204,7 @@
 
                 if (!matches.length) {
                     searchResults.innerHTML = '<div class="search-empty">No quick matches for this keyword.</div>';
-                    searchResults.hidden = false;
+                    setSearchResultsVisible(true);
                     return;
                 }
 
@@ -205,7 +212,7 @@
                     var meta = item.formats ? item.formats.join(' • ') : item.category;
                     return '<a class="search-result-item" href="' + item.href + '"><span>' + item.label + '</span><small>' + item.category.toUpperCase() + ' • ' + meta + '</small></a>';
                 }).join('');
-                searchResults.hidden = false;
+                setSearchResultsVisible(true);
 
                 const visibleKeys = !rawQuery ? [] : matches.map(function(item) { return item.href; });
                 document.querySelectorAll('.tool-tile, .channel-item').forEach(function(node) {
@@ -220,6 +227,13 @@
             }
 
             if (searchInput && searchResults) {
+                function shouldKeepSearchOpen(target) {
+                    if (!target) return false;
+                    const insideSearchBox = searchBox && searchBox.contains(target);
+                    const resultItem = target.closest && target.closest('.search-result-item');
+                    return Boolean(insideSearchBox || resultItem);
+                }
+
                 searchInput.addEventListener('input', function(event) {
                     renderSearchResults(event.target.value);
                 });
@@ -228,9 +242,39 @@
                     renderSearchResults(searchInput.value);
                 });
 
+                searchInput.addEventListener('keydown', function(event) {
+                    if (event.key === 'Escape') {
+                        setSearchResultsVisible(false);
+                    }
+                });
+
+                searchResults.addEventListener('mousedown', function(event) {
+                    if (event.target.closest('.search-result-item')) {
+                        event.preventDefault();
+                    }
+                });
+
+                document.addEventListener('focusin', function(event) {
+                    if (shouldKeepSearchOpen(event.target)) {
+                        setSearchResultsVisible(true);
+                    }
+                });
+
+                document.addEventListener('pointerdown', function(event) {
+                    if (!shouldKeepSearchOpen(event.target)) {
+                        setSearchResultsVisible(false);
+                    }
+                });
+
                 document.addEventListener('click', function(event) {
-                    if (!event.target.closest('.search-box') && !event.target.closest('.search-result-item')) {
-                        searchResults.hidden = true;
+                    if (!shouldKeepSearchOpen(event.target)) {
+                        setSearchResultsVisible(false);
+                    }
+                });
+
+                window.addEventListener('resize', function() {
+                    if (searchInput && searchInput.value) {
+                        renderSearchResults(searchInput.value);
                     }
                 });
             }
