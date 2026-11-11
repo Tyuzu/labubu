@@ -270,7 +270,10 @@ func mustLoadTemplates(dir string) *template.Template {
 
 func main() {
 	cfg := config.New()
-	app := infra.New()
+	app, err := infra.New(cfg)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	fileBytes, err := os.ReadFile("routes.json")
 	if err != nil {
@@ -285,19 +288,20 @@ func main() {
 	routeMap = rts.NormalizeRoutes(routeMap)
 
 	router := httprouter.New()
-	router.Handler(http.MethodGet, "/static/*filepath", handlers.StaticHandler())
-	router.PanicHandler = handlers.PanicHandler(app, tmpl)
-	router.NotFound = handlers.NotFoundHandler(app, tmpl)
-
-	baseURL := rts.DefaultBaseURL()
-	router.HandlerFunc(http.MethodGet, "/sitemap.xml", handlers.SitemapHandler(routeMap, baseURL))
-	router.HandlerFunc(http.MethodGet, "/api/health", handlers.HealthHandler())
-	router.POST("/api/video/process", handlers.VideoProcessHandler)
-	router.POST("/api/pdf/process", handlers.PdfProcessHandler)
-
-	for _, route := range routeMap {
-		router.Handler(http.MethodGet, route.Path, handlers.PageHandler(tmpl, app, route.Template, route.Metadata))
-	}
+	rts.Register(
+		router,
+		tmpl,
+		app,
+		routeMap,
+		handlers.PageHandler,
+		handlers.StaticHandler,
+		handlers.PanicHandler,
+		handlers.NotFoundHandler,
+		handlers.SitemapHandler,
+		handlers.HealthHandler,
+		handlers.VideoProcessHandler,
+		handlers.PdfProcessHandler,
+	)
 
 	log.Printf("Server starting on port %s...", cfg.SERVER_HTTP_PORT)
 	if err := serveWithGracefulShutdown(cfg, router); err != nil {
