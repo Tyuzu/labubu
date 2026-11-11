@@ -57,7 +57,7 @@ func PanicHandler(app *infra.Deps, t *template.Template) func(http.ResponseWrite
 			Description: "An unexpected error occurred.",
 		}
 		backendStatus := services.CheckBackendHealth()
-		data := PageData{Metadata: meta, App: app, TemplateName: "content", BackendStatus: backendStatus, BackendWarning: backendStatus.ServerUnavailable(), CurrentYear: time.Now().Year()}
+		data := PageData{Metadata: meta, App: app, TemplateName: "500.html", BackendStatus: backendStatus, BackendWarning: backendStatus.ServerUnavailable(), CurrentYear: time.Now().Year()}
 		_ = t.ExecuteTemplate(w, "layout", data)
 	}
 }
@@ -70,7 +70,7 @@ func NotFoundHandler(app *infra.Deps, t *template.Template) http.HandlerFunc {
 			Description: "The requested page could not be found.",
 		}
 		backendStatus := services.CheckBackendHealth()
-		data := PageData{Metadata: meta, App: app, TemplateName: "content", BackendStatus: backendStatus, BackendWarning: backendStatus.ServerUnavailable(), CurrentYear: time.Now().Year()}
+		data := PageData{Metadata: meta, App: app, TemplateName: "404.html", BackendStatus: backendStatus, BackendWarning: backendStatus.ServerUnavailable(), CurrentYear: time.Now().Year()}
 		_ = t.ExecuteTemplate(w, "layout", data)
 	}
 }

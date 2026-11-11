@@ -466,5 +466,53 @@
       "robots": "index, follow",
       "canonical": "https://allok.com/pdf-page-editor"
     }
+  },
+  "TOOL_LIST_PAGE_URL": {
+    "path": "/tool-list",
+    "template": "tool-list.html",
+    "metadata": {
+      "title": "Tool List - Imigi",
+      "description": "Browse the full list of Imigi tools and utilities from one organized catalog page.",
+      "keywords": "tool list, imigi tools, utility catalog",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "noindex, nofollow",
+      "canonical": "https://allok.com/tool-list"
+    }
+  },
+  "DEFAULT_CONTENT_PAGE_URL": {
+    "path": "/default-content",
+    "template": "default-content.html",
+    "metadata": {
+      "title": "Content Template - Imigi",
+      "description": "Default content template used for standard page layouts and future feature landing pages.",
+      "keywords": "default content, template, landing page",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "noindex, nofollow",
+      "canonical": "https://allok.com/default-content"
+    }
+  },
+  "NOT_FOUND_PAGE_URL": {
+    "path": "/404",
+    "template": "404.html",
+    "metadata": {
+      "title": "Page Not Found - Imigi",
+      "description": "The page you are looking for does not exist or may have moved.",
+      "keywords": "404, page not found, missing page",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "noindex, nofollow",
+      "canonical": "https://allok.com/404"
+    }
+  },
+  "SERVER_ERROR_PAGE_URL": {
+    "path": "/500",
+    "template": "500.html",
+    "metadata": {
+      "title": "Server Error - Imigi",
+      "description": "Something went wrong while loading this page. Please try again shortly.",
+      "keywords": "500, internal server error, page error",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "noindex, nofollow",
+      "canonical": "https://allok.com/500"
+    }
   }
 }

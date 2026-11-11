@@ -1,6 +1,40 @@
 package routes
 
-import "testing"
+import (
+	"encoding/json"
+	"os"
+	"testing"
+)
+
+func TestPageTemplatesHaveRegisteredRoutes(t *testing.T) {
+	required := map[string]string{
+		"404.html":             "/404",
+		"500.html":             "/500",
+		"default-content.html": "/default-content",
+		"tool-list.html":       "/tool-list",
+	}
+
+	data, err := os.ReadFile("../routes.json")
+	if err != nil {
+		t.Fatalf("read routes.json: %v", err)
+	}
+
+	var routeMap RouteMap
+	if err := json.Unmarshal(data, &routeMap); err != nil {
+		t.Fatalf("decode routes.json: %v", err)
+	}
+
+	seen := map[string]bool{}
+	for _, route := range routeMap {
+		seen[route.Template] = true
+	}
+
+	for templateName, routePath := range required {
+		if !seen[templateName] {
+			t.Fatalf("missing route for template %q at %q", templateName, routePath)
+		}
+	}
+}
 
 func TestNormalizeCanonicalURLUsesBaseURL(t *testing.T) {
 	got := NormalizeCanonicalURL("https://allok.com", "/about", "https://example.com/about")
