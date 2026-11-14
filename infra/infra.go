@@ -10,6 +10,7 @@ import (
 	"imigi/infra/logger"
 	"imigi/infra/mq"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 
@@ -51,9 +52,22 @@ func New(cfg *config.Config) (*Deps, error) {
 
 	/* -------- Redis -------- */
 
-	redisAddr := env("REDIS_ADDR", "localhost:6379")
+	redisAddr := strings.TrimSpace(env("REDIS_ADDR", ""))
+	if redisAddr == "" {
+		cleanup()
+		return nil, errors.New("REDIS_ADDR is not set")
+	}
+
 	redisPassword := env("REDIS_PASSWORD", "")
 	redisDB := 0
+	if raw := strings.TrimSpace(env("REDIS_DB", "")); raw != "" {
+		parsed, err := strconv.Atoi(raw)
+		if err != nil {
+			cleanup()
+			return nil, fmt.Errorf("REDIS_DB is invalid: %w", err)
+		}
+		redisDB = parsed
+	}
 
 	redisClient, err := NewRedis(redisAddr, redisPassword, redisDB)
 	if err != nil {
