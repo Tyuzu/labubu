@@ -45,8 +45,13 @@ func envInt(key string, fallback int) int {
 }
 
 func LoadEnv() error {
-	if err := godotenv.Load(); err != nil && !os.IsNotExist(err) {
-		return err
+	candidates := []string{".env", ".env.local", ".env.example"}
+	for _, candidate := range candidates {
+		if _, err := os.Stat(candidate); err == nil {
+			return godotenv.Load(candidate)
+		} else if !os.IsNotExist(err) {
+			return err
+		}
 	}
 	return nil
 }

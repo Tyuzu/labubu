@@ -35,6 +35,10 @@ func New(cfg *config.Config) (*Deps, error) {
 		return nil, errors.New("nil config provided")
 	}
 
+	if err := config.LoadEnv(); err != nil {
+		return nil, fmt.Errorf("load env: %w", err)
+	}
+
 	d := &Deps{
 		Config: *cfg,
 	}
