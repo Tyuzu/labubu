@@ -9,6 +9,7 @@ import (
 	"imigi/infra/cache"
 	"imigi/infra/logger"
 	"imigi/infra/mq"
+	"net/url"
 	"os"
 	"strconv"
 	"strings"
@@ -56,21 +57,10 @@ func New(cfg *config.Config) (*Deps, error) {
 
 	/* -------- Redis -------- */
 
-	redisAddr := strings.TrimSpace(env("REDIS_ADDR", ""))
-	if redisAddr == "" {
+	redisAddr, redisPassword, redisDB, err := resolveRedisConfig()
+	if err != nil {
 		cleanup()
-		return nil, errors.New("REDIS_ADDR is not set")
-	}
-
-	redisPassword := env("REDIS_PASSWORD", "")
-	redisDB := 0
-	if raw := strings.TrimSpace(env("REDIS_DB", "")); raw != "" {
-		parsed, err := strconv.Atoi(raw)
-		if err != nil {
-			cleanup()
-			return nil, fmt.Errorf("REDIS_DB is invalid: %w", err)
-		}
-		redisDB = parsed
+		return nil, err
 	}
 
 	redisClient, err := NewRedis(redisAddr, redisPassword, redisDB)
@@ -122,6 +112,50 @@ func (d *Deps) Close(ctx context.Context) error {
 }
 
 /* -------------------- Redis -------------------- */
+
+func resolveRedisConfig() (string, string, int, error) {
+	if rawURL := strings.TrimSpace(env("REDIS_URL", "")); rawURL != "" {
+		parsed, err := url.Parse(rawURL)
+		if err != nil {
+			return "", "", 0, fmt.Errorf("REDIS_URL is invalid: %w", err)
+		}
+		if parsed.Host == "" {
+			return "", "", 0, errors.New("REDIS_URL host is empty")
+		}
+		password := ""
+		if parsed.User != nil {
+			password, _ = parsed.User.Password()
+		}
+		db := 0
+		if parsed.Path != "" && parsed.Path != "/" {
+			path := strings.TrimPrefix(parsed.Path, "/")
+			if path != "" {
+				parsedDB, err := strconv.Atoi(path)
+				if err != nil {
+					return "", "", 0, fmt.Errorf("REDIS_URL database index is invalid: %w", err)
+				}
+				db = parsedDB
+			}
+		}
+		return parsed.Host, password, db, nil
+	}
+
+	redisAddr := strings.TrimSpace(env("REDIS_ADDR", ""))
+	if redisAddr == "" {
+		return "", "", 0, errors.New("REDIS_ADDR is not set")
+	}
+
+	redisPassword := env("REDIS_PASSWORD", "")
+	redisDB := 0
+	if raw := strings.TrimSpace(env("REDIS_DB", "")); raw != "" {
+		parsed, err := strconv.Atoi(raw)
+		if err != nil {
+			return "", "", 0, fmt.Errorf("REDIS_DB is invalid: %w", err)
+		}
+		redisDB = parsed
+	}
+	return redisAddr, redisPassword, redisDB, nil
+}
 
 func NewRedis(addr string, password string, dbIndex int) (*redis.Client, error) {
 	if strings.TrimSpace(addr) == "" {
