@@ -351,4 +351,43 @@
   } else {
     init();
   }
+
+  function initVideoFilterGallery() {
+    const gallery = document.querySelector('.video-filter-gallery');
+    if (!gallery) return;
+
+    const hiddenInput = document.querySelector('#video-filter-style');
+    const cards = Array.from(gallery.querySelectorAll('.video-filter-card'));
+    const loadMore = gallery.querySelector('.video-filter-load-more');
+    const count = gallery.querySelector('.video-filter-count');
+    let visibleCount = 6;
+
+    cards.forEach(card => {
+      card.hidden = cards.indexOf(card) >= visibleCount;
+      card.addEventListener('click', function() {
+        cards.forEach(item => {
+          item.classList.remove('is-selected');
+          item.setAttribute('aria-pressed', 'false');
+        });
+        card.classList.add('is-selected');
+        card.setAttribute('aria-pressed', 'true');
+        if (hiddenInput) hiddenInput.value = card.dataset.filter || 'cinematic';
+      });
+    });
+
+    if (loadMore) {
+      loadMore.addEventListener('click', function() {
+        visibleCount = Math.min(cards.length, visibleCount + 5);
+        cards.forEach((card, index) => { card.hidden = index >= visibleCount; });
+        if (count) count.textContent = `Showing ${visibleCount} of ${cards.length} filters`;
+        if (visibleCount >= cards.length) {
+          loadMore.hidden = true;
+        } else {
+          loadMore.textContent = `Show ${cards.length - visibleCount} more filters`;
+        }
+      });
+    }
+  }
+
+  initVideoFilterGallery();
 })();
