@@ -1,6 +1,32 @@
 {{define "uiSlider"}}
-<label class="ui-slider">
-    <span>{{if .Label}}{{.Label}}{{else}}Value{{end}}</span>
-    <input {{if .Id}}id="{{.Id}}"{{end}} type="range" min="{{if .Min}}{{.Min}}{{else}}0{{end}}" max="{{if .Max}}{{.Max}}{{else}}100{{end}}" value="{{if .Value}}{{.Value}}{{else}}50{{end}}" {{if .Step}}step="{{.Step}}"{{end}} {{if .Name}}name="{{.Name}}"{{end}}>
-</label>
+<div class="ui-slider flex flex-col gap-2 w-full {{if .Class}}{{.Class}}{{end}}">
+    <div class="flex items-center justify-between text-xs font-medium">
+        <label for="{{if .Id}}{{.Id}}{{else}}range-slider{{end}}" class="text-slate-300 tracking-wide">
+            {{if .Label}}{{.Label}}{{else}}Value{{end}}
+        </label>
+        <span id="{{if .Id}}{{.Id}}{{else}}range-slider{{end}}-value" class="font-mono text-indigo-400 bg-slate-900 px-2 py-0.5 rounded border border-slate-800">
+            {{if .Value}}{{.Value}}{{else}}50{{end}}{{if .Unit}}{{.Unit}}{{end}}
+        </span>
+    </div>
+
+    <div class="relative flex items-center">
+        <input 
+            id="{{if .Id}}{{.Id}}{{else}}range-slider{{end}}" 
+            type="range" 
+            min="{{if .Min}}{{.Min}}{{else}}0{{end}}" 
+            max="{{if .Max}}{{.Max}}{{else}}100{{end}}" 
+            value="{{if .Value}}{{.Value}}{{else}}50{{end}}" 
+            {{if .Step}}step="{{.Step}}"{{end}} 
+            {{if .Name}}name="{{.Name}}"{{end}}
+            class="w-full h-2 bg-slate-900 rounded-lg appearance-none cursor-pointer accent-indigo-600 focus:outline-none focus:ring-1 focus:ring-indigo-500 border border-slate-800"
+        />
+    </div>
+
+    {{if or .MinLabel .MaxLabel}}
+    <div class="flex items-center justify-between text-[11px] text-slate-500">
+        <span>{{if .MinLabel}}{{.MinLabel}}{{else}}{{if .Min}}{{.Min}}{{else}}0{{end}}{{end}}</span>
+        <span>{{if .MaxLabel}}{{.MaxLabel}}{{else}}{{if .Max}}{{.Max}}{{else}}100{{end}}{{end}}</span>
+    </div>
+    {{end}}
+</div>
 {{end}}

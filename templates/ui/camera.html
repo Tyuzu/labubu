@@ -1,10 +1,58 @@
 {{define "uiCamera"}}
-<div class="ui-camera">
-  <div class="ui-camera__actions">
-    <button type="button" class="{{if .ToggleClass}}{{.ToggleClass}}{{else}}camera-toggle ui-button ui-button--secondary{{end}}" {{if .ToggleId}}id="{{.ToggleId}}"{{end}}>{{if .ToggleLabel}}{{.ToggleLabel}}{{else}}Use camera{{end}}</button>
-    <button type="button" class="{{if .CaptureClass}}{{.CaptureClass}}{{else}}camera-capture ui-button{{end}}" hidden {{if .CaptureId}}id="{{.CaptureId}}"{{end}}>{{if .CaptureLabel}}{{.CaptureLabel}}{{else}}Capture photo{{end}}</button>
-  </div>
-  <video id="{{if .VideoId}}{{.VideoId}}{{else}}camera-feed{{end}}" autoplay playsinline muted hidden></video>
-  <canvas id="{{if .CanvasId}}{{.CanvasId}}{{else}}camera-canvas{{end}}" hidden></canvas>
+<div class="ui-camera flex flex-col gap-4 bg-slate-900/50 border border-slate-800/80 rounded-2xl p-5 shadow-xl max-w-xl mx-auto">
+    
+    <!-- Camera Viewport / Stream Container -->
+    <div class="relative w-full aspect-video bg-slate-950 rounded-xl border border-slate-800 overflow-hidden flex items-center justify-center">
+        
+        <!-- Live Video Feed -->
+        <video 
+            id="{{if .VideoId}}{{.VideoId}}{{else}}camera-feed{{end}}" 
+            autoplay 
+            playsinline 
+            muted 
+            class="w-full h-full object-cover hidden"
+        ></video>
+        
+        <!-- Hidden Canvas for Snapshot Capture -->
+        <canvas id="{{if .CanvasId}}{{.CanvasId}}{{else}}camera-canvas{{end}}" class="hidden"></canvas>
+        
+        <!-- Initial Placeholder State (Before Camera Starts) -->
+        <div id="{{if .PlaceholderId}}{{.PlaceholderId}}{{else}}camera-placeholder{{end}}" class="absolute inset-0 flex flex-col items-center justify-center gap-2 p-6 text-center text-slate-400">
+            <svg class="w-10 h-10 text-slate-600 mb-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>
+            </svg>
+            <p class="text-sm font-medium text-slate-300">Camera is currently inactive</p>
+            <p class="text-xs text-slate-500">Click below to grant camera access and start scanning documents or taking photos.</p>
+        </div>
+
+        <!-- Error Banner (Hidden by default) -->
+        <div id="{{if .ErrorId}}{{.ErrorId}}{{else}}camera-error{{end}}" class="absolute inset-x-4 bottom-4 bg-rose-950/90 border border-rose-500/40 text-rose-200 px-4 py-3 rounded-xl text-xs flex items-center gap-3 shadow-lg hidden" role="alert">
+            <svg class="w-5 h-5 text-rose-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span class="error-message">Unable to access camera. Please check your browser permissions.</span>
+        </div>
+    </div>
+
+    <!-- Action Buttons Toolbar -->
+    <div class="ui-camera__actions flex items-center justify-center gap-3">
+        <button 
+            type="button" 
+            class="{{if .ToggleClass}}{{.ToggleClass}}{{else}}camera-toggle inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl shadow-sm transition{{end}}" 
+            {{if .ToggleId}}id="{{.ToggleId}}"{{end}}
+        >
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            <span>{{if .ToggleLabel}}{{.ToggleLabel}}{{else}}Use Camera{{end}}</span>
+        </button>
+
+        <button 
+            type="button" 
+            class="{{if .CaptureClass}}{{.CaptureClass}}{{else}}camera-capture inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl shadow-sm transition{{end}}" 
+            hidden 
+            {{if .CaptureId}}id="{{.CaptureId}}"{{end}}
+        >
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+            <span>{{if .CaptureLabel}}{{.CaptureLabel}}{{else}}Capture Photo{{end}}</span>
+        </button>
+    </div>
+
 </div>
 {{end}}

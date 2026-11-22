@@ -1,53 +1,103 @@
 {{define "video-trimmer.html"}}
-<section class="tool-page">
-  <div class="tool-header">
-    <p class="eyebrow">Video Utility</p>
-    <h1>Video Trimmer</h1>
-    <p>Cut your video between start and end points to keep only the best moments from each clip.</p>
-  </div>
+<section class="tool-page max-w-4xl mx-auto flex flex-col gap-8">
+    <header class="tool-header flex flex-col gap-2">
+        <p class="eyebrow text-xs font-semibold uppercase tracking-wider text-indigo-400">Video Utility</p>
+        <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-100">Video Trimmer</h1>
+        <p class="text-sm text-slate-400">Cut your video between start and end points to keep only the best moments from each clip.</p>
+    </header>
+
     {{template "adBanner" .}}
-  <div class="tool-card">
-    <form class="image-tool" data-tool="video-trimmer">
-      <div class="field">
-        <label for="video-trim-file">Upload video</label>
-        <input id="video-trim-file" type="file" accept="video/*" />
-      </div>
 
-      <div class="field">
-        <label for="video-trim-mode">Processing engine</label>
-        <select id="video-trim-mode">
-          <option value="cdn">CDN FFmpeg (ffmpeg.wasm)</option>
-          <option value="self-hosted">Self-hosted FFmpeg</option>
-        </select>
-      </div>
+    <div class="tool-card bg-slate-900/50 border border-slate-800/80 rounded-2xl p-6 sm:p-8 shadow-xl flex flex-col gap-6">
+        <form class="image-tool flex flex-col gap-6" data-tool="video-trimmer">
+            
+            <!-- Reusable Video Dropzone -->
+            {{template "uiFileUpload" (dict
+                "Id" "video-trim-file"
+                "Label" "Upload video"
+                "Accept" "video/*"
+                "Icon" "🎬"
+                "Title" "Drag & drop your MP4, WebM, or MOV video"
+                "Hint" "Supports client-side trimming via FFmpeg"
+                "Required" true
+            )}}
 
-      <div class="field-row two-col">
-        <div class="field">
-          <label for="video-trim-start">Start time (seconds)</label>
-          <input id="video-trim-start" type="number" min="0" value="0" />
+            <!-- Processing Engine & Export Format Row -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {{template "uiDropdown" (dict
+                    "Id" "video-trim-mode"
+                    "Label" "Processing engine"
+                    "Options" (slice
+                        (dict "Value" "cdn" "Label" "CDN FFmpeg (ffmpeg.wasm)" "Selected" true)
+                        (dict "Value" "self-hosted" "Label" "Self-hosted FFmpeg" "Selected" false)
+                    )
+                )}}
+
+                {{template "uiDropdown" (dict
+                    "Id" "video-output-format"
+                    "Label" "Export format"
+                    "Options" (slice
+                        (dict "Value" "mp4" "Label" "MP4 (H.264 / Universal)" "Selected" true)
+                        (dict "Value" "webm" "Label" "WebM (VP9 / Web)" "Selected" false)
+                        (dict "Value" "mov" "Label" "MOV (QuickTime)" "Selected" false)
+                    )
+                )}}
+            </div>
+
+            <!-- Start & End Time Inputs -->
+            <div class="field-row two-col grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="field flex flex-col gap-1.5">
+                    <label for="video-trim-start" class="text-xs font-medium text-slate-300">Start time (seconds)</label>
+                    <input 
+                        id="video-trim-start" 
+                        type="number" 
+                        min="0" 
+                        step="0.1"
+                        value="0" 
+                        class="w-full bg-slate-900 text-sm font-mono text-slate-100 px-3.5 py-2.5 rounded-xl border border-slate-800 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                    />
+                </div>
+                <div class="field flex flex-col gap-1.5">
+                    <label for="video-trim-end" class="text-xs font-medium text-slate-300">End time (seconds)</label>
+                    <input 
+                        id="video-trim-end" 
+                        type="number" 
+                        min="0.5" 
+                        step="0.1"
+                        value="10" 
+                        class="w-full bg-slate-900 text-sm font-mono text-slate-100 px-3.5 py-2.5 rounded-xl border border-slate-800 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                    />
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            {{template "uiButton" (dict
+                "Type" "submit"
+                "Variant" "primary"
+                "Icon" "✂️"
+                "Label" "Trim Video"
+                "Class" "w-full sm:w-auto self-start"
+            )}}
+        </form>
+
+        <!-- FFmpeg Render Status Bar (Toggled by video-tools.js) -->
+        <div id="ffmpeg-progress-box" class="bg-slate-950 border border-slate-800 rounded-xl p-4 flex flex-col gap-2" hidden>
+            <div class="flex items-center justify-between text-xs">
+                <span id="ffmpeg-status-text" class="text-slate-300 font-medium">Initializing FFmpeg engine...</span>
+                <span id="ffmpeg-percent-text" class="font-mono text-indigo-400">0%</span>
+            </div>
+            <div class="w-full h-1.5 bg-slate-900 rounded-full overflow-hidden">
+                <div id="ffmpeg-progress-bar" class="h-full bg-indigo-500 w-0 transition-all duration-150"></div>
+            </div>
         </div>
-        <div class="field">
-          <label for="video-trim-end">End time (seconds)</label>
-          <input id="video-trim-end" type="number" min="1" value="10" />
+
+        <!-- Video Preview & Download Link -->
+        <div class="result-block border-t border-slate-800/80 pt-6 flex flex-col items-center gap-4">
+            <video class="tool-preview w-full max-h-96 rounded-xl border border-slate-800 bg-slate-950 shadow-lg" controls muted playsinline hidden></video>
+            <a class="download-link inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-medium bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl shadow-sm transition" href="#" hidden>
+                <span>⬇ Download Trimmed Video</span>
+            </a>
         </div>
-      </div>
-
-      <div class="field">
-        <label for="video-output-format">Export format</label>
-        <select id="video-output-format">
-          <option value="mp4">MP4</option>
-          <option value="webm">WebM</option>
-          <option value="mov">MOV</option>
-        </select>
-      </div>
-
-      <button type="submit">Trim video</button>
-    </form>
-
-    <div class="result-block">
-      <video class="tool-preview" controls muted playsinline hidden></video>
-      <a class="download-link" href="#" hidden>Download trimmed video</a>
     </div>
-  </div>
 </section>
 {{end}}

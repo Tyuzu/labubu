@@ -1,10 +1,29 @@
 {{define "uiDropdown"}}
-<label class="ui-dropdown">
-    <span>{{if .Label}}{{.Label}}{{else}}Select option{{end}}</span>
-    <select class="ui-dropdown__select{{if .Class}} {{.Class}}{{end}}" {{if .Id}}id="{{.Id}}"{{end}} {{if .Name}}name="{{.Name}}"{{end}} {{if .Required}}required{{end}}>
-        {{range .Options}}
-        <option value="{{.Value}}" {{if .Selected}}selected{{end}}>{{.Label}}</option>
-        {{end}}
-    </select>
+<label class="ui-dropdown flex flex-col gap-1.5 text-left w-full {{if .WrapperClass}}{{.WrapperClass}}{{end}}">
+    {{if .Label}}
+    <span class="text-xs font-medium text-slate-300 tracking-wide">{{.Label}}</span>
+    {{end}}
+    
+    <div class="relative flex items-center">
+        <select 
+            class="ui-dropdown__select w-full appearance-none bg-slate-900 hover:bg-slate-900/80 text-sm text-slate-100 px-3.5 py-2.5 pr-10 rounded-xl border border-slate-800 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition cursor-pointer disabled:opacity-50 disabled:pointer-events-none {{if .Class}}{{.Class}}{{end}}" 
+            {{if .Id}}id="{{.Id}}"{{end}} 
+            {{if .Name}}name="{{.Name}}"{{end}} 
+            {{if .Required}}required{{end}}
+            {{if .Disabled}}disabled{{end}}
+            {{if .AriaLabel}}aria-label="{{.AriaLabel}}"{{end}}
+        >
+            {{range .Options}}
+            <option value="{{.Value}}" {{if .Selected}}selected{{end}} {{if .Disabled}}disabled{{end}}>{{.Label}}</option>
+            {{end}}
+        </select>
+        
+        <!-- Custom Dropdown Chevron Indicator -->
+        <span class="absolute right-3.5 pointer-events-none text-slate-500" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"/>
+            </svg>
+        </span>
+    </div>
 </label>
 {{end}}
