@@ -2,3 +2,4 @@
 redis.bat
 dump.rdb
 dist/
+ffmpegFilters/
