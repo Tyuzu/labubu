@@ -441,19 +441,6 @@ h3 { font-size: var(--fs-heading-md); }
   display: none !important;
 }
 
-.preview-toggle {
-  border: 1px solid var(--border-color);
-  background-color: var(--bg-surface);
-  color: var(--text-main);
-  border-radius: var(--radius-sm);
-  padding: 8px 14px;
-  font-weight: 600;
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.preview-toggle:hover,
 .theme-toggle:hover {
   border-color: var(--accent);
   background-color: var(--bg-app);
@@ -1754,10 +1741,6 @@ footer {
     font-size: 0.75rem;
   }
 
-  .preview-toggle {
-    padding: 8px 12px;
-    font-size: 0.8rem;
-  }
 
   .search-box {
     width: 100%;

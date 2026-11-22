@@ -155,34 +155,90 @@
 
     // --- 5. SIDEBAR RAIL & NAVIGATION STATE ---
     function initNavigation() {
-        const serverButtons = document.querySelectorAll('.server-button');
-        const sidebarSections = document.querySelectorAll('.sidebar-section');
+        const serverButtons = Array.from(document.querySelectorAll('.server-button'));
+        const sidebarSections = Array.from(document.querySelectorAll('.sidebar-section'));
+        const sidebarNav = document.getElementById('sidebarNav');
         const storageKey = 'imigi-nav-state';
 
-        serverButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const targetCat = btn.getAttribute('data-category');
-                
-                serverButtons.forEach(b => {
-                    const active = b === btn;
-                    b.classList.toggle('active', active);
-                    b.classList.toggle('bg-indigo-600', active);
-                    b.classList.toggle('text-white', active);
-                    b.setAttribute('aria-selected', active ? 'true' : 'false');
-                });
+        const categoryRoutes = {
+            overview: ['/', '/about', '/contact', '/images', '/image-tools', '/pdf-tools', '/video-tools', '/scanner-tools', '/tool-list'],
+            images: ['/image-compressor', '/image-resizer', '/jpg-to-png', '/png-to-jpg', '/webp-converter', '/png-to-webp', '/jpg-to-webp', '/image-cropper', '/image-rotator', '/image-batch-converter', '/passport-photo-maker'],
+            videos: ['/videos', '/video-cropper', '/video-trimmer', '/video-filters', '/video-enhancer'],
+            scanner: ['/document-scanner', '/qr-code-scanner', '/document-enhancer', '/ocr-text'],
+            pdfs: ['/merge-pdf', '/split-pdf', '/compress-pdf', '/jpg-to-pdf', '/pdf-to-images', '/rotate-pdf', '/delete-pdf-pages', '/extract-pdf-pages', '/pdf-page-editor'],
+            utility: ['/image-to-base64', '/base64-to-image']
+        };
 
-                sidebarSections.forEach(sec => {
-                    const match = sec.getAttribute('data-category') === targetCat;
-                    sec.classList.toggle('hidden', !match);
-                    sec.classList.toggle('block', match);
-                });
+        function normalizePath(path) {
+            let normalized = String(path || '/').split('?')[0].split('#')[0];
+            if (normalized.length > 1) normalized = normalized.replace(/\/+$/, '');
+            return normalized || '/';
+        }
 
-                try {
-                    const state = JSON.parse(localStorage.getItem(storageKey)) || {};
-                    state.lastCategory = targetCat;
-                    localStorage.setItem(storageKey, JSON.stringify(state));
-                } catch (err) {}
+        function categoryForPath(path) {
+            const currentPath = normalizePath(path);
+            for (const [category, routes] of Object.entries(categoryRoutes)) {
+                if (routes.includes(currentPath)) return category;
+            }
+            return 'overview';
+        }
+
+        function setCategory(category, options = {}) {
+            const targetCategory = categoryRoutes[category] ? category : 'overview';
+
+            serverButtons.forEach(button => {
+                const active = button.dataset.category === targetCategory;
+                button.classList.toggle('active', active);
+                button.setAttribute('aria-selected', active ? 'true' : 'false');
+                button.tabIndex = active ? 0 : -1;
             });
+
+            sidebarSections.forEach(section => {
+                const active = section.dataset.category === targetCategory;
+                section.classList.toggle('active', active);
+                section.setAttribute('aria-hidden', active ? 'false' : 'true');
+            });
+
+            if (sidebarNav && window.matchMedia('(max-width: 760px)').matches) {
+                sidebarNav.classList.toggle('is-open', options.openMobile === true);
+            }
+
+            if (options.persist !== false) {
+                try {
+                    localStorage.setItem(storageKey, JSON.stringify({ lastCategory: targetCategory }));
+                } catch (err) {}
+            }
+        }
+
+        serverButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                setCategory(button.dataset.category || 'overview', { openMobile: true });
+            });
+
+            button.addEventListener('keydown', event => {
+                if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+                event.preventDefault();
+                const currentIndex = serverButtons.indexOf(button);
+                const direction = event.key === 'ArrowRight' ? 1 : -1;
+                const next = serverButtons[(currentIndex + direction + serverButtons.length) % serverButtons.length];
+                next.focus();
+                setCategory(next.dataset.category || 'overview', { openMobile: true });
+            });
+        });
+
+        document.querySelectorAll('.channel-item').forEach(link => {
+            if (normalizePath(link.pathname) === normalizePath(window.location.pathname)) {
+                link.classList.add('active');
+                link.setAttribute('aria-current', 'page');
+            }
+        });
+
+        setCategory(categoryForPath(window.location.pathname), { persist: false, openMobile: false });
+
+        document.addEventListener('click', event => {
+            if (!window.matchMedia('(max-width: 760px)').matches || !sidebarNav) return;
+            if (sidebarNav.contains(event.target) || event.target.closest('.server-button')) return;
+            sidebarNav.classList.remove('is-open');
         });
     }
 
