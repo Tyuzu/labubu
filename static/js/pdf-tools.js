@@ -120,33 +120,8 @@
 
       throw new Error('Unsupported PDF action in browser runtime.');
     } catch (error) {
-      console.warn('[pdf] Browser PDF processing failed, falling back to backend:', error);
-      if (!input) throw error;
-
-      const formData = new FormData();
-      formData.append('action', action);
-      if (Array.isArray(input)) {
-        input.forEach((file) => file && formData.append('pdfs', file, file.name));
-      } else {
-        formData.append('pdf', input, input.name);
-      }
-
-      Object.entries(params || {}).forEach(([key, value]) => {
-        if (value !== undefined && value !== null) formData.append(key, String(value));
-      });
-
-      const response = await fetch('/api/pdf/process', { method: 'POST', body: formData });
-      if (!response.ok) {
-        const text = await response.text();
-        throw new Error(text || 'The server-side PDF backend could not complete this action.');
-      }
-
-      const blob = await response.blob();
-      const contentDisposition = response.headers.get('Content-Disposition') || '';
-      const match = contentDisposition.match(/filename="?([^";]+)"?/i);
-      const fileName = match ? match[1] : 'processed.pdf';
-
-      return { url: URL.createObjectURL(blob), fileName, type: 'blob' };
+      console.warn('[pdf] Browser PDF processing failed:', error);
+      throw new Error('This PDF operation is unavailable in the static browser build. ' + (error.message || 'Please try a supported browser engine.'));
     }
   }
 

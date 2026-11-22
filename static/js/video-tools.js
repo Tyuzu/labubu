@@ -150,25 +150,7 @@
   }
 
   async function processVideoOnServer(file, action, params) {
-    if (!file) throw new Error('Please upload a video before processing.');
-    const formData = new FormData();
-    formData.append('action', action);
-    formData.append('video', file, file.name);
-    Object.entries(params).forEach(([key, value]) => {
-      if (value !== undefined && value !== null) formData.append(key, String(value));
-    });
-
-    const response = await fetch('/api/video/process', { method: 'POST', body: formData });
-    if (!response.ok) {
-      const text = await response.text();
-      throw new Error(text || 'The self-hosted FFmpeg backend failed to process the video.');
-    }
-
-    const blob = await response.blob();
-    const contentDisposition = response.headers.get('Content-Disposition') || '';
-    const match = contentDisposition.match(/filename="?([^";]+)"?/i);
-    const fileName = match ? match[1] : `${action}-video.mp4`;
-    return { url: URL.createObjectURL(blob), fileName };
+    throw new Error('Server-side video processing is not included in the static site. Please use the browser/CDN processing mode.');
   }
 
   let ffmpegInstance = null;

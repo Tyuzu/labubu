@@ -1,3 +1,4 @@
 .env
 redis.bat
 dump.rdb
+dist/

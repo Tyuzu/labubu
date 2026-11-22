@@ -4,7 +4,9 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"encoding/xml"
 	"errors"
+	"flag"
 	"fmt"
 	"html/template"
 	"io/fs"
@@ -268,7 +270,111 @@ func mustLoadTemplates(dir string) *template.Template {
 	return parsed
 }
 
+func buildStaticSite(outputDir string) error {
+	outputDir = filepath.Clean(outputDir)
+	if err := os.RemoveAll(outputDir); err != nil {
+		return fmt.Errorf("clean output directory: %w", err)
+	}
+
+	fileBytes, err := os.ReadFile("routes.json")
+	if err != nil {
+		return fmt.Errorf("read routes.json: %w", err)
+	}
+	var routeMap rts.RouteMap
+	if err := json.Unmarshal(fileBytes, &routeMap); err != nil {
+		return fmt.Errorf("parse routes.json: %w", err)
+	}
+	routeMap = rts.NormalizeRoutes(routeMap)
+
+	for _, route := range routeMap {
+		var outputPath string
+		if route.Path == "/" {
+			outputPath = filepath.Join(outputDir, "index.html")
+		} else {
+			outputPath = filepath.Join(outputDir, filepath.FromSlash(strings.Trim(route.Path, "/")), "index.html")
+		}
+		if err := os.MkdirAll(filepath.Dir(outputPath), 0o755); err != nil {
+			return fmt.Errorf("create output directory: %w", err)
+		}
+
+		data := handlers.PageData{
+			Metadata:       route.Metadata,
+			TemplateName:   route.Template,
+			BackendWarning: false,
+			CurrentYear:    time.Now().Year(),
+		}
+		var rendered bytes.Buffer
+		if err := tmpl.ExecuteTemplate(&rendered, "layout", data); err != nil {
+			return fmt.Errorf("render %s: %w", route.Path, err)
+		}
+		if err := os.WriteFile(outputPath, rendered.Bytes(), 0o644); err != nil {
+			return fmt.Errorf("write %s: %w", outputPath, err)
+		}
+	}
+
+	if err := copyDirectory("static", filepath.Join(outputDir, "static")); err != nil {
+		return fmt.Errorf("copy static assets: %w", err)
+	}
+	if err := os.WriteFile(filepath.Join(outputDir, ".nojekyll"), nil, 0o644); err != nil {
+		return fmt.Errorf("write .nojekyll: %w", err)
+	}
+
+	var urlSet rts.URLSet
+	currentDate := time.Now().Format("2006-01-02")
+	for _, route := range routeMap {
+		if strings.Contains(strings.ToLower(route.Metadata.Robots), "noindex") {
+			continue
+		}
+		urlSet.URLs = append(urlSet.URLs, rts.SitemapURL{
+			Loc: route.Metadata.Canonical, LastMod: currentDate, ChangeFreq: "weekly", Priority: "0.8",
+		})
+	}
+	var sitemap bytes.Buffer
+	sitemap.WriteString(xml.Header)
+	encoder := xml.NewEncoder(&sitemap)
+	encoder.Indent("", "  ")
+	if err := encoder.Encode(urlSet); err != nil {
+		return fmt.Errorf("encode sitemap: %w", err)
+	}
+	if err := os.WriteFile(filepath.Join(outputDir, "sitemap.xml"), sitemap.Bytes(), 0o644); err != nil {
+		return fmt.Errorf("write sitemap: %w", err)
+	}
+
+	log.Printf("Static site built in %s (%d pages)", outputDir, len(routeMap))
+	return nil
+}
+
+func copyDirectory(sourceDir, destinationDir string) error {
+	return filepath.WalkDir(sourceDir, func(path string, entry fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		relativePath, err := filepath.Rel(sourceDir, path)
+		if err != nil {
+			return err
+		}
+		destinationPath := filepath.Join(destinationDir, relativePath)
+		if entry.IsDir() {
+			return os.MkdirAll(destinationPath, 0o755)
+		}
+		content, err := os.ReadFile(path)
+		if err != nil {
+			return err
+		}
+		return os.WriteFile(destinationPath, content, 0o644)
+	})
+}
+
 func main() {
+	buildOutput := flag.String("build", "", "Build a static site into the given output directory")
+	flag.Parse()
+	if *buildOutput != "" {
+		if err := buildStaticSite(*buildOutput); err != nil {
+			log.Fatal(err)
+		}
+		return
+	}
+
 	cfg := config.New()
 	app, err := infra.New(cfg)
 	if err != nil {
@@ -306,5 +412,26 @@ func main() {
 	log.Printf("Server starting on port %s...", cfg.SERVER_HTTP_PORT)
 	if err := serveWithGracefulShutdown(cfg, router); err != nil {
 		log.Fatal(err)
+	}
+
+	var exportDir string
+	flag.StringVar(&exportDir, "export", "", "Directory to export static site")
+	flag.Parse()
+
+	if exportDir != "" {
+		log.Printf("Exporting static site to %s...", exportDir)
+		if err := os.MkdirAll(exportDir, 0755); err != nil {
+			log.Fatalf("Failed to create export directory: %v", err)
+		}
+
+		indexFile := filepath.Join(exportDir, "index.html")
+		log.Printf("Writing index file to %s...", indexFile)
+		if err := os.WriteFile(indexFile, []byte("<html><body><h1>Static Site Export</h1></body></html>"), 0644); err != nil {
+			log.Fatalf("Failed to write index file: %v", err)
+		}
+
+		// Additional export logic (e.g., copying assets) can be added here
+
+		log.Println("Static site export completed")
 	}
 }
