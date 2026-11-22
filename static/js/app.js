@@ -84,16 +84,20 @@
         const toggleBtn = document.getElementById('theme-toggle');
         if (!toggleBtn) return;
 
-        const savedTheme = localStorage.getItem('imigi-theme') || 'dark';
-        if (savedTheme === 'light') {
-            document.documentElement.classList.remove('dark');
-            document.body.classList.add('light-mode');
+        function applyTheme(theme) {
+            const isDark = theme === 'dark';
+            document.documentElement.classList.toggle('dark', isDark);
+            document.body.classList.toggle('light-mode', isDark);
+            toggleBtn.setAttribute('aria-label', isDark ? 'Switch to light theme' : 'Switch to dark theme');
+            toggleBtn.setAttribute('title', isDark ? 'Switch to light theme' : 'Switch to dark theme');
         }
 
+        applyTheme(localStorage.getItem('imigi-theme') || 'dark');
+
         toggleBtn.addEventListener('click', () => {
-            const isDark = document.documentElement.classList.toggle('dark');
-            document.body.classList.toggle('light-mode', !isDark);
-            localStorage.setItem('imigi-theme', isDark ? 'dark' : 'light');
+            const nextTheme = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
+            applyTheme(nextTheme);
+            localStorage.setItem('imigi-theme', nextTheme);
         });
     }
 
@@ -131,8 +135,28 @@
             searchResults.hidden = false;
         }
 
-        searchInput.addEventListener('input', e => renderResults(e.target.value));
-        searchInput.addEventListener('focus', () => renderResults(searchInput.value));
+        searchInput.addEventListener('input', event => {
+            searchInput.setAttribute('aria-expanded', 'true');
+            renderResults(event.target.value);
+        });
+        searchInput.addEventListener('focus', () => {
+            searchInput.setAttribute('aria-expanded', 'true');
+            renderResults(searchInput.value);
+        });
+
+        searchInput.addEventListener('keydown', event => {
+            if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return;
+            const links = Array.from(searchResults.querySelectorAll('a'));
+            if (!links.length) return;
+
+            event.preventDefault();
+            const activeIndex = links.findIndex(link => link === document.activeElement);
+            const direction = event.key === 'ArrowDown' ? 1 : -1;
+            const nextIndex = activeIndex < 0
+                ? (direction === 1 ? 0 : links.length - 1)
+                : (activeIndex + direction + links.length) % links.length;
+            links[nextIndex].focus();
+        });
 
         // Keyboard shortcut '/' to focus search
         document.addEventListener('keydown', e => {
@@ -142,6 +166,7 @@
             }
             if (e.key === 'Escape') {
                 searchResults.hidden = true;
+                searchInput.setAttribute('aria-expanded', 'false');
                 searchInput.blur();
             }
         });
@@ -149,6 +174,8 @@
         document.addEventListener('click', e => {
             if (!searchBox.contains(e.target) && !searchResults.contains(e.target)) {
                 searchResults.hidden = true;
+                searchInput.setAttribute('aria-expanded', 'false');
+                searchInput.blur();
             }
         });
     }

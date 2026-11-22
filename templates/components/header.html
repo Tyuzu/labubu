@@ -2,8 +2,13 @@
 <header class="top-header">
     <div class="header-branding">
         <a href="/" class="brand-link" aria-label="Imigi Home">
-            <span class="user-badge" aria-hidden="true">I</span>
-            <span class="brand-name">Imigi</span>
+            <span class="user-badge" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><path d="m8 16 2.8-8h2.4L16 16"/><path d="M9 13h6"/></svg>
+            </span>
+            <span class="brand-copy">
+                <span class="brand-name">Imigi</span>
+                <span class="brand-context">Media workspace</span>
+            </span>
         </a>
     </div>
 
@@ -24,12 +29,17 @@
                 aria-autocomplete="list"
                 aria-controls="global-tool-results"
             />
+            <kbd class="search-shortcut" aria-hidden="true">/</kbd>
             <div class="search-results" id="global-tool-results" role="listbox" hidden></div>
         </div>
     </form>
 
     <div class="header-actions">
-                <button 
+        <span class="header-status" title="Processing happens privately in your browser">
+            <span class="header-status-dot" aria-hidden="true"></span>
+            <span>Browser-ready</span>
+        </span>
+        <button 
             type="button" 
             class="theme-toggle" 
             id="theme-toggle" 
