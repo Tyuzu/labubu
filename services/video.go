@@ -100,12 +100,18 @@ func ProcessVideoUpload(r *http.Request) ([]byte, string, string, error) {
 			"contrast":  "eq=contrast=1.6:saturation=1.2:brightness=0.02",
 			"grayscale": "eq=contrast=1.12:saturation=0.1:brightness=0.02",
 			"sepia":     "eq=contrast=1.18:saturation=0.8:brightness=0.05,colorchannelmixer=rr=1.2:gg=0.8:bb=0.6",
-			"noir":      "curves=r='0.2':0.4:1.0/0.0:1.0,curves=g='0.2':0.4:1.0/0.0:1.0,curves=b='0.2':0.4:1.0/0.0:1.0",
+			"noir":      "format=gray,eq=contrast=1.7:brightness=-0.04",
 			"sharp":     "unsharp=5:5:1.2:5:5:0.8",
 			"sunset":    "eq=contrast=1.25:saturation=1.5:brightness=0.09",
 			"dreamy":    "eq=contrast=1.08:saturation=1.1:brightness=0.08",
 		}
-		args = append(args, "-vf", filterMap[filter], "-c:v", codecName, "-preset", "veryfast", "-c:a", audioCodec, outputPath)
+		if mapped, ok := filterMap[filter]; ok {
+			filter = mapped
+		}
+		if len(filter) > 4096 {
+			return nil, "", "", newStatusError(http.StatusBadRequest, "Filter expression is too long")
+		}
+		args = append(args, "-vf", filter, "-c:v", codecName, "-preset", "veryfast", "-c:a", audioCodec, outputPath)
 	default:
 		return nil, "", "", newStatusError(http.StatusBadRequest, "Unsupported video action")
 	}

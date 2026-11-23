@@ -710,6 +710,8 @@ function displayResult(form, result) {
       downloadLink.textContent = 'Download images archive';
     } else if (fileExtension === 'pdf') {
       downloadLink.textContent = 'Download PDF';
+    } else if (form.dataset.tool === 'video-filters') {
+      downloadLink.textContent = 'Download filtered video';
     } else {
       downloadLink.textContent = 'Download processed file';
     }

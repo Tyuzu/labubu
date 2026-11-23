@@ -101,76 +101,89 @@
     const format = getVideoOutputFormat(form);
     const nextParams = { ...params, format };
 
-    if (mode === 'self-hosted') {
-      return processVideoOnServer(file, action, nextParams);
-    }
-
-    try {
-      switch (action) {
-        case 'crop':
-          return cropVideo(file, nextParams);
-        case 'trim':
-          return trimVideo(file, nextParams);
-        case 'filter':
-          return applyVideoFilter(file, nextParams.filter || 'cinematic', nextParams.format || 'mp4');
-        default:
-          throw new Error('Unknown video action.');
-      }
-    } catch (error) {
-      console.warn('[video] CDN processing failed, falling back to self-hosted backend:', error);
-      return processVideoOnServer(file, action, nextParams);
-    }
+    // Route every video action through native FFmpeg on the server.
+    return processVideoOnServer(file, action, nextParams);
   }
 
   async function processVideoEnhancement(file, form, params) {
     if (!file) throw new Error('Please upload a video before enhancing it.');
-    const action = String(params.action || 'enhance');
-    const outputFormat = String(params.format || 'mp4').toLowerCase();
 
-    switch (action) {
-      case 'burn-subtitles':
-        return burnSubtitle(file, { subtitle: params.subtitle || 'Imigi', format: outputFormat });
-      case 'trim-audio':
-        return trimAudio(file, { start: Number(params.trimStart || 0), end: Number(params.trimEnd || 10), format: outputFormat });
-      case 'audio-fade':
-        return fadeAudio(file, { fadeIn: Number(params.fadeIn || 1.5), fadeOut: Number(params.fadeOut || 1.5), format: outputFormat });
-      case 'speed-control':
-        return changeVideoSpeed(file, { rate: Number(params.speed || 1), format: outputFormat });
-      case 'convert-format':
-        return convertVideoFormat(file, outputFormat);
-      case 'enhance':
-      default:
-        return enhanceVideo(file, {
-          format: outputFormat,
-          contrast: Number(form.querySelector('#video-enhance-contrast')?.value || 1.2),
-          brightness: Number(form.querySelector('#video-enhance-brightness')?.value || 0.05),
-          saturation: Number(form.querySelector('#video-enhance-saturation')?.value || 1.25)
-        });
+    if (params.action && params.action !== 'enhance') {
+      throw new Error('This enhancer action is not implemented by the server backend yet.');
     }
+
+    return processVideoOnServer(file, 'filter', {
+      format: String(params.format || 'mp4').toLowerCase(),
+      filter: 'eq=contrast=1.2:saturation=1.25:brightness=0.05'
+    });
   }
 
   async function processVideoOnServer(file, action, params) {
-    throw new Error('Server-side video processing is not included in the static site. Please use the browser/CDN processing mode.');
+    if (!file) throw new Error('Please upload a video before processing.');
+
+    const formData = new FormData();
+    formData.append('video', file, file.name);
+    formData.append('action', action);
+    formData.append('format', String(params.format || 'mp4').toLowerCase());
+
+    if (action === 'crop') {
+      formData.append('x', String(params.x || 0));
+      formData.append('y', String(params.y || 0));
+      formData.append('width', String(params.width || 1280));
+      formData.append('height', String(params.height || 720));
+    } else if (action === 'trim') {
+      formData.append('start', String(params.start || 0));
+      formData.append('end', String(params.end || 10));
+    } else if (action === 'filter') {
+      formData.append('filter', String(params.filter || 'cinematic'));
+    }
+
+    const response = await fetch('/api/video/process', {
+      method: 'POST',
+      body: formData
+    });
+
+    if (!response.ok) {
+      let message = 'The server could not process this video.';
+      try {
+        message = (await response.text()).trim() || message;
+      } catch (_) {}
+      throw new Error(message);
+    }
+
+    const blob = await response.blob();
+    const disposition = response.headers.get('Content-Disposition') || '';
+    const nameMatch = disposition.match(/filename="?([^";]+)"?/i);
+    const fileName = nameMatch ? nameMatch[1] : `${file.name.replace(/\.[^/.]+$/, '')}-processed.${String(params.format || 'mp4').toLowerCase()}`;
+    return createDownloadResult(blob, fileName);
   }
 
   let ffmpegInstance = null;
-  let ffmpegUtil = null;
+
+  async function fetchFileAsUint8Array(file) {
+    if (file instanceof Blob) {
+      return new Uint8Array(await file.arrayBuffer());
+    }
+    if (typeof file === 'string') {
+      const response = await fetch(file);
+      if (!response.ok) throw new Error(`Unable to download file (${response.status}).`);
+      return new Uint8Array(await response.arrayBuffer());
+    }
+    return new Uint8Array();
+  }
 
   async function getFFmpeg() {
     if (ffmpegInstance) return ffmpegInstance;
-    const [{ FFmpeg }, utilModule] = await Promise.all([
-      import('https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.10/dist/esm/index.js'),
-      import('https://cdn.jsdelivr.net/npm/@ffmpeg/util@0.12.10/dist/esm/index.js')
-    ]);
-    ffmpegUtil = utilModule;
+    const { FFmpeg } = await import('/static/vendor/ffmpeg/index.js');
     const ffmpeg = new FFmpeg();
     ffmpeg.on('log', ({ message }) => {
       if (message && typeof console !== 'undefined') console.debug('[ffmpeg]', message);
     });
 
     await ffmpeg.load({
-      coreURL: await ffmpegUtil.toBlobURL('https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/esm/ffmpeg-core.js', 'text/javascript'),
-      wasmURL: await ffmpegUtil.toBlobURL('https://cdn.jsdelivr.net/npm/@ffmpeg/core@0.12.10/dist/esm/ffmpeg-core.wasm', 'application/wasm')
+      classWorkerURL: '/static/vendor/ffmpeg/worker.js',
+      coreURL: '/static/vendor/ffmpeg/core/ffmpeg-core.js',
+      wasmURL: '/static/vendor/ffmpeg/core/ffmpeg-core.wasm'
     });
 
     ffmpegInstance = ffmpeg;
@@ -182,10 +195,19 @@
     const ffmpeg = await getFFmpeg();
     const extension = getFileExtension(file.name);
     const inputName = `input.${extension}`;
-    await ffmpeg.writeFile(inputName, await ffmpegUtil.fetchFile(file));
-    await ffmpeg.exec(args);
+    await ffmpeg.writeFile(inputName, await fetchFileAsUint8Array(file));
+    const exitCode = await ffmpeg.exec(args);
+    if (Number(exitCode) !== 0) {
+      throw new Error(`Video processing failed (FFmpeg exit code ${exitCode}).`);
+    }
     const data = await ffmpeg.readFile(outputName);
-    return new Blob([data.buffer], { type: resolveVideoMimeType(outputFormat) });
+    if (!data || typeof data === 'string' || data.length === 0) {
+      throw new Error('FFmpeg did not create a downloadable video file.');
+    }
+    const bytes = data instanceof Uint8Array ? data.slice() : new Uint8Array(data);
+    await ffmpeg.deleteFile(inputName).catch(function() {});
+    await ffmpeg.deleteFile(outputName).catch(function() {});
+    return new Blob([bytes], { type: resolveVideoMimeType(outputFormat) });
   }
 
   function resolveVideoOutputExtension(format) {
