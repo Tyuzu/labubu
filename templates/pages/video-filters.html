@@ -25,6 +25,10 @@
         <label id="video-filter-style-label">Filter preset</label>
         <input id="video-filter-style" type="hidden" value="cinematic" />
         <div class="video-filter-gallery" data-page-size="12" aria-labelledby="video-filter-style-label">
+          <div class="video-filter-toolbar">
+            <input class="video-filter-search" type="search" placeholder="Search filters" aria-label="Search filter presets" />
+            <span class="video-filter-selected-label">Selected: <strong>Cinematic</strong></span>
+          </div>
           <div class="video-filter-grid">
             {{range $index, $filter := .VideoFilters}}
             <button class="video-filter-card{{if eq $index 0}} is-selected{{end}}" type="button" data-filter="{{$filter.ID}}" data-filter-value="{{$filter.Filter}}" aria-pressed="{{if eq $index 0}}true{{else}}false{{end}}"{{if ge $index 12}} hidden{{end}}>

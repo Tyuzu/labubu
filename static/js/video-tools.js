@@ -306,7 +306,7 @@
     const outputFormat = resolveVideoOutputExtension(format);
     const inputName = `input.${getFileExtension(file.name)}`;
     const outputName = `filtered-${Date.now()}.${outputFormat}`;
-    const blob = await runVideoFFmpeg(file, ['-i', inputName, '-vf', filter, '-c:v', outputFormat === 'webm' ? 'libvpx-vp9' : 'libx264', '-preset', 'veryfast', '-c:a', outputFormat === 'webm' ? 'libopus' : 'aac', '-movflags', '+faststart', outputName], outputName, outputFormat);
+    const blob = await runVideoFFmpeg(file, ['-i', inputName, '-vf', filter, '-c:v', outputFormat === 'webm' ? 'libvpx-vp9' : 'libx264', '-preset', 'veryfast', '-c:a', outputFormat === 'webm' ? 'libopus' : 'aac', '-movflags', '+faststart', outputName], outputName, format);
     return createDownloadResult(blob, `${file.name.replace(/\.[^/.]+$/, '')}-filtered.${outputFormat}`);
   }
 
@@ -360,11 +360,34 @@
     const cards = Array.from(gallery.querySelectorAll('.video-filter-card'));
     const loadMore = gallery.querySelector('.video-filter-load-more');
     const count = gallery.querySelector('.video-filter-count');
+    const search = gallery.querySelector('.video-filter-search');
+    const selectedLabel = gallery.querySelector('.video-filter-selected-label strong');
     const pageSize = Number(gallery.dataset.pageSize || 12);
     let visibleCount = Math.min(cards.length, pageSize);
+    let query = '';
 
-    cards.forEach((card, index) => {
-      card.hidden = index >= visibleCount;
+    function matchingCards() {
+      return cards.filter(card => {
+        const name = (card.textContent || '').toLowerCase();
+        return !query || name.includes(query);
+      });
+    }
+
+    function renderCards() {
+      const matches = matchingCards();
+      cards.forEach(card => {
+        card.hidden = true;
+      });
+      matches.slice(0, visibleCount).forEach(card => { card.hidden = false; });
+      if (count) count.textContent = `Showing ${Math.min(visibleCount, matches.length)} of ${matches.length} filters`;
+      if (loadMore) {
+        loadMore.hidden = matches.length <= visibleCount;
+        loadMore.textContent = `Show ${Math.max(0, matches.length - visibleCount)} more filters`;
+      }
+    }
+
+    cards.forEach(card => {
+      card.hidden = cards.indexOf(card) >= visibleCount;
       card.addEventListener('click', function() {
         cards.forEach(item => {
           item.classList.remove('is-selected');
@@ -373,27 +396,31 @@
         card.classList.add('is-selected');
         card.setAttribute('aria-pressed', 'true');
         if (hiddenInput) hiddenInput.value = card.dataset.filterValue || card.dataset.filter || 'cinematic';
+        if (selectedLabel) selectedLabel.textContent = card.querySelector('.video-filter-name')?.textContent.trim() || card.dataset.filter;
       });
     });
 
-    const selected = cards.find(card => card.classList.contains('is-selected')) || cards[0];
-    if (selected && hiddenInput) hiddenInput.value = selected.dataset.filterValue || selected.dataset.filter || 'cinematic';
-
-    if (count) count.textContent = `Showing ${visibleCount} of ${cards.length} filters`;
-
-    if (loadMore) {
-      if (visibleCount >= cards.length) loadMore.hidden = true;
-      loadMore.addEventListener('click', function() {
-        visibleCount = Math.min(cards.length, visibleCount + pageSize);
-        cards.forEach((card, index) => { card.hidden = index >= visibleCount; });
-        if (count) count.textContent = `Showing ${visibleCount} of ${cards.length} filters`;
-        if (visibleCount >= cards.length) {
-          loadMore.hidden = true;
-        } else {
-          loadMore.textContent = `Show ${cards.length - visibleCount} more filters`;
-        }
+    if (search) {
+      search.addEventListener('input', function() {
+        query = search.value.trim().toLowerCase();
+        visibleCount = pageSize;
+        renderCards();
       });
     }
+
+    if (loadMore) {
+      loadMore.addEventListener('click', function() {
+        visibleCount = Math.min(matchingCards().length, visibleCount + pageSize);
+        renderCards();
+      });
+    }
+
+    const selected = cards.find(card => card.classList.contains('is-selected')) || cards[0];
+    if (selected) {
+      if (hiddenInput) hiddenInput.value = selected.dataset.filterValue || selected.dataset.filter || 'cinematic';
+      if (selectedLabel) selectedLabel.textContent = selected.querySelector('.video-filter-name')?.textContent.trim() || selected.dataset.filter;
+    }
+    renderCards();
   }
 
   initVideoFilterGallery();

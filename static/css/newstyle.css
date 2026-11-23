@@ -741,88 +741,36 @@ main.container {
   gap: var(--space-3);
 }
 
-.video-filter-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(138px, 1fr));
+.video-filter-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   gap: var(--space-3);
 }
 
-.video-filter-card {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: var(--space-2);
-  padding: var(--space-2);
-  background-color: var(--bg-canvas);
-  border: 1px solid var(--stroke-subtle);
-  border-radius: var(--radius-lg);
-  cursor: pointer;
-  text-align: left;
-  transition: transform 140ms var(--ease-decelerate), border-color 140ms var(--ease-fluent), background-color 140ms var(--ease-fluent);
-}
-
-.video-filter-card:hover {
-  background-color: var(--bg-subtle-hover);
-  border-color: var(--stroke-default);
-  transform: translateY(-1px);
-}
-
-.video-filter-card.is-selected,
-.video-filter-card[aria-pressed="true"] {
-  background-color: var(--accent-subtle);
-  border-color: var(--accent-primary);
-  box-shadow: inset 0 0 0 1px var(--accent-primary);
-}
-
-.video-filter-preview {
-  display: block;
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  border-radius: var(--radius-md);
-  background: linear-gradient(135deg, #0f6cbd 0%, #8764b8 50%, #e3008c 100%);
-}
-
-/* Visual Preset Swatches */
-.filter-cinematic { filter: contrast(1.12) saturate(1.18) hue-rotate(-6deg); }
-.filter-warm      { filter: sepia(0.28) saturate(1.25) brightness(1.03); }
-.filter-cool      { filter: hue-rotate(15deg) saturate(1.1) brightness(0.98); }
-.filter-vintage   { filter: sepia(0.45) contrast(0.92) brightness(0.96); }
-.filter-contrast  { filter: contrast(1.4) saturate(1.1); }
-.filter-grayscale { filter: grayscale(1); }
-.filter-sepia     { filter: sepia(0.85); }
-.filter-noir      { filter: grayscale(1) contrast(1.45) brightness(0.88); }
-.filter-sharp     { filter: contrast(1.22) brightness(1.04); }
-.filter-sunset    { filter: sepia(0.35) hue-rotate(-18deg) saturate(1.45); }
-.filter-dreamy    { filter: blur(0.4px) brightness(1.08) saturate(1.2) contrast(0.92); }
-
-.video-filter-name {
-  font-size: var(--text-xs);
-  font-weight: 600;
-  color: var(--fg-primary);
-  padding: 0 2px;
-}
-
-.video-filter-load-more {
-  align-self: flex-start;
-  padding: 6px 14px;
-  border-radius: var(--radius-md);
+.video-filter-search {
+  width: min(260px, 100%);
+  min-height: 38px;
+  padding: 8px 12px;
   border: 1px solid var(--stroke-default);
-  background-color: var(--bg-layer);
+  border-radius: var(--radius-md);
+  background: var(--bg-layer);
   color: var(--fg-primary);
-  font-family: inherit;
-  font-size: var(--text-xs);
-  font-weight: 600;
-  cursor: pointer;
 }
 
-.video-filter-load-more:hover {
-  background-color: var(--bg-subtle-hover);
-}
-
-.video-filter-count {
-  margin: 0;
-  font-size: var(--text-xs);
+.video-filter-selected-label {
   color: var(--fg-muted);
+  font-size: var(--text-xs);
+}
+
+.video-filter-selected-label strong {
+  color: var(--fg-primary);
+}
+
+.video-filter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--space-3);
 }
 
 /* Primary Fluent Accent CTA */
@@ -1026,4 +974,67 @@ main.container {
   .footer-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+}
+
+@media (max-width: 560px) {
+  .video-filter-toolbar { align-items: stretch; flex-direction: column; }
+  .video-filter-search { width: 100%; }
+  .video-filter-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* ==========================================================================
+   Video Filter Styles
+   ========================================================================== */
+.video-filter-preview {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background-image: url('/static/images/filter-demo.svg');
+  background-size: cover;
+  background-position: center;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.video-filter-preview::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 55%, rgba(6, 10, 18, 0.18));
+  pointer-events: none;
+}
+
+.video-filter-card.is-selected .video-filter-preview,
+.video-filter-card[aria-pressed="true"] .video-filter-preview {
+  box-shadow: inset 0 0 0 2px var(--accent-primary), 0 8px 20px rgba(0, 0, 0, 0.18);
+}
+
+.filter-catalog {
+  filter: contrast(1.04) saturate(1.05);
+}
+
+.video-filter-card:nth-child(6n+1) .video-filter-preview {
+  filter: contrast(1.12) saturate(1.18) hue-rotate(-5deg);
+}
+
+.video-filter-card:nth-child(6n+2) .video-filter-preview {
+  filter: sepia(.32) saturate(1.25) brightness(1.04);
+}
+
+.video-filter-card:nth-child(6n+3) .video-filter-preview {
+  filter: hue-rotate(14deg) saturate(.92) brightness(.98);
+}
+
+.video-filter-card:nth-child(6n+4) .video-filter-preview {
+  filter: sepia(.38) contrast(.92) brightness(.96);
+}
+
+.video-filter-card:nth-child(6n+5) .video-filter-preview {
+  filter: grayscale(1) contrast(1.35) brightness(.9);
+}
+
+.video-filter-card:nth-child(6n+6) .video-filter-preview {
+  filter: contrast(1.38) saturate(1.28) hue-rotate(-12deg);
 }
