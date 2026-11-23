@@ -302,6 +302,7 @@ func buildStaticSite(outputDir string) error {
 			TemplateName:   route.Template,
 			BackendWarning: false,
 			CurrentYear:    time.Now().Year(),
+			VideoFilters:   handlers.FrontendVideoFilters(),
 		}
 		var rendered bytes.Buffer
 		if err := tmpl.ExecuteTemplate(&rendered, "layout", data); err != nil {

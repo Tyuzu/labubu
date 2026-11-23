@@ -24,56 +24,22 @@
       <div class="field">
         <label id="video-filter-style-label">Filter preset</label>
         <input id="video-filter-style" type="hidden" value="cinematic" />
-        <div class="video-filter-gallery" data-page-size="6" aria-labelledby="video-filter-style-label">
+        <div class="video-filter-gallery" data-page-size="12" aria-labelledby="video-filter-style-label">
           <div class="video-filter-grid">
-            <button class="video-filter-card is-selected" type="button" data-filter="cinematic" aria-pressed="true">
+            {{range $index, $filter := .VideoFilters}}
+            <button class="video-filter-card{{if eq $index 0}} is-selected{{end}}" type="button" data-filter="{{$filter.ID}}" data-filter-value="{{$filter.Filter}}" aria-pressed="{{if eq $index 0}}true{{else}}false{{end}}"{{if ge $index 12}} hidden{{end}}>
+              <span class="video-filter-preview filter-catalog" aria-hidden="true"></span>
+              <span class="video-filter-name">{{$filter.Name}}</span>
+            </button>
+            {{else}}
+            <button class="video-filter-card is-selected" type="button" data-filter="cinematic" data-filter-value="eq=contrast=1.15:saturation=1.35:brightness=0.04" aria-pressed="true">
               <span class="video-filter-preview filter-cinematic" aria-hidden="true"></span>
               <span class="video-filter-name">Cinematic</span>
             </button>
-            <button class="video-filter-card" type="button" data-filter="warm" aria-pressed="false">
-              <span class="video-filter-preview filter-warm" aria-hidden="true"></span>
-              <span class="video-filter-name">Warm</span>
-            </button>
-            <button class="video-filter-card" type="button" data-filter="cool" aria-pressed="false">
-              <span class="video-filter-preview filter-cool" aria-hidden="true"></span>
-              <span class="video-filter-name">Cool</span>
-            </button>
-            <button class="video-filter-card" type="button" data-filter="vintage" aria-pressed="false">
-              <span class="video-filter-preview filter-vintage" aria-hidden="true"></span>
-              <span class="video-filter-name">Vintage</span>
-            </button>
-            <button class="video-filter-card" type="button" data-filter="contrast" aria-pressed="false">
-              <span class="video-filter-preview filter-contrast" aria-hidden="true"></span>
-              <span class="video-filter-name">High Contrast</span>
-            </button>
-            <button class="video-filter-card" type="button" data-filter="grayscale" aria-pressed="false">
-              <span class="video-filter-preview filter-grayscale" aria-hidden="true"></span>
-              <span class="video-filter-name">Grayscale</span>
-            </button>
-
-            <button class="video-filter-card" type="button" data-filter="sepia" aria-pressed="false" hidden>
-              <span class="video-filter-preview filter-sepia" aria-hidden="true"></span>
-              <span class="video-filter-name">Sepia</span>
-            </button>
-            <button class="video-filter-card" type="button" data-filter="noir" aria-pressed="false" hidden>
-              <span class="video-filter-preview filter-noir" aria-hidden="true"></span>
-              <span class="video-filter-name">Noir</span>
-            </button>
-            <button class="video-filter-card" type="button" data-filter="sharp" aria-pressed="false" hidden>
-              <span class="video-filter-preview filter-sharp" aria-hidden="true"></span>
-              <span class="video-filter-name">Sharp</span>
-            </button>
-            <button class="video-filter-card" type="button" data-filter="sunset" aria-pressed="false" hidden>
-              <span class="video-filter-preview filter-sunset" aria-hidden="true"></span>
-              <span class="video-filter-name">Sunset</span>
-            </button>
-            <button class="video-filter-card" type="button" data-filter="dreamy" aria-pressed="false" hidden>
-              <span class="video-filter-preview filter-dreamy" aria-hidden="true"></span>
-              <span class="video-filter-name">Dreamy</span>
-            </button>
+            {{end}}
           </div>
-          <button class="video-filter-load-more" type="button">Show 5 more filters</button>
-          <p class="video-filter-count" aria-live="polite">Showing 6 of 11 filters</p>
+          <button class="video-filter-load-more" type="button">Show more filters</button>
+          <p class="video-filter-count" aria-live="polite">Showing filters</p>
         </div>
       </div>
 

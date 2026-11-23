@@ -22,6 +22,7 @@ type PageData struct {
 	BackendStatus  services.BackendStatus
 	BackendWarning bool
 	CurrentYear    int
+	VideoFilters   []FrontendFilter
 }
 
 func PageHandler(t *template.Template, app *infra.Deps, templateName string, meta rts.Metadata) http.HandlerFunc {
@@ -38,6 +39,7 @@ func PageHandler(t *template.Template, app *infra.Deps, templateName string, met
 			BackendStatus:  backendStatus,
 			BackendWarning: backendStatus.ServerUnavailable(),
 			CurrentYear:    time.Now().Year(),
+			VideoFilters:   FrontendVideoFilters(),
 		}
 
 		w.Header().Set("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")

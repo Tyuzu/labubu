@@ -297,12 +297,12 @@
       contrast: 'eq=contrast=1.6:saturation=1.2:brightness=0.02',
       grayscale: 'eq=contrast=1.12:saturation=0.1:brightness=0.02',
       sepia: 'eq=contrast=1.18:saturation=0.8:brightness=0.05, colorchannelmixer=rr=1.2:gg=0.8:bb=0.6',
-      noir: 'curves=r=' + '0.2' + ':' + '0.4' + ':1.0/0.0:1.0, curves=g=' + '0.2' + ':' + '0.4' + ':1.0/0.0:1.0, curves=b=' + '0.2' + ':' + '0.4' + ':1.0/0.0:1.0',
+      noir: 'format=gray,eq=contrast=1.7:brightness=-0.04',
       sharp: 'unsharp=5:5:1.2:5:5:0.8',
       sunset: 'eq=contrast=1.25:saturation=1.5:brightness=0.09',
       dreamy: 'eq=contrast=1.08:saturation=1.1:brightness=0.08'
     };
-    const filter = presetMap[preset] || presetMap.cinematic;
+    const filter = presetMap[preset] || preset || presetMap.cinematic;
     const outputFormat = resolveVideoOutputExtension(format);
     const inputName = `input.${getFileExtension(file.name)}`;
     const outputName = `filtered-${Date.now()}.${outputFormat}`;
@@ -360,10 +360,11 @@
     const cards = Array.from(gallery.querySelectorAll('.video-filter-card'));
     const loadMore = gallery.querySelector('.video-filter-load-more');
     const count = gallery.querySelector('.video-filter-count');
-    let visibleCount = 6;
+    const pageSize = Number(gallery.dataset.pageSize || 12);
+    let visibleCount = Math.min(cards.length, pageSize);
 
-    cards.forEach(card => {
-      card.hidden = cards.indexOf(card) >= visibleCount;
+    cards.forEach((card, index) => {
+      card.hidden = index >= visibleCount;
       card.addEventListener('click', function() {
         cards.forEach(item => {
           item.classList.remove('is-selected');
@@ -371,13 +372,19 @@
         });
         card.classList.add('is-selected');
         card.setAttribute('aria-pressed', 'true');
-        if (hiddenInput) hiddenInput.value = card.dataset.filter || 'cinematic';
+        if (hiddenInput) hiddenInput.value = card.dataset.filterValue || card.dataset.filter || 'cinematic';
       });
     });
 
+    const selected = cards.find(card => card.classList.contains('is-selected')) || cards[0];
+    if (selected && hiddenInput) hiddenInput.value = selected.dataset.filterValue || selected.dataset.filter || 'cinematic';
+
+    if (count) count.textContent = `Showing ${visibleCount} of ${cards.length} filters`;
+
     if (loadMore) {
+      if (visibleCount >= cards.length) loadMore.hidden = true;
       loadMore.addEventListener('click', function() {
-        visibleCount = Math.min(cards.length, visibleCount + 5);
+        visibleCount = Math.min(cards.length, visibleCount + pageSize);
         cards.forEach((card, index) => { card.hidden = index >= visibleCount; });
         if (count) count.textContent = `Showing ${visibleCount} of ${cards.length} filters`;
         if (visibleCount >= cards.length) {

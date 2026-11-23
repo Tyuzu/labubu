@@ -1,6 +1,9 @@
 package handlers
 
-import "strings"
+import (
+	"regexp"
+	"strings"
+)
 
 type FilterPreset struct {
 	ID          string
@@ -256,4 +259,72 @@ func buildFilterMap(presets []FilterPreset) map[string][]string {
 		out[p.ID] = append(out[p.ID], p.Command)
 	}
 	return out
+}
+
+var vfFlagPattern = regexp.MustCompile(`(?:-vf|-filter:v|-filter_complex)\s+(?:"([^"]*)"|'([^']*)'|([^\s]+))`)
+
+type FrontendFilter struct {
+	ID     string `json:"id"`
+	Name   string `json:"name"`
+	Filter string `json:"filter"`
+}
+
+func FrontendVideoFilters() []FrontendFilter {
+	out := make([]FrontendFilter, 0)
+	seen := make(map[string]struct{})
+
+	for _, preset := range AllFilterPresets {
+		if preset.NeedsReview || preset.TwoInputs || preset.TwoPass {
+			continue
+		}
+
+		filter := extractVideoFilter(preset.Command)
+		if filter == "" || strings.Contains(filter, "%INPUT%") || strings.Contains(filter, "%1") {
+			continue
+		}
+
+		key := preset.ID + "\x00" + filter
+		if _, exists := seen[key]; exists {
+			continue
+		}
+		seen[key] = struct{}{}
+		out = append(out, FrontendFilter{
+			ID:     preset.ID,
+			Name:   FilterDisplayName(preset.ID),
+			Filter: filter,
+		})
+	}
+	return out
+}
+
+func extractVideoFilter(command string) string {
+	match := vfFlagPattern.FindStringSubmatch(command)
+	if len(match) == 0 {
+		return ""
+	}
+	for i := 1; i < len(match); i++ {
+		if strings.TrimSpace(match[i]) != "" {
+			return strings.TrimSpace(match[i])
+		}
+	}
+	return ""
+}
+
+func FilterDisplayName(id string) string {
+	id = strings.TrimSpace(id)
+	if id == "" {
+		return "Filter"
+	}
+	words := strings.Fields(strings.NewReplacer("_", " ", "-", " ").Replace(id))
+	for i, word := range words {
+		if word == "" {
+			continue
+		}
+		if len(word) == 1 {
+			words[i] = strings.ToUpper(word)
+			continue
+		}
+		words[i] = strings.ToUpper(word[:1]) + strings.ToLower(word[1:])
+	}
+	return strings.Join(words, " ")
 }
