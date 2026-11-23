@@ -514,5 +514,497 @@
       "robots": "noindex, nofollow",
       "canonical": "https://allok.com/500"
     }
+  },
+  "HEIC_TO_JPG_URL": {
+    "path": "/heic-to-jpg",
+    "template": "generic-tool.html",
+    "metadata": {
+      "title": "HEIC to JPG - Imigi",
+      "description": "Convert HEIC and HEIF photos to broadly compatible JPG images.",
+      "keywords": "heic to jpg, heif to jpg, convert heic",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/heic-to-jpg"
+    }
+  },
+  "SVG_TO_PNG_URL": {
+    "path": "/svg-to-png",
+    "template": "generic-tool.html",
+    "metadata": {
+      "title": "SVG to PNG - Imigi",
+      "description": "Convert scalable SVG graphics into PNG image files.",
+      "keywords": "svg to png, convert svg",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/svg-to-png"
+    }
+  },
+  "PNG_TRANSPARENCY_REMOVER_URL": {
+    "path": "/png-transparency-remover",
+    "template": "generic-tool.html",
+    "metadata": {
+      "title": "PNG Transparency Remover - Imigi",
+      "description": "Remove transparency and replace it with a selected background color.",
+      "keywords": "remove png transparency, flatten png",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/png-transparency-remover"
+    }
+  },
+  "IMAGE_METADATA_REMOVER_URL": {
+    "path": "/image-metadata-remover",
+    "template": "generic-tool.html",
+    "metadata": {
+      "title": "Image Metadata Remover - Imigi",
+      "description": "Strip EXIF and other metadata from uploaded images.",
+      "keywords": "remove image metadata, exif remover",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/image-metadata-remover"
+    }
+  },
+  "IMAGE_ENLARGER_URL": {
+    "path": "/image-enlarger",
+    "template": "generic-tool.html",
+    "metadata": {
+      "title": "Image Enlarger - Imigi",
+      "description": "Increase image dimensions and scale photos for larger presentations.",
+      "keywords": "image enlarger, upscale image",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/image-enlarger"
+    }
+  },
+  "BACKGROUND_REMOVER_URL": {
+    "path": "/background-remover",
+    "template": "generic-tool.html",
+    "metadata": {
+      "title": "Background Remover - Imigi",
+      "description": "Remove backgrounds from photos and export transparent cutouts.",
+      "keywords": "background remover, remove photo background",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/background-remover"
+    }
+  },
+  "BLUR_PIXELATE_IMAGE_URL": {
+    "path": "/blur-pixelate-image",
+    "template": "generic-tool.html",
+    "metadata": {
+      "title": "Blur or Pixelate Image - Imigi",
+      "description": "Blur or pixelate selected parts of an image to hide sensitive details.",
+      "keywords": "blur image, pixelate image",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/blur-pixelate-image"
+    }
+  },
+  "IMAGE_WATERMARK_URL": {
+    "path": "/image-watermark",
+    "template": "generic-tool.html",
+    "metadata": {
+      "title": "Add Image Text or Watermark - Imigi",
+      "description": "Add text, logos, and watermarks to images before downloading.",
+      "keywords": "image watermark, add text to image",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/image-watermark"
+    }
+  },
+  "COLOR_PALETTE_EXTRACTOR_URL": {
+    "path": "/color-palette-extractor",
+    "template": "generic-tool.html",
+    "metadata": {
+      "title": "Color Palette Extractor - Imigi",
+      "description": "Extract dominant colors and create a palette from any image.",
+      "keywords": "color palette extractor, image colors",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/color-palette-extractor"
+    }
+  },
+  "PASSPORT_PHOTO_VARIANTS_URL": {
+    "path": "/passport-photo-variants",
+    "template": "generic-tool.html",
+    "metadata": {
+      "title": "Passport Photo Variants - Imigi",
+      "description": "Create passport, ID, visa, and professional portrait photo layouts.",
+      "keywords": "passport photo variants, id photo, visa photo",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/passport-photo-variants"
+    }
+  },
+  "BULK_IMAGE_RENAMER_URL": {
+    "path": "/bulk-image-renamer",
+    "template": "generic-tool.html",
+    "metadata": {
+      "title": "Bulk Image Renamer - Imigi",
+      "description": "Rename multiple images using custom prefixes, sequences, and file rules.",
+      "keywords": "bulk image renamer, rename photos",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/bulk-image-renamer"
+    }
+  },
+  "VIDEO_COMPRESSOR_URL": {
+    "path": "/video-compressor",
+    "template": "generic-tool.html",
+    "metadata": {
+      "title": "Video Compressor - Imigi",
+      "description": "Reduce video file size for sharing and faster uploads.",
+      "keywords": "video compressor, compress video",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/video-compressor"
+    }
+  },
+  "VIDEO_TO_GIF_URL": {
+    "path": "/video-to-gif",
+    "template": "generic-tool.html",
+    "metadata": {
+      "title": "Video to GIF - Imigi",
+      "description": "Convert video clips into lightweight animated GIF files.",
+      "keywords": "video to gif, convert video to gif",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/video-to-gif"
+    }
+  },
+  "VIDEO_TO_MP3_URL": {
+    "path": "/video-to-mp3",
+    "template": "generic-tool.html",
+    "metadata": {
+      "title": "Video to MP3 - Imigi",
+      "description": "Extract audio from videos and save it as an MP3 file.",
+      "keywords": "video to mp3, extract audio",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/video-to-mp3"
+    }
+  },
+  "MERGE_VIDEOS_URL": {
+    "path": "/merge-videos",
+    "template": "generic-tool.html",
+    "metadata": {
+      "title": "Merge Videos - Imigi",
+      "description": "Combine multiple video clips into one continuous video.",
+      "keywords": "merge videos, combine video clips",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/merge-videos"
+    }
+  },
+  "ROTATE_FLIP_VIDEO_URL": {
+    "path": "/rotate-flip-video",
+    "template": "generic-tool.html",
+    "metadata": {
+      "title": "Rotate or Flip Video - Imigi",
+      "description": "Rotate or mirror videos to correct their orientation.",
+      "keywords": "rotate video, flip video",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/rotate-flip-video"
+    }
+  },
+  "CHANGE_VIDEO_SPEED_URL": {
+    "path": "/change-video-speed",
+    "template": "generic-tool.html",
+    "metadata": {
+      "title": "Change Video Speed - Imigi",
+      "description": "Speed up or slow down video clips with pitch-preserving playback.",
+      "keywords": "change video speed, slow motion video",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/change-video-speed"
+    }
+  },
+  "ADD_SUBTITLES_URL": {
+    "path": "/add-subtitles",
+    "template": "generic-tool.html",
+    "metadata": {
+      "title": "Add Subtitles to Video - Imigi",
+      "description": "Add and burn subtitle tracks into video files.",
+      "keywords": "add subtitles, subtitle video",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/add-subtitles"
+    }
+  },
+  "EXTRACT_AUDIO_URL": {
+    "path": "/extract-audio",
+    "template": "generic-tool.html",
+    "metadata": {
+      "title": "Extract Audio from Video - Imigi",
+      "description": "Extract the audio track from a video into a separate file.",
+      "keywords": "extract video audio, save audio track",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/extract-audio"
+    }
+  },
+  "SOCIAL_VIDEO_RESIZER_URL": {
+    "path": "/social-video-resizer",
+    "template": "generic-tool.html",
+    "metadata": {
+      "title": "Social Video Resizer - Imigi",
+      "description": "Resize videos for TikTok, Reels, Shorts, Stories, and social feeds.",
+      "keywords": "social video resizer, resize for social media",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/social-video-resizer"
+    }
+  },
+  "REMOVE_VIDEO_AUDIO_URL": {
+    "path": "/remove-video-audio",
+    "template": "generic-tool.html",
+    "metadata": {
+      "title": "Remove Video Audio - Imigi",
+      "description": "Mute a video and export a silent copy without its audio track.",
+      "keywords": "remove video audio, mute video",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/remove-video-audio"
+    }
+  },
+  "SCREEN_RECORDER_URL": {
+    "path": "/screen-recorder",
+    "template": "generic-tool.html",
+    "metadata": {
+      "title": "Record Screen - Imigi",
+      "description": "Record your screen and export a browser-based video capture.",
+      "keywords": "screen recorder, record screen",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/screen-recorder"
+    }
+  },
+  "QR_CODE_GENERATOR_URL": {
+    "path": "/qr-code-generator",
+    "template": "generic-tool.html",
+    "metadata": {
+      "title": "QR Code Generator - Imigi",
+      "description": "Generate QR codes for URLs, text, contact details, and Wi-Fi networks.",
+      "keywords": "qr code generator, create qr code",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/qr-code-generator"
+    }
+  },
+  "BARCODE_TOOL_URL": {
+    "path": "/barcode-generator-scanner",
+    "template": "generic-tool.html",
+    "metadata": {
+      "title": "Barcode Generator and Scanner - Imigi",
+      "description": "Create and decode common barcode formats directly in your browser.",
+      "keywords": "barcode generator, barcode scanner",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/barcode-generator-scanner"
+    }
+  },
+  "DOCUMENT_COMPARE_URL": {
+    "path": "/compare-documents",
+    "template": "generic-tool.html",
+    "metadata": {
+      "title": "Compare Documents - Imigi",
+      "description": "Compare two text or document files and highlight differences.",
+      "keywords": "compare documents, document diff",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/compare-documents"
+    }
+  },
+  "INVOICE_GENERATOR_URL": {
+    "path": "/invoice-generator",
+    "template": "generic-tool.html",
+    "metadata": {
+      "title": "Invoice Generator - Imigi",
+      "description": "Create professional invoices and export them as PDF documents.",
+      "keywords": "invoice generator, create invoice",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/invoice-generator"
+    }
+  },
+  "RESUME_BUILDER_URL": {
+    "path": "/resume-builder",
+    "template": "generic-tool.html",
+    "metadata": {
+      "title": "Resume Builder - Imigi",
+      "description": "Build and export an ATS-friendly resume in the browser.",
+      "keywords": "resume builder, cv builder",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/resume-builder"
+    }
+  },
+  "MARKDOWN_TO_HTML_URL": {
+    "path": "/markdown-to-html",
+    "template": "generic-tool.html",
+    "metadata": {
+      "title": "Markdown to HTML - Imigi",
+      "description": "Convert Markdown formatting into clean HTML output.",
+      "keywords": "markdown to html, markdown converter",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/markdown-to-html"
+    }
+  },
+  "WORD_CHARACTER_COUNTER_URL": {
+    "path": "/word-character-counter",
+    "template": "generic-tool.html",
+    "metadata": {
+      "title": "Word and Character Counter - Imigi",
+      "description": "Count words, characters, sentences, and reading time instantly.",
+      "keywords": "word counter, character counter",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/word-character-counter"
+    }
+  },
+  "JSON_CSV_CONVERTER_URL": {
+    "path": "/json-csv-converter",
+    "template": "generic-tool.html",
+    "metadata": {
+      "title": "JSON CSV Converter - Imigi",
+      "description": "Convert JSON data into CSV and CSV data into JSON.",
+      "keywords": "json csv converter, convert json csv",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/json-csv-converter"
+    }
+  },
+  "PRIVACY_URL": {
+    "path": "/privacy",
+    "template": "info-page.html",
+    "metadata": {
+      "title": "Privacy Policy - Imigi",
+      "description": "Learn how Imigi handles privacy, browser processing, and local files.",
+      "keywords": "privacy policy, imigi privacy",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/privacy"
+    }
+  },
+  "TERMS_URL": {
+    "path": "/terms",
+    "template": "info-page.html",
+    "metadata": {
+      "title": "Terms of Service - Imigi",
+      "description": "Review the terms governing use of the Imigi website and tools.",
+      "keywords": "terms of service, imigi terms",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/terms"
+    }
+  },
+  "COOKIES_URL": {
+    "path": "/cookies",
+    "template": "info-page.html",
+    "metadata": {
+      "title": "Cookie Policy - Imigi",
+      "description": "Understand how Imigi and its advertising partners may use cookies.",
+      "keywords": "cookie policy, cookies",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/cookies"
+    }
+  },
+  "DISCLAIMER_URL": {
+    "path": "/disclaimer",
+    "template": "info-page.html",
+    "metadata": {
+      "title": "Disclaimer - Imigi",
+      "description": "Read important limitations and disclaimers for Imigi tools.",
+      "keywords": "disclaimer, legal disclaimer",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/disclaimer"
+    }
+  },
+  "HOW_IT_WORKS_URL": {
+    "path": "/how-it-works",
+    "template": "how-it-works.html",
+    "metadata": {
+      "title": "How It Works - Imigi",
+      "description": "Learn how to choose, configure, process, and download files with Imigi.",
+      "keywords": "how imigi works, browser tools",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/how-it-works"
+    }
+  },
+  "BLOG_URL": {
+    "path": "/blog",
+    "template": "info-page.html",
+    "metadata": {
+      "title": "Blog and Guides - Imigi",
+      "description": "Read guides and practical articles about images, video, PDF files, and document workflows.",
+      "keywords": "imigi blog, image guides, pdf guides",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/blog"
+    }
+  },
+  "GUIDES_URL": {
+    "path": "/guides",
+    "template": "info-page.html",
+    "metadata": {
+      "title": "Tool Help and Tutorials - Imigi",
+      "description": "Find help and tutorials for using Imigi tools efficiently.",
+      "keywords": "tool tutorials, help guides",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/guides"
+    }
+  },
+  "FAQ_URL": {
+    "path": "/faq",
+    "template": "faq.html",
+    "metadata": {
+      "title": "FAQ - Imigi",
+      "description": "Answers to frequently asked questions about Imigi file tools.",
+      "keywords": "faq, imigi help",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/faq"
+    }
+  },
+  "SUPPORT_FEEDBACK_URL": {
+    "path": "/support",
+    "template": "contact.html",
+    "metadata": {
+      "title": "Support and Feedback - Imigi",
+      "description": "Send a support request or share product feedback with Imigi.",
+      "keywords": "imigi support, feedback, contact",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/support"
+    }
+  },
+  "DONATE_URL": {
+    "path": "/donate",
+    "template": "info-page.html",
+    "metadata": {
+      "title": "Support Imigi - Donation and Sponsorship",
+      "description": "Support continued development of free browser-based tools.",
+      "keywords": "support imigi, donate, sponsor",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/donate"
+    }
+  },
+  "API_DOCS_URL": {
+    "path": "/api-docs",
+    "template": "info-page.html",
+    "metadata": {
+      "title": "API Documentation - Imigi",
+      "description": "Review available API endpoints and integration documentation.",
+      "keywords": "imigi api, api documentation",
+      "og_image": "https://allok.com/static/icons/imigi-icon.svg",
+      "robots": "index, follow",
+      "canonical": "https://allok.com/api-docs"
+    }
   }
 }

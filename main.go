@@ -139,7 +139,7 @@ func withSecurityHeaders(next http.Handler) http.Handler {
 		headers.Set("X-XSS-Protection", "0")
 		headers.Set("Referrer-Policy", "strict-origin-when-cross-origin")
 		headers.Set("Permissions-Policy", "camera=(self), microphone=(self), geolocation=()")
-		headers.Set("Content-Security-Policy", "default-src 'self'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'")
+		headers.Set("Content-Security-Policy", "default-src 'self'; img-src 'self' data: https: blob:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' https:; connect-src 'self' https: blob: data:; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'")
 		if r.TLS != nil {
 			headers.Set("Strict-Transport-Security", "max-age=31536000; includeSubDomains")
 		}

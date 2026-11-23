@@ -413,6 +413,8 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   document.querySelectorAll('.image-tool').forEach((form) => {
+    if (form.dataset.imigiLoaded === 'true') return;
+    form.dataset.imigiLoaded = 'true';
     bindRangeValue(form);
     ensureStatusElement(form);
 
@@ -437,8 +439,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const fileToValidate = files[0] || null;
       if (fileToValidate) {
-        if (fileToValidate.size > 25 * 1024 * 1024) {
-          setFormStatus(form, 'This file is too large. Please choose a file under 25MB.', true);
+        const isVideoTool = String(form.dataset.tool || '').startsWith('video-');
+        const maxBytes = isVideoTool ? 250 * 1024 * 1024 : 25 * 1024 * 1024;
+        if (fileToValidate.size > maxBytes) {
+          setFormStatus(form, `This file is too large. Please choose a file under ${isVideoTool ? '250MB' : '25MB'}.`, true);
+          return;
+        }
+
+        if (isVideoTool && fileToValidate.type && !fileToValidate.type.startsWith('video/')) {
+          setFormStatus(form, 'Please upload a valid video file.', true);
           return;
         }
 
@@ -1192,3 +1201,79 @@ function formatToExtension(format) {
   if (format === 'image/webp') return 'webp';
   return 'jpg';
 }
+
+function initializeDynamicallyLoadedTools() {
+  workflowState.history = readWorkflowHistory();
+  initializeWorkflowUI();
+
+  document.querySelectorAll('.image-tool').forEach((form) => {
+    if (form.dataset.imigiLoaded === 'true') return;
+    form.dataset.imigiLoaded = 'true';
+    bindRangeValue(form);
+    ensureStatusElement(form);
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const input = form.querySelector('input[type="file"]');
+      const files = input && input.files ? Array.from(input.files) : [];
+      const submitButton = form.querySelector('button[type="submit"]');
+      const originalText = submitButton ? submitButton.textContent : '';
+
+      if (!files.length && !['image-to-base64', 'base64-to-image'].includes(form.dataset.tool)) {
+        setFormStatus(form, 'Please choose a video or image file first.', true);
+        return;
+      }
+
+      const file = files[0];
+      if (file) {
+        const isVideo = String(form.dataset.tool || '').startsWith('video-');
+        const maxBytes = isVideo ? 250 * 1024 * 1024 : 25 * 1024 * 1024;
+        if (file.size > maxBytes) {
+          setFormStatus(form, `This file is too large. Please choose a file under ${isVideo ? '250MB' : '25MB'}.`, true);
+          return;
+        }
+        if (isVideo && file.type && !file.type.startsWith('video/')) {
+          setFormStatus(form, 'Please upload a valid video file.', true);
+          return;
+        }
+      }
+
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.textContent = 'Loading engine…';
+      }
+      setFormStatus(form, 'Loading FFmpeg in your browser. Large videos may take several minutes…', false);
+
+      try {
+        const result = await queueWorkflowJob(formatToolLabel(form.dataset.tool), () => runTool(form.dataset.tool, form, files));
+        displayResult(form, result);
+        recordWorkflowHistory({
+          label: formatToolLabel(form.dataset.tool),
+          fileName: result && result.fileName ? result.fileName : 'result-file',
+          url: result && result.url ? result.url : ''
+        });
+        setFormStatus(form, 'Processing complete. Preview and download are ready.', false);
+      } catch (error) {
+        console.error('[video-tools]', error);
+        setFormStatus(form, error && error.message ? error.message : 'Unable to process the video.', true);
+      } finally {
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.textContent = originalText;
+        }
+      }
+    });
+  });
+
+  const downloadLinks = document.querySelectorAll('.download-link');
+  downloadLinks.forEach((link) => {
+    link.addEventListener('click', () => {
+      const form = link.closest('.tool-card')?.querySelector('.image-tool');
+      if (form && form.dataset.tool && String(form.dataset.tool).startsWith('video-') && link.download) {
+        setFormStatus(form, 'Download started.', false);
+      }
+    });
+  });
+}
+
+initializeDynamicallyLoadedTools();

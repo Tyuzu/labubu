@@ -62,7 +62,7 @@ func TestWithSecurityHeadersSetsHardenedDefaults(t *testing.T) {
 	if got, want := res.Header().Get("Referrer-Policy"), "strict-origin-when-cross-origin"; got != want {
 		t.Fatalf("Referrer-Policy mismatch: got %q, want %q", got, want)
 	}
-	if got, want := res.Header().Get("Content-Security-Policy"), "default-src 'self'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'"; got != want {
+	if got, want := res.Header().Get("Content-Security-Policy"), "default-src 'self'; img-src 'self' data: https: blob:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' https:; connect-src 'self' https: blob: data:; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'"; got != want {
 		t.Fatalf("Content-Security-Policy mismatch: got %q, want %q", got, want)
 	}
 }

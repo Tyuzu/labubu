@@ -1,0 +1,9 @@
+{{define "info-page.html"}}
+<section class="page-shell">
+  {{template "pageHeader" (pageHeaderData "Information" .Metadata.Title .Metadata.Description)}}
+  <article class="page-card">
+    <h2>About this page</h2>
+    <p>{{.Metadata.Description}}</p>
+  </article>
+</section>
+{{end}}

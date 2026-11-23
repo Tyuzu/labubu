@@ -50,14 +50,25 @@
         '/jpg-to-webp': ['/static/js/image-tools.js'],
         '/image-cropper': ['/static/js/image-tools.js'],
         '/image-rotator': ['/static/js/image-tools.js'],
+        '/image-batch-converter': ['/static/js/image-tools.js'],
+        '/passport-photo-maker': ['/static/js/image-tools.js'],
         '/base64-to-image': ['/static/js/image-tools.js'],
         '/image-to-base64': ['/static/js/image-tools.js'],
-        '/document-scanner': ['/static/js/scanner-tools.js'],
-        '/qr-code-scanner': ['/static/js/scanner-tools.js'],
+        '/document-scanner': ['/static/js/image-tools.js', '/static/js/scanner-tools.js'],
+        '/document-enhancer': ['/static/js/image-tools.js', '/static/js/scanner-tools.js'],
+        '/qr-code-scanner': ['/static/js/image-tools.js', '/static/js/scanner-tools.js'],
+        '/ocr-text': ['/static/js/image-tools.js', '/static/js/scanner-tools.js'],
         '/merge-pdf': ['/static/js/image-tools.js', '/static/js/pdf-tools.js'],
         '/split-pdf': ['/static/js/image-tools.js', '/static/js/pdf-tools.js'],
         '/compress-pdf': ['/static/js/image-tools.js', '/static/js/pdf-tools.js'],
+        '/jpg-to-pdf': ['/static/js/image-tools.js', '/static/js/pdf-tools.js'],
+        '/pdf-to-images': ['/static/js/image-tools.js', '/static/js/pdf-tools.js'],
+        '/rotate-pdf': ['/static/js/image-tools.js', '/static/js/pdf-tools.js'],
+        '/delete-pdf-pages': ['/static/js/image-tools.js', '/static/js/pdf-tools.js'],
+        '/extract-pdf-pages': ['/static/js/image-tools.js', '/static/js/pdf-tools.js'],
+        '/pdf-page-editor': ['/static/js/image-tools.js', '/static/js/pdf-tools.js'],
         '/videos': ['/static/js/video-tools.js'],
+        '/video-enhancer': ['/static/js/image-tools.js', '/static/js/video-tools.js'],
         '/video-cropper': ['/static/js/image-tools.js', '/static/js/video-tools.js'],
         '/video-trimmer': ['/static/js/image-tools.js', '/static/js/video-tools.js'],
         '/video-filters': ['/static/js/image-tools.js', '/static/js/video-tools.js']
@@ -165,14 +176,6 @@
                 searchInput.focus();
             }
             if (e.key === 'Escape') {
-                searchResults.hidden = true;
-                searchInput.setAttribute('aria-expanded', 'false');
-                searchInput.blur();
-            }
-        });
-
-        document.addEventListener('click', e => {
-            if (!searchBox.contains(e.target) && !searchResults.contains(e.target)) {
                 searchResults.hidden = true;
                 searchInput.setAttribute('aria-expanded', 'false');
                 searchInput.blur();
@@ -299,6 +302,27 @@
         });
     }
 
+    function initContactForm() {
+        const form = document.querySelector('.contact-form');
+        if (!form) return;
+
+        form.addEventListener('submit', event => {
+            event.preventDefault();
+            if (!form.reportValidity()) return;
+
+            const data = new FormData(form);
+            const name = String(data.get('name') || '').trim();
+            const email = String(data.get('email') || '').trim();
+            const subject = String(data.get('subject') || '').trim();
+            const message = String(data.get('message') || '').trim();
+            const body = `Name: ${name}\nEmail: ${email}\n\n${message}`;
+            const status = form.querySelector('.contact-form-status');
+
+            if (status) status.textContent = 'Opening your email app…';
+            window.location.href = `mailto:support@imigi.app?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        });
+    }
+
     // --- INITIALIZE ON DOM LOAD ---
     document.addEventListener('DOMContentLoaded', () => {
         initDynamicScripts();
@@ -306,5 +330,6 @@
         initSearch();
         initNavigation();
         initUIEnhancements();
+        initContactForm();
     });
 })();
