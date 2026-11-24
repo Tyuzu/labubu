@@ -1,0 +1,585 @@
+
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+    <title>Document Scanner - Imigi</title>
+    <meta name="description" content="Turn photos of documents into clean, contrast-boosted scans with a CamScanner-style enhancement flow.">
+    <meta name="keywords" content="document scanner, scan document, camscanner, image enhancement">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://allok.com/document-scanner">
+
+    
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Document Scanner - Imigi">
+    <meta property="og:description" content="Turn photos of documents into clean, contrast-boosted scans with a CamScanner-style enhancement flow.">
+    <meta property="og:image" content="https://allok.com/static/icons/imigi-icon.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Document Scanner - Imigi">
+    <meta name="twitter:description" content="Turn photos of documents into clean, contrast-boosted scans with a CamScanner-style enhancement flow.">
+
+    
+    <meta name="theme-color" content="#090d16">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="icon" type="image/svg+xml" href="/static/icons/imigi-icon.svg">
+    <link rel="apple-touch-icon" href="/static/icons/imigi-icon.svg">
+    <link rel="manifest" href="/static/manifest.webmanifest">
+
+    
+    <link rel="stylesheet" href="/static/css/newstyle.css?v=20261104">
+</head>
+<body class="app-layout bg-slate-950 text-slate-100 antialiased min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white">
+    
+    
+    
+<div class="discord-shell">
+    <aside class="server-rail" role="tablist" aria-label="Tool Categories">
+        <button class="server-button active" type="button" role="tab" aria-selected="true" data-category="overview" title="Overview">
+            <span class="server-icon">I</span>
+            <span class="server-name">Home</span>
+        </button>
+        <button class="server-button" type="button" role="tab" aria-selected="false" data-category="images" title="Images">
+            <span class="server-icon">🖼️</span>
+            <span class="server-name">Images</span>
+        </button>
+        <button class="server-button" type="button" role="tab" aria-selected="false" data-category="videos" title="Videos">
+            <span class="server-icon">🎬</span>
+            <span class="server-name">Videos</span>
+        </button>
+        <button class="server-button" type="button" role="tab" aria-selected="false" data-category="scanner" title="Scanner">
+            <span class="server-icon">📑</span>
+            <span class="server-name">Scanner</span>
+        </button>
+        <button class="server-button" type="button" role="tab" aria-selected="false" data-category="pdfs" title="PDFs">
+            <span class="server-icon">📄</span>
+            <span class="server-name">PDFs</span>
+        </button>
+        <button class="server-button" type="button" role="tab" aria-selected="false" data-category="utility" title="Utility">
+            <span class="server-icon">⚡</span>
+            <span class="server-name">Tools</span>
+        </button>
+    </aside>
+
+    <nav class="sidebar-nav" id="sidebarNav" aria-label="Main Navigation">
+        <div class="nav-topbar">
+            <div class="nav-brand">
+                <a href="/">Imigi</a>
+            </div>
+        </div>
+
+        <div class="nav-inner">
+            <div class="sidebar-section active" data-category="overview">
+                <span class="nav-label">Navigation</span>
+                <div class="nav-group nav-tools">
+                    <a class="channel-item" href="/"><span class="nav-icon">🏠</span>Home</a>
+                    <a class="channel-item" href="/image-tools"><span class="nav-icon">🖼️</span>Image Tools</a>
+                    <a class="channel-item" href="/pdf-tools"><span class="nav-icon">📄</span>PDF Tools</a>
+                    <a class="channel-item" href="/video-tools"><span class="nav-icon">🎬</span>Video Tools</a>
+                    <a class="channel-item" href="/scanner-tools"><span class="nav-icon">📑</span>Scanner Tools</a>
+                    <a class="channel-item" href="/about"><span class="nav-icon">ℹ️</span>About</a>
+                    <a class="channel-item" href="/contact"><span class="nav-icon">✉️</span>Contact</a>
+                </div>
+            </div>
+
+            <div class="sidebar-section" data-category="images">
+                <span class="nav-label"><span class="nav-icon">🧩</span>Image Tools</span>
+                <div class="nav-group nav-tools">
+                    <a class="channel-item" href="/image-compressor"><span class="nav-icon">🗜️</span>Compressor</a>
+                    <a class="channel-item" href="/image-resizer"><span class="nav-icon">📐</span>Resizer</a>
+                    <a class="channel-item" href="/jpg-to-png"><span class="nav-icon">⇄</span>JPG to PNG</a>
+                    <a class="channel-item" href="/png-to-jpg"><span class="nav-icon">⇄</span>PNG to JPG</a>
+                    <a class="channel-item" href="/webp-converter"><span class="nav-icon">🧠</span>WebP Converter</a>
+                    <a class="channel-item" href="/png-to-webp"><span class="nav-icon">⚡</span>PNG to WebP</a>
+                    <a class="channel-item" href="/jpg-to-webp"><span class="nav-icon">⚡</span>JPG to WebP</a>
+                    <a class="channel-item" href="/image-cropper"><span class="nav-icon">✂️</span>Cropper</a>
+                    <a class="channel-item" href="/image-rotator"><span class="nav-icon">🔄</span>Rotator</a>
+                    <a class="channel-item" href="/document-scanner"><span class="nav-icon">📄</span>Document Scanner</a>
+                    <a class="channel-item" href="/passport-photo-maker"><span class="nav-icon">📸</span>Passport Photo</a>
+                </div>
+            </div>
+
+            <div class="sidebar-section" data-category="videos">
+                <span class="nav-label"><span class="nav-icon">🎬</span>Video Tools</span>
+                <div class="nav-group nav-tools">
+                    <a class="channel-item" href="/videos"><span class="nav-icon">🎞️</span>Video Studio</a>
+                    <a class="channel-item" href="/video-cropper"><span class="nav-icon">✂️</span>Video Cropper</a>
+                    <a class="channel-item" href="/video-trimmer"><span class="nav-icon">⏱️</span>Video Trimmer</a>
+                    <a class="channel-item" href="/video-filters"><span class="nav-icon">🎨</span>Video Filters</a>
+                </div>
+            </div>
+
+            <div class="sidebar-section" data-category="scanner">
+                <span class="nav-label"><span class="nav-icon">📑</span>Scanner Tools</span>
+                <div class="nav-group nav-tools">
+                    <a class="channel-item" href="/document-scanner"><span class="nav-icon">📄</span>Document Scanner</a>
+                    <a class="channel-item" href="/qr-code-scanner"><span class="nav-icon">◼️</span>QR Code Scanner</a>
+                </div>
+            </div>
+
+            <div class="sidebar-section" data-category="pdfs">
+                <span class="nav-label"><span class="nav-icon">📄</span>PDF Tools</span>
+                <div class="nav-group nav-tools">
+                    <a class="channel-item" href="/merge-pdf"><span class="nav-icon">🧩</span>Merge PDF</a>
+                    <a class="channel-item" href="/split-pdf"><span class="nav-icon">✂️</span>Split PDF</a>
+                    <a class="channel-item" href="/compress-pdf"><span class="nav-icon">🗜️</span>Compress PDF</a>
+                    <a class="channel-item" href="/jpg-to-pdf"><span class="nav-icon">📎</span>JPG to PDF</a>
+                    <a class="channel-item" href="/pdf-to-images"><span class="nav-icon">🖼️</span>PDF to Images</a>
+                    <a class="channel-item" href="/rotate-pdf"><span class="nav-icon">🔁</span>Rotate PDF</a>
+                    <a class="channel-item" href="/delete-pdf-pages"><span class="nav-icon">🗑️</span>Delete Pages</a>
+                    <a class="channel-item" href="/extract-pdf-pages"><span class="nav-icon">📤</span>Extract Pages</a>
+                </div>
+            </div>
+
+            <div class="sidebar-section" data-category="utility">
+                <span class="nav-label"><span class="nav-icon">⚡</span>Developer Utilities</span>
+                <div class="nav-group nav-tools">
+                    <a class="channel-item" href="/image-to-base64"><span class="nav-icon">⌨️</span>Image to Base64</a>
+                    <a class="channel-item" href="/base64-to-image"><span class="nav-icon">🧾</span>Base64 to Image</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>
+
+
+    
+    
+<header class="top-header">
+    <div class="header-branding">
+        <a href="/" class="brand-link" aria-label="Imigi Home">
+            <span class="user-badge" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><path d="m8 16 2.8-8h2.4L16 16"/><path d="M9 13h6"/></svg>
+            </span>
+            <span class="brand-copy">
+                <span class="brand-name">Imigi</span>
+                <span class="brand-context">Media workspace</span>
+            </span>
+        </a>
+    </div>
+
+    <form class="header-search-wrap" role="search" action="/search" method="get" onSubmit="return false;">
+        <div class="search-box">
+            <span class="search-icon" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </span>
+            <input 
+                id="global-tool-search" 
+                name="q"
+                type="search" 
+                placeholder="Search tools, formats, categories..." 
+                aria-label="Search tools, formats, and categories"
+                autocomplete="off"
+                role="combobox"
+                aria-expanded="false"
+                aria-autocomplete="list"
+                aria-controls="global-tool-results"
+            />
+            <kbd class="search-shortcut" aria-hidden="true">/</kbd>
+            <div class="search-results" id="global-tool-results" role="listbox" hidden></div>
+        </div>
+    </form>
+
+    <div class="header-actions">
+        <span class="header-status" title="Processing happens privately in your browser">
+            <span class="header-status-dot" aria-hidden="true"></span>
+            <span>Browser-ready</span>
+        </span>
+        <button 
+            type="button" 
+            class="theme-toggle" 
+            id="theme-toggle" 
+            aria-label="Toggle dark and light theme"
+            title="Toggle theme"
+        >
+            <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+    </div>
+</header>
+
+<div class="lazy-preview-panel" id="lazy-preview-panel" hidden aria-hidden="true">
+    <div class="preview-header">
+        <div>
+            <span class="eyebrow">Side-by-side comparison</span>
+            <h2>Before &amp; After Preview</h2>
+        </div>
+        <button type="button" class="preview-close" id="preview-close" aria-label="Close preview panel">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+    </div>
+
+    <div class="preview-grid">
+        <figure class="preview-card preview-card--before">
+            <figcaption>Original (Before)</figcaption>
+            <div class="preview-visual preview-visual--before" aria-hidden="true"></div>
+        </figure>
+        <figure class="preview-card preview-card--after">
+            <figcaption>Optimized (After)</figcaption>
+            <div class="preview-visual preview-visual--after" aria-hidden="true"></div>
+        </figure>
+    </div>
+
+    <div class="preview-meta">
+        <span class="meta-title">Supported Live Operations</span>
+        <ul class="meta-tags">
+            <li>Crop</li>
+            <li>Resize</li>
+            <li>Color Filters</li>
+            <li>Scan Cleanup</li>
+        </ul>
+    </div>
+</div>
+
+
+    
+    <main class="container flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 flex flex-col gap-8">
+        
+        
+        
+
+        
+        
+<aside class="adsense-container adsense-container--inline" aria-label="Advertisement" role="region">
+    <div class="adsense-slot adsense-slot--desktop" 
+         style="display:flex; align-items:center; justify-content:center; width:min(100%, 728px); height:90px; background:var(--color-surface-subtle, rgba(148,163,184,0.06)); border:1px dashed var(--color-border, rgba(148,163,184,0.15)); border-radius:12px; margin:1.5rem auto; overflow:hidden;">
+        
+        <span style="font-size:0.75rem; color:var(--color-text-muted, #94a3b8); letter-spacing:0.05em; text-transform:uppercase;">Sponsored</span>
+    </div>
+</aside>
+
+
+        
+        <div class="page-content-wrapper flex-1 flex flex-col gap-8">
+            
+<section class="tool-page">
+  <div class="tool-header">
+    <p class="eyebrow">Document Utility</p>
+    <h1>Document Scanner</h1>
+    <p>Turn a photo of a sheet or document into a cleaner, higher-contrast scan with auto-cropping and grayscale enhancement.</p>
+  </div>
+    
+<aside class="adsense-container adsense-container--inline" aria-label="Advertisement" role="region">
+    <div class="adsense-slot adsense-slot--desktop" 
+         style="display:flex; align-items:center; justify-content:center; width:min(100%, 728px); height:90px; background:var(--color-surface-subtle, rgba(148,163,184,0.06)); border:1px dashed var(--color-border, rgba(148,163,184,0.15)); border-radius:12px; margin:1.5rem auto; overflow:hidden;">
+        
+        <span style="font-size:0.75rem; color:var(--color-text-muted, #94a3b8); letter-spacing:0.05em; text-transform:uppercase;">Sponsored</span>
+    </div>
+</aside>
+
+  <div class="tool-card">
+    <form class="image-tool" data-tool="document-scanner">
+      
+<div class="ui-file-upload flex flex-col gap-2 ">
+    
+    <label class="text-xs font-medium text-slate-300 tracking-wide" for="scanner-file">
+        Upload document photo
+    </label>
+    
+    
+    <div 
+        class="file-dropzone ui-file-upload__dropzone group relative bg-slate-900/40 hover:bg-slate-900/80 border-2 border-dashed border-slate-800 hover:border-indigo-500/80 rounded-2xl p-8 transition-all duration-200 flex flex-col items-center justify-center text-center cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+        data-dropzone 
+        data-input="scanner-file" 
+        tabindex="0" 
+        role="button" 
+        aria-label="Upload document photo"
+    >
+        <input 
+            id="scanner-file" 
+            type="file" 
+             
+            accept="image/*" 
+            capture="environment" 
+             
+             
+            class="sr-only absolute inset-0 w-full h-full opacity-0 cursor-pointer pointer-events-auto" 
+        />
+        
+        <div class="dropzone-content flex flex-col items-center justify-center gap-3 pointer-events-none">
+            <div class="w-12 h-12 rounded-xl bg-slate-800/90 group-hover:bg-indigo-500/15 border border-slate-700/60 group-hover:border-indigo-500/40 text-slate-400 group-hover:text-indigo-400 flex items-center justify-center text-xl transition-colors shadow-sm" aria-hidden="true">
+                ⇪
+            </div>
+            
+            <div class="dropzone-copy flex flex-col gap-1">
+                <strong class="text-sm font-semibold text-slate-200 group-hover:text-white transition-colors">
+                    Choose a document photo
+                </strong>
+                <span class="text-xs text-slate-400">
+                    or browse from your device
+                </span>
+            </div>
+        </div>
+
+        <small class="dropzone-filename mt-3 text-xs font-mono text-slate-500 group-hover:text-slate-400 transition-colors">
+            No file selected
+        </small>
+    </div>
+</div>
+
+
+      <div class="field">
+        <label>Scan from camera</label>
+        
+<div class="ui-camera flex flex-col gap-4 bg-slate-900/50 border border-slate-800/80 rounded-2xl p-5 shadow-xl max-w-xl mx-auto">
+    
+    
+    <div class="relative w-full aspect-video bg-slate-950 rounded-xl border border-slate-800 overflow-hidden flex items-center justify-center">
+        
+        
+        <video 
+            id="scanner-camera" 
+            autoplay 
+            playsinline 
+            muted 
+            class="w-full h-full object-cover hidden"
+        ></video>
+        
+        
+        <canvas id="scanner-capture-canvas" class="hidden"></canvas>
+        
+        
+        <div id="camera-placeholder" class="absolute inset-0 flex flex-col items-center justify-center gap-2 p-6 text-center text-slate-400">
+            <svg class="w-10 h-10 text-slate-600 mb-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>
+            </svg>
+            <p class="text-sm font-medium text-slate-300">Camera is currently inactive</p>
+            <p class="text-xs text-slate-500">Click below to grant camera access and start scanning documents or taking photos.</p>
+        </div>
+
+        
+        <div id="camera-error" class="absolute inset-x-4 bottom-4 bg-rose-950/90 border border-rose-500/40 text-rose-200 px-4 py-3 rounded-xl text-xs flex items-center gap-3 shadow-lg hidden" role="alert">
+            <svg class="w-5 h-5 text-rose-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span class="error-message">Unable to access camera. Please check your browser permissions.</span>
+        </div>
+    </div>
+
+    
+    <div class="ui-camera__actions flex items-center justify-center gap-3">
+        <button 
+            type="button" 
+            class="camera-toggle inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl shadow-sm transition" 
+            
+        >
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            <span>Use camera</span>
+        </button>
+
+        <button 
+            type="button" 
+            class="camera-capture inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl shadow-sm transition" 
+            hidden 
+            
+        >
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+            <span>Capture photo</span>
+        </button>
+    </div>
+
+</div>
+
+      </div>
+
+      <div class="field">
+        
+<div class="ui-slider flex flex-col gap-2 w-full ">
+    <div class="flex items-center justify-between text-xs font-medium">
+        <label for="scanner-threshold" class="text-slate-300 tracking-wide">
+            Scan intensity
+        </label>
+        <span id="scanner-threshold-value" class="font-mono text-indigo-400 bg-slate-900 px-2 py-0.5 rounded border border-slate-800">
+            180
+        </span>
+    </div>
+
+    <div class="relative flex items-center">
+        <input 
+            id="scanner-threshold" 
+            type="range" 
+            min="120" 
+            max="220" 
+            value="180" 
+            step="5" 
+            
+            class="w-full h-2 bg-slate-900 rounded-lg appearance-none cursor-pointer accent-indigo-600 focus:outline-none focus:ring-1 focus:ring-indigo-500 border border-slate-800"
+        />
+    </div>
+
+    
+</div>
+
+      </div>
+
+      <div class="field-row two-col">
+        <div class="field">
+          <label for="scanner-padding">Padding</label>
+          <input id="scanner-padding" type="number" min="0" max="120" value="18" />
+        </div>
+        <div class="field">
+          <label for="scanner-contrast">Contrast boost</label>
+          <input id="scanner-contrast" type="number" min="1" max="3" step="0.1" value="1.6" />
+        </div>
+      </div>
+
+      
+
+
+
+
+
+<button 
+    class="ui-button inline-flex items-center justify-center gap-2 px-3.5 py-2 text-sm font-medium rounded-xl transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:opacity-50 disabled:pointer-events-none cursor-pointer bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700/80 " 
+     
+    type="submit" 
+     
+    
+    
+    
+    
+    
+    
+    
+>
+    
+    
+    <span class="ui-button__label truncate">
+        Scan document
+    </span>
+</button>
+
+    </form>
+
+    <div class="result-block">
+      <img class="tool-preview" alt="Scanned document preview" hidden />
+      <a class="download-link" href="#" hidden>Download scanned document</a>
+    </div>
+  </div>
+</section>
+
+        </div>
+
+        
+        
+<aside class="adsense-container adsense-container--inline" aria-label="Advertisement" role="region">
+    <div class="adsense-slot adsense-slot--desktop" 
+         style="display:flex; align-items:center; justify-content:center; width:min(100%, 728px); height:90px; background:var(--color-surface-subtle, rgba(148,163,184,0.06)); border:1px dashed var(--color-border, rgba(148,163,184,0.15)); border-radius:12px; margin:1.5rem auto; overflow:hidden;">
+        
+        <span style="font-size:0.75rem; color:var(--color-text-muted, #94a3b8); letter-spacing:0.05em; text-transform:uppercase;">Sponsored</span>
+    </div>
+</aside>
+
+    </main>
+
+    
+    
+<footer class="site-footer bg-slate-950 border-t border-slate-800/80 pt-12 pb-8 px-6 text-slate-400 text-sm" role="contentinfo">
+    <div class="max-w-7xl mx-auto flex flex-col gap-10">
+        
+        
+        
+<footer class="adsense-container adsense-container--footer" aria-label="Footer Advertisement" role="region">
+    <div class="adsense-slot adsense-slot--responsive" 
+         style="display:flex; align-items:center; justify-content:center; width:min(100%, 728px); height:90px; background:var(--color-surface-subtle, rgba(148,163,184,0.06)); border:1px dashed var(--color-border, rgba(148,163,184,0.15)); border-radius:12px; margin:2rem auto 1rem; overflow:hidden;">
+        <span style="font-size:0.75rem; color:var(--color-text-muted, #94a3b8); letter-spacing:0.05em; text-transform:uppercase;">Advertisement</span>
+    </div>
+</footer>
+
+
+        
+        <nav class="footer-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8" aria-label="Footer Navigation">
+            
+            
+            <div class="footer-group flex flex-col gap-3">
+                <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-200">Pages</h3>
+                <ul class="footer-links flex flex-col gap-2">
+                    <li><a href="/" class="hover:text-slate-100 transition-colors">Home</a></li>
+                    <li><a href="/about" class="hover:text-slate-100 transition-colors">About</a></li>
+                    <li><a href="/images" class="hover:text-slate-100 transition-colors">Gallery</a></li>
+                    <li><a href="/videos" class="hover:text-slate-100 transition-colors">Video Studio</a></li>
+                    <li><a href="/contact" class="hover:text-slate-100 transition-colors">Contact</a></li>
+                    <li><a href="/sitemap.xml" class="hover:text-slate-100 transition-colors">Sitemap</a></li>
+                </ul>
+            </div>
+
+            
+            <div class="footer-group flex flex-col gap-3">
+                <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-200">Image Tools</h3>
+                <ul class="footer-links flex flex-col gap-2">
+                    <li><a href="/image-compressor" class="hover:text-slate-100 transition-colors">Image Compressor</a></li>
+                    <li><a href="/image-resizer" class="hover:text-slate-100 transition-colors">Image Resizer</a></li>
+                    <li><a href="/jpg-to-png" class="hover:text-slate-100 transition-colors">JPG to PNG</a></li>
+                    <li><a href="/png-to-jpg" class="hover:text-slate-100 transition-colors">PNG to JPG</a></li>
+                    <li><a href="/webp-converter" class="hover:text-slate-100 transition-colors">WebP Converter</a></li>
+                    <li><a href="/png-to-webp" class="hover:text-slate-100 transition-colors">PNG to WebP</a></li>
+                    <li><a href="/jpg-to-webp" class="hover:text-slate-100 transition-colors">JPG to WebP</a></li>
+                    <li><a href="/image-cropper" class="hover:text-slate-100 transition-colors">Image Cropper</a></li>
+                    <li><a href="/image-rotator" class="hover:text-slate-100 transition-colors">Image Rotator</a></li>
+                    <li><a href="/passport-photo-maker" class="hover:text-slate-100 transition-colors">Passport Photo</a></li>
+                    <li><a href="/image-to-base64" class="hover:text-slate-100 transition-colors">Image to Base64</a></li>
+                </ul>
+            </div>
+
+            
+            <div class="footer-group flex flex-col gap-3">
+                <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-200">PDF Tools</h3>
+                <ul class="footer-links flex flex-col gap-2">
+                    <li><a href="/merge-pdf" class="hover:text-slate-100 transition-colors">Merge PDF</a></li>
+                    <li><a href="/split-pdf" class="hover:text-slate-100 transition-colors">Split PDF</a></li>
+                    <li><a href="/compress-pdf" class="hover:text-slate-100 transition-colors">Compress PDF</a></li>
+                    <li><a href="/jpg-to-pdf" class="hover:text-slate-100 transition-colors">JPG to PDF</a></li>
+                    <li><a href="/pdf-to-images" class="hover:text-slate-100 transition-colors">PDF to Images</a></li>
+                    <li><a href="/rotate-pdf" class="hover:text-slate-100 transition-colors">Rotate PDF</a></li>
+                    <li><a href="/delete-pdf-pages" class="hover:text-slate-100 transition-colors">Delete Pages</a></li>
+                    <li><a href="/extract-pdf-pages" class="hover:text-slate-100 transition-colors">Extract Pages</a></li>
+                </ul>
+            </div>
+
+            
+            <div class="footer-group flex flex-col gap-3">
+                <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-200">Scanner Tools</h3>
+                <ul class="footer-links flex flex-col gap-2">
+                    <li><a href="/document-scanner" class="hover:text-slate-100 transition-colors">Document Scanner</a></li>
+                    <li><a href="/qr-code-scanner" class="hover:text-slate-100 transition-colors">QR Code Scanner</a></li>
+                </ul>
+            </div>
+
+            
+            <div class="footer-group flex flex-col gap-3">
+                <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-200">Video Tools</h3>
+                <ul class="footer-links flex flex-col gap-2">
+                    <li><a href="/videos" class="hover:text-slate-100 transition-colors">Video Studio</a></li>
+                    <li><a href="/video-cropper" class="hover:text-slate-100 transition-colors">Video Trimmer</a></li>
+                    <li><a href="/video-filters" class="hover:text-slate-100 transition-colors">Video Filters</a></li>
+                </ul>
+            </div>
+
+            
+            <div class="footer-group flex flex-col gap-3">
+                <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-200">Utilities</h3>
+                <ul class="footer-links flex flex-col gap-2">
+                    <li><a href="/base64-to-image" class="hover:text-slate-100 transition-colors">Base64 to Image</a></li>
+                    <li><a href="/image-to-base64" class="hover:text-slate-100 transition-colors">Image to Base64</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        
+        <div class="border-t border-slate-800/80 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+            <p class="footer-copy">&copy; 2026 Imigi App. All rights reserved.</p>
+            <div class="flex items-center gap-4 text-slate-500">
+                <a href="/privacy" class="hover:text-slate-300 transition-colors">Privacy Policy</a>
+                <a href="/terms" class="hover:text-slate-300 transition-colors">Terms of Service</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    
+    <script defer src="/static/js/pwa.js"></script>
+    <script defer src="/static/js/app.js"></script>
+</body>
+</html>

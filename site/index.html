@@ -1,0 +1,687 @@
+
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+    <title>Home Page - Imigi</title>
+    <meta name="description" content="Welcome to our home page description">
+    <meta name="keywords" content="imigi, home, app, welcome">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://allok.com">
+
+    
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Home Page - Imigi">
+    <meta property="og:description" content="Welcome to our home page description">
+    <meta property="og:image" content="https://allok.com/static/icons/imigi-icon.svg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Home Page - Imigi">
+    <meta name="twitter:description" content="Welcome to our home page description">
+
+    
+    <meta name="theme-color" content="#090d16">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="icon" type="image/svg+xml" href="/static/icons/imigi-icon.svg">
+    <link rel="apple-touch-icon" href="/static/icons/imigi-icon.svg">
+    <link rel="manifest" href="/static/manifest.webmanifest">
+
+    
+    <link rel="stylesheet" href="/static/css/newstyle.css?v=20261104">
+</head>
+<body class="app-layout bg-slate-950 text-slate-100 antialiased min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white">
+    
+    
+    
+<div class="discord-shell">
+    <aside class="server-rail" role="tablist" aria-label="Tool Categories">
+        <button class="server-button active" type="button" role="tab" aria-selected="true" data-category="overview" title="Overview">
+            <span class="server-icon">I</span>
+            <span class="server-name">Home</span>
+        </button>
+        <button class="server-button" type="button" role="tab" aria-selected="false" data-category="images" title="Images">
+            <span class="server-icon">🖼️</span>
+            <span class="server-name">Images</span>
+        </button>
+        <button class="server-button" type="button" role="tab" aria-selected="false" data-category="videos" title="Videos">
+            <span class="server-icon">🎬</span>
+            <span class="server-name">Videos</span>
+        </button>
+        <button class="server-button" type="button" role="tab" aria-selected="false" data-category="scanner" title="Scanner">
+            <span class="server-icon">📑</span>
+            <span class="server-name">Scanner</span>
+        </button>
+        <button class="server-button" type="button" role="tab" aria-selected="false" data-category="pdfs" title="PDFs">
+            <span class="server-icon">📄</span>
+            <span class="server-name">PDFs</span>
+        </button>
+        <button class="server-button" type="button" role="tab" aria-selected="false" data-category="utility" title="Utility">
+            <span class="server-icon">⚡</span>
+            <span class="server-name">Tools</span>
+        </button>
+    </aside>
+
+    <nav class="sidebar-nav" id="sidebarNav" aria-label="Main Navigation">
+        <div class="nav-topbar">
+            <div class="nav-brand">
+                <a href="/">Imigi</a>
+            </div>
+        </div>
+
+        <div class="nav-inner">
+            <div class="sidebar-section active" data-category="overview">
+                <span class="nav-label">Navigation</span>
+                <div class="nav-group nav-tools">
+                    <a class="channel-item" href="/"><span class="nav-icon">🏠</span>Home</a>
+                    <a class="channel-item" href="/image-tools"><span class="nav-icon">🖼️</span>Image Tools</a>
+                    <a class="channel-item" href="/pdf-tools"><span class="nav-icon">📄</span>PDF Tools</a>
+                    <a class="channel-item" href="/video-tools"><span class="nav-icon">🎬</span>Video Tools</a>
+                    <a class="channel-item" href="/scanner-tools"><span class="nav-icon">📑</span>Scanner Tools</a>
+                    <a class="channel-item" href="/about"><span class="nav-icon">ℹ️</span>About</a>
+                    <a class="channel-item" href="/contact"><span class="nav-icon">✉️</span>Contact</a>
+                </div>
+            </div>
+
+            <div class="sidebar-section" data-category="images">
+                <span class="nav-label"><span class="nav-icon">🧩</span>Image Tools</span>
+                <div class="nav-group nav-tools">
+                    <a class="channel-item" href="/image-compressor"><span class="nav-icon">🗜️</span>Compressor</a>
+                    <a class="channel-item" href="/image-resizer"><span class="nav-icon">📐</span>Resizer</a>
+                    <a class="channel-item" href="/jpg-to-png"><span class="nav-icon">⇄</span>JPG to PNG</a>
+                    <a class="channel-item" href="/png-to-jpg"><span class="nav-icon">⇄</span>PNG to JPG</a>
+                    <a class="channel-item" href="/webp-converter"><span class="nav-icon">🧠</span>WebP Converter</a>
+                    <a class="channel-item" href="/png-to-webp"><span class="nav-icon">⚡</span>PNG to WebP</a>
+                    <a class="channel-item" href="/jpg-to-webp"><span class="nav-icon">⚡</span>JPG to WebP</a>
+                    <a class="channel-item" href="/image-cropper"><span class="nav-icon">✂️</span>Cropper</a>
+                    <a class="channel-item" href="/image-rotator"><span class="nav-icon">🔄</span>Rotator</a>
+                    <a class="channel-item" href="/document-scanner"><span class="nav-icon">📄</span>Document Scanner</a>
+                    <a class="channel-item" href="/passport-photo-maker"><span class="nav-icon">📸</span>Passport Photo</a>
+                </div>
+            </div>
+
+            <div class="sidebar-section" data-category="videos">
+                <span class="nav-label"><span class="nav-icon">🎬</span>Video Tools</span>
+                <div class="nav-group nav-tools">
+                    <a class="channel-item" href="/videos"><span class="nav-icon">🎞️</span>Video Studio</a>
+                    <a class="channel-item" href="/video-cropper"><span class="nav-icon">✂️</span>Video Cropper</a>
+                    <a class="channel-item" href="/video-trimmer"><span class="nav-icon">⏱️</span>Video Trimmer</a>
+                    <a class="channel-item" href="/video-filters"><span class="nav-icon">🎨</span>Video Filters</a>
+                </div>
+            </div>
+
+            <div class="sidebar-section" data-category="scanner">
+                <span class="nav-label"><span class="nav-icon">📑</span>Scanner Tools</span>
+                <div class="nav-group nav-tools">
+                    <a class="channel-item" href="/document-scanner"><span class="nav-icon">📄</span>Document Scanner</a>
+                    <a class="channel-item" href="/qr-code-scanner"><span class="nav-icon">◼️</span>QR Code Scanner</a>
+                </div>
+            </div>
+
+            <div class="sidebar-section" data-category="pdfs">
+                <span class="nav-label"><span class="nav-icon">📄</span>PDF Tools</span>
+                <div class="nav-group nav-tools">
+                    <a class="channel-item" href="/merge-pdf"><span class="nav-icon">🧩</span>Merge PDF</a>
+                    <a class="channel-item" href="/split-pdf"><span class="nav-icon">✂️</span>Split PDF</a>
+                    <a class="channel-item" href="/compress-pdf"><span class="nav-icon">🗜️</span>Compress PDF</a>
+                    <a class="channel-item" href="/jpg-to-pdf"><span class="nav-icon">📎</span>JPG to PDF</a>
+                    <a class="channel-item" href="/pdf-to-images"><span class="nav-icon">🖼️</span>PDF to Images</a>
+                    <a class="channel-item" href="/rotate-pdf"><span class="nav-icon">🔁</span>Rotate PDF</a>
+                    <a class="channel-item" href="/delete-pdf-pages"><span class="nav-icon">🗑️</span>Delete Pages</a>
+                    <a class="channel-item" href="/extract-pdf-pages"><span class="nav-icon">📤</span>Extract Pages</a>
+                </div>
+            </div>
+
+            <div class="sidebar-section" data-category="utility">
+                <span class="nav-label"><span class="nav-icon">⚡</span>Developer Utilities</span>
+                <div class="nav-group nav-tools">
+                    <a class="channel-item" href="/image-to-base64"><span class="nav-icon">⌨️</span>Image to Base64</a>
+                    <a class="channel-item" href="/base64-to-image"><span class="nav-icon">🧾</span>Base64 to Image</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>
+
+
+    
+    
+<header class="top-header">
+    <div class="header-branding">
+        <a href="/" class="brand-link" aria-label="Imigi Home">
+            <span class="user-badge" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><path d="m8 16 2.8-8h2.4L16 16"/><path d="M9 13h6"/></svg>
+            </span>
+            <span class="brand-copy">
+                <span class="brand-name">Imigi</span>
+                <span class="brand-context">Media workspace</span>
+            </span>
+        </a>
+    </div>
+
+    <form class="header-search-wrap" role="search" action="/search" method="get" onSubmit="return false;">
+        <div class="search-box">
+            <span class="search-icon" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </span>
+            <input 
+                id="global-tool-search" 
+                name="q"
+                type="search" 
+                placeholder="Search tools, formats, categories..." 
+                aria-label="Search tools, formats, and categories"
+                autocomplete="off"
+                role="combobox"
+                aria-expanded="false"
+                aria-autocomplete="list"
+                aria-controls="global-tool-results"
+            />
+            <kbd class="search-shortcut" aria-hidden="true">/</kbd>
+            <div class="search-results" id="global-tool-results" role="listbox" hidden></div>
+        </div>
+    </form>
+
+    <div class="header-actions">
+        <span class="header-status" title="Processing happens privately in your browser">
+            <span class="header-status-dot" aria-hidden="true"></span>
+            <span>Browser-ready</span>
+        </span>
+        <button 
+            type="button" 
+            class="theme-toggle" 
+            id="theme-toggle" 
+            aria-label="Toggle dark and light theme"
+            title="Toggle theme"
+        >
+            <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            <svg class="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+    </div>
+</header>
+
+<div class="lazy-preview-panel" id="lazy-preview-panel" hidden aria-hidden="true">
+    <div class="preview-header">
+        <div>
+            <span class="eyebrow">Side-by-side comparison</span>
+            <h2>Before &amp; After Preview</h2>
+        </div>
+        <button type="button" class="preview-close" id="preview-close" aria-label="Close preview panel">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+    </div>
+
+    <div class="preview-grid">
+        <figure class="preview-card preview-card--before">
+            <figcaption>Original (Before)</figcaption>
+            <div class="preview-visual preview-visual--before" aria-hidden="true"></div>
+        </figure>
+        <figure class="preview-card preview-card--after">
+            <figcaption>Optimized (After)</figcaption>
+            <div class="preview-visual preview-visual--after" aria-hidden="true"></div>
+        </figure>
+    </div>
+
+    <div class="preview-meta">
+        <span class="meta-title">Supported Live Operations</span>
+        <ul class="meta-tags">
+            <li>Crop</li>
+            <li>Resize</li>
+            <li>Color Filters</li>
+            <li>Scan Cleanup</li>
+        </ul>
+    </div>
+</div>
+
+
+    
+    <main class="container flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 flex flex-col gap-8">
+        
+        
+        
+
+        
+        
+<aside class="adsense-container adsense-container--inline" aria-label="Advertisement" role="region">
+    <div class="adsense-slot adsense-slot--desktop" 
+         style="display:flex; align-items:center; justify-content:center; width:min(100%, 728px); height:90px; background:var(--color-surface-subtle, rgba(148,163,184,0.06)); border:1px dashed var(--color-border, rgba(148,163,184,0.15)); border-radius:12px; margin:1.5rem auto; overflow:hidden;">
+        
+        <span style="font-size:0.75rem; color:var(--color-text-muted, #94a3b8); letter-spacing:0.05em; text-transform:uppercase;">Sponsored</span>
+    </div>
+</aside>
+
+
+        
+        <div class="page-content-wrapper flex-1 flex flex-col gap-8">
+            
+<section class="hero-section">
+    <div class="hero-copy">
+        <span class="eyebrow">All-in-one media toolkit</span>
+        <h1>Transform, optimize, and manage your images and PDFs effortlessly.</h1>
+        <p>
+            Imigi helps creators, teams, and businesses compress, convert, split, merge, and scan media securely inside your browser—no uploads required.
+        </p>
+        <div class="hero-actions">
+            <a class="primary-btn" href="/image-compressor">Try Image Tools</a>
+            <a class="secondary-btn" href="/merge-pdf">Try PDF Tools</a>
+        </div>
+        <div class="hero-metrics">
+            <div class="metric-item">
+                <strong>25+</strong>
+                <span>Media tools</span>
+            </div>
+            <div class="metric-item">
+                <strong>100%</strong>
+                <span>Browser-based</span>
+            </div>
+            <div class="metric-item">
+                <strong>Zero</strong>
+                <span>Data collection</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="hero-panel">
+        <div class="action-choice-grid">
+            <a class="action-choice" href="/image-compressor">
+                <div class="choice-icon" aria-hidden="true">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/><line x1="12" y1="11" x2="12" y2="17"/><polyline points="9 14 12 11 15 14"/></svg>
+                </div>
+                <div class="choice-copy">
+                    <h2>Upload File</h2>
+                    <p>Drop a file or browse to start processing instantly.</p>
+                </div>
+                <ul class="format-list" aria-label="Supported file formats">
+                    <li>JPG</li>
+                    <li>PNG</li>
+                    <li>WEBP</li>
+                    <li>PDF</li>
+                </ul>
+                <div class="choice-meta">
+                    <span>Privacy Guarantee</span>
+                    <strong>100% Client-Side</strong>
+                </div>
+            </a>
+
+            <a class="action-choice alt" href="/document-scanner">
+                <div class="choice-icon" aria-hidden="true">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                </div>
+                <div class="choice-copy">
+                    <h2>Scan via Camera</h2>
+                    <p>Capture documents or scan QR codes directly using your device camera.</p>
+                </div>
+                <ul class="format-list" aria-label="Supported scan modes">
+                    <li>Document</li>
+                    <li>QR Code</li>
+                    <li>Photo</li>
+                    <li>Notes</li>
+                </ul>
+                <div class="choice-meta">
+                    <span>Browser Camera API</span>
+                    <strong>Instant Processing</strong>
+                </div>
+            </a>
+        </div>
+
+        <div class="mini-panel trust-panel">
+            <span class="trust-title">Privacy &amp; Security</span>
+            <ul class="trust-row">
+                <li class="badge">🔒 Zero Server Transfers</li>
+                <li class="badge">🛡️ Client-Side Processing</li>
+                <li class="badge">⚡ Works Offline</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section class="recent-tools-panel" id="recent-tools-panel" hidden aria-label="Recent tools">
+    <div class="section-header">
+        <span class="eyebrow">History</span>
+        <h2>Jump back in</h2>
+    </div>
+    <div class="recent-tool-list" id="recent-tools-list"></div>
+</section>
+
+<section class="feature-grid" aria-label="Core Capabilities">
+    <article class="feature-card">
+        <div class="feature-icon" aria-hidden="true">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        </div>
+        <h3>Image Engine</h3>
+        <p>Resize, crop, rotate, convert, and compress images without loss of quality.</p>
+    </article>
+
+    <article class="feature-card">
+        <div class="feature-icon" aria-hidden="true">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        </div>
+        <h3>PDF Suite</h3>
+        <p>Merge, split, extract, rotate, and compress PDF documents with precision.</p>
+    </article>
+
+    <article class="feature-card">
+        <div class="feature-icon" aria-hidden="true">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        </div>
+        <h3>Instant Output</h3>
+        <p>Real-time previews, fast browser execution, and instant zero-wait downloads.</p>
+    </article>
+</section>
+
+<section class="ad-space" aria-label="Advertisement">
+    
+<aside class="adsense-container adsense-container--inline" aria-label="Advertisement" role="region">
+    <div class="adsense-slot adsense-slot--desktop" 
+         style="display:flex; align-items:center; justify-content:center; width:min(100%, 728px); height:90px; background:var(--color-surface-subtle, rgba(148,163,184,0.06)); border:1px dashed var(--color-border, rgba(148,163,184,0.15)); border-radius:12px; margin:1.5rem auto; overflow:hidden;">
+        
+        <span style="font-size:0.75rem; color:var(--color-text-muted, #94a3b8); letter-spacing:0.05em; text-transform:uppercase;">Sponsored</span>
+    </div>
+</aside>
+
+    
+<aside class="adsense-container adsense-container--inline" aria-label="Advertisement" role="region">
+    <div class="adsense-slot adsense-slot--desktop" 
+         style="display:flex; align-items:center; justify-content:center; width:min(100%, 728px); height:90px; background:var(--color-surface-subtle, rgba(148,163,184,0.06)); border:1px dashed var(--color-border, rgba(148,163,184,0.15)); border-radius:12px; margin:1.5rem auto; overflow:hidden;">
+        
+        <span style="font-size:0.75rem; color:var(--color-text-muted, #94a3b8); letter-spacing:0.05em; text-transform:uppercase;">Sponsored</span>
+    </div>
+</aside>
+
+</section>
+
+<section class="tool-showcase">
+    <div class="section-header">
+        <span class="eyebrow">Popular Utilities</span>
+        <h2>Everything you need for image and PDF management</h2>
+    </div>
+
+    <div class="tool-grid">
+        <a href="/image-compressor" class="tool-tile">
+            <span>Image Compressor</span>
+            <small>Reduce file size</small>
+        </a>
+        <a href="/jpg-to-png" class="tool-tile">
+            <span>JPG to PNG</span>
+            <small>Convert format</small>
+        </a>
+        <a href="/png-to-webp" class="tool-tile">
+            <span>PNG to WebP</span>
+            <small>Optimize for web</small>
+        </a>
+        <a href="/image-cropper" class="tool-tile">
+            <span>Image Cropper</span>
+            <small>Frame precisely</small>
+        </a>
+        <a href="/merge-pdf" class="tool-tile">
+            <span>Merge PDF</span>
+            <small>Combine files</small>
+        </a>
+        <a href="/split-pdf" class="tool-tile">
+            <span>Split PDF</span>
+            <small>Separate pages</small>
+        </a>
+        <a href="/jpg-to-pdf" class="tool-tile">
+            <span>JPG to PDF</span>
+            <small>Create documents</small>
+        </a>
+        <a href="/pdf-to-images" class="tool-tile">
+            <span>PDF to Images</span>
+            <small>Export pages</small>
+        </a>
+    </div>
+</section>
+
+<section class="content-panel">
+    <div class="section-header">
+        <span class="eyebrow">Workflow</span>
+        <h2>Fast, private, browser-native processing</h2>
+    </div>
+
+    <ol class="info-grid three-up">
+        <li class="feature-card">
+            <span class="step-number" aria-hidden="true">01</span>
+            <h3>Select or Capture</h3>
+            <p>Upload a file from your device or use your camera to scan physical documents and QR codes.</p>
+        </li>
+        <li class="feature-card">
+            <span class="step-number" aria-hidden="true">02</span>
+            <h3>Configure &amp; Preview</h3>
+            <p>Adjust parameters with real-time visual previews before generating the final output.</p>
+        </li>
+        <li class="feature-card">
+            <span class="step-number" aria-hidden="true">03</span>
+            <h3>Export Instantly</h3>
+            <p>Download optimized assets directly to your device without signups or server queues.</p>
+        </li>
+    </ol>
+</section>
+
+<section class="content-panel">
+    <div class="section-header">
+        <span class="eyebrow">Use Cases</span>
+        <h2>Engineered for creators, teams, and daily tasks</h2>
+    </div>
+
+    <div class="info-grid three-up">
+        <article class="feature-card">
+            <h3>For Creators &amp; Photographers</h3>
+            <p>Batch resize, convert, and compress high-resolution images rapidly inside your browser.</p>
+        </article>
+        <article class="feature-card">
+            <h3>For Operations &amp; Office Teams</h3>
+            <p>Scan paper receipts, crop documents, and clean up scans with integrated camera tools.</p>
+        </article>
+        <article class="feature-card">
+            <h3>For Power PDF Users</h3>
+            <p>Merge multi-page documents, reorder pages, and convert formats seamlessly.</p>
+        </article>
+    </div>
+</section>
+
+<section class="content-panel faq-panel" aria-label="Frequently Asked Questions">
+    <div class="section-header">
+        <span class="eyebrow">FAQ</span>
+        <h2>Frequently Asked Questions</h2>
+    </div>
+
+    <div class="faq-list">
+        <details class="faq-item" open>
+            <summary>Are my files stored on your servers?</summary>
+            <p>No. Imigi operates entirely on client-side technology. Your files stay within your browser window and are never uploaded to an external server.</p>
+        </details>
+        <details class="faq-item">
+            <summary>What file formats are supported?</summary>
+            <p>We support standard formats including JPG, PNG, WEBP, and PDF, as well as camera-based QR codes and document scanning capabilities.</p>
+        </details>
+        <details class="faq-item">
+            <summary>Can I scan documents on mobile devices?</summary>
+            <p>Yes. The built-in document scanner utilizes WebRTC to access modern browser cameras on mobile phones, tablets, and desktops.</p>
+        </details>
+        <details class="faq-item">
+            <summary>Is installation or software setup required?</summary>
+            <p>No software installation is required. You can use Imigi directly in any web browser or install it as a Progressive Web App (PWA) for offline access.</p>
+        </details>
+    </div>
+</section>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "@id": "https://allok.com/#webapp",
+      "name": "Imigi",
+      "url": "https://allok.com/",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "All",
+      "description": "A fast browser-based toolkit for image conversion, PDF editing, document scanning, and QR code decoding."
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://allok.com/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Are my files stored on your servers?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Imigi operates entirely on client-side technology. Your files stay within your browser window and are never uploaded to an external server."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What file formats are supported?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We support standard formats including JPG, PNG, WEBP, and PDF, as well as camera-based QR codes and document scanning capabilities."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I scan documents on mobile devices?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. The built-in document scanner utilizes WebRTC to access modern browser cameras on mobile phones, tablets, and desktops."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is installation or software setup required?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No software installation is required. You can use Imigi directly in any web browser or install it as a Progressive Web App (PWA) for offline access."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+
+        </div>
+
+        
+        
+<aside class="adsense-container adsense-container--inline" aria-label="Advertisement" role="region">
+    <div class="adsense-slot adsense-slot--desktop" 
+         style="display:flex; align-items:center; justify-content:center; width:min(100%, 728px); height:90px; background:var(--color-surface-subtle, rgba(148,163,184,0.06)); border:1px dashed var(--color-border, rgba(148,163,184,0.15)); border-radius:12px; margin:1.5rem auto; overflow:hidden;">
+        
+        <span style="font-size:0.75rem; color:var(--color-text-muted, #94a3b8); letter-spacing:0.05em; text-transform:uppercase;">Sponsored</span>
+    </div>
+</aside>
+
+    </main>
+
+    
+    
+<footer class="site-footer bg-slate-950 border-t border-slate-800/80 pt-12 pb-8 px-6 text-slate-400 text-sm" role="contentinfo">
+    <div class="max-w-7xl mx-auto flex flex-col gap-10">
+        
+        
+        
+<footer class="adsense-container adsense-container--footer" aria-label="Footer Advertisement" role="region">
+    <div class="adsense-slot adsense-slot--responsive" 
+         style="display:flex; align-items:center; justify-content:center; width:min(100%, 728px); height:90px; background:var(--color-surface-subtle, rgba(148,163,184,0.06)); border:1px dashed var(--color-border, rgba(148,163,184,0.15)); border-radius:12px; margin:2rem auto 1rem; overflow:hidden;">
+        <span style="font-size:0.75rem; color:var(--color-text-muted, #94a3b8); letter-spacing:0.05em; text-transform:uppercase;">Advertisement</span>
+    </div>
+</footer>
+
+
+        
+        <nav class="footer-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8" aria-label="Footer Navigation">
+            
+            
+            <div class="footer-group flex flex-col gap-3">
+                <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-200">Pages</h3>
+                <ul class="footer-links flex flex-col gap-2">
+                    <li><a href="/" class="hover:text-slate-100 transition-colors">Home</a></li>
+                    <li><a href="/about" class="hover:text-slate-100 transition-colors">About</a></li>
+                    <li><a href="/images" class="hover:text-slate-100 transition-colors">Gallery</a></li>
+                    <li><a href="/videos" class="hover:text-slate-100 transition-colors">Video Studio</a></li>
+                    <li><a href="/contact" class="hover:text-slate-100 transition-colors">Contact</a></li>
+                    <li><a href="/sitemap.xml" class="hover:text-slate-100 transition-colors">Sitemap</a></li>
+                </ul>
+            </div>
+
+            
+            <div class="footer-group flex flex-col gap-3">
+                <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-200">Image Tools</h3>
+                <ul class="footer-links flex flex-col gap-2">
+                    <li><a href="/image-compressor" class="hover:text-slate-100 transition-colors">Image Compressor</a></li>
+                    <li><a href="/image-resizer" class="hover:text-slate-100 transition-colors">Image Resizer</a></li>
+                    <li><a href="/jpg-to-png" class="hover:text-slate-100 transition-colors">JPG to PNG</a></li>
+                    <li><a href="/png-to-jpg" class="hover:text-slate-100 transition-colors">PNG to JPG</a></li>
+                    <li><a href="/webp-converter" class="hover:text-slate-100 transition-colors">WebP Converter</a></li>
+                    <li><a href="/png-to-webp" class="hover:text-slate-100 transition-colors">PNG to WebP</a></li>
+                    <li><a href="/jpg-to-webp" class="hover:text-slate-100 transition-colors">JPG to WebP</a></li>
+                    <li><a href="/image-cropper" class="hover:text-slate-100 transition-colors">Image Cropper</a></li>
+                    <li><a href="/image-rotator" class="hover:text-slate-100 transition-colors">Image Rotator</a></li>
+                    <li><a href="/passport-photo-maker" class="hover:text-slate-100 transition-colors">Passport Photo</a></li>
+                    <li><a href="/image-to-base64" class="hover:text-slate-100 transition-colors">Image to Base64</a></li>
+                </ul>
+            </div>
+
+            
+            <div class="footer-group flex flex-col gap-3">
+                <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-200">PDF Tools</h3>
+                <ul class="footer-links flex flex-col gap-2">
+                    <li><a href="/merge-pdf" class="hover:text-slate-100 transition-colors">Merge PDF</a></li>
+                    <li><a href="/split-pdf" class="hover:text-slate-100 transition-colors">Split PDF</a></li>
+                    <li><a href="/compress-pdf" class="hover:text-slate-100 transition-colors">Compress PDF</a></li>
+                    <li><a href="/jpg-to-pdf" class="hover:text-slate-100 transition-colors">JPG to PDF</a></li>
+                    <li><a href="/pdf-to-images" class="hover:text-slate-100 transition-colors">PDF to Images</a></li>
+                    <li><a href="/rotate-pdf" class="hover:text-slate-100 transition-colors">Rotate PDF</a></li>
+                    <li><a href="/delete-pdf-pages" class="hover:text-slate-100 transition-colors">Delete Pages</a></li>
+                    <li><a href="/extract-pdf-pages" class="hover:text-slate-100 transition-colors">Extract Pages</a></li>
+                </ul>
+            </div>
+
+            
+            <div class="footer-group flex flex-col gap-3">
+                <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-200">Scanner Tools</h3>
+                <ul class="footer-links flex flex-col gap-2">
+                    <li><a href="/document-scanner" class="hover:text-slate-100 transition-colors">Document Scanner</a></li>
+                    <li><a href="/qr-code-scanner" class="hover:text-slate-100 transition-colors">QR Code Scanner</a></li>
+                </ul>
+            </div>
+
+            
+            <div class="footer-group flex flex-col gap-3">
+                <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-200">Video Tools</h3>
+                <ul class="footer-links flex flex-col gap-2">
+                    <li><a href="/videos" class="hover:text-slate-100 transition-colors">Video Studio</a></li>
+                    <li><a href="/video-cropper" class="hover:text-slate-100 transition-colors">Video Trimmer</a></li>
+                    <li><a href="/video-filters" class="hover:text-slate-100 transition-colors">Video Filters</a></li>
+                </ul>
+            </div>
+
+            
+            <div class="footer-group flex flex-col gap-3">
+                <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-200">Utilities</h3>
+                <ul class="footer-links flex flex-col gap-2">
+                    <li><a href="/base64-to-image" class="hover:text-slate-100 transition-colors">Base64 to Image</a></li>
+                    <li><a href="/image-to-base64" class="hover:text-slate-100 transition-colors">Image to Base64</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        
+        <div class="border-t border-slate-800/80 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+            <p class="footer-copy">&copy; 2026 Imigi App. All rights reserved.</p>
+            <div class="flex items-center gap-4 text-slate-500">
+                <a href="/privacy" class="hover:text-slate-300 transition-colors">Privacy Policy</a>
+                <a href="/terms" class="hover:text-slate-300 transition-colors">Terms of Service</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    
+    <script defer src="/static/js/pwa.js"></script>
+    <script defer src="/static/js/app.js"></script>
+</body>
+</html>
